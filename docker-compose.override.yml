@@ -1,0 +1,15 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      target: production
+    volumes: !reset []
+
+  frontend:
+    build: 
+      context: ./frontend
+      target: production
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/nginx.conf
+    ports: 
+      - 80:80

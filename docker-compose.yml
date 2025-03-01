@@ -1,0 +1,39 @@
+services:
+  backend:
+    container_name: hsl-backend
+    build:
+      context: ./backend
+      target: development
+    ports: 
+      - 4000:4000
+    environment:
+      - GRAPHQL_API_TOKEN=${GRAPHQL_API_TOKEN}
+      - GRAPHQL_ENDPOINT=${GRAPHQL_ENDPOINT}
+    restart: always
+    volumes:
+      - ./backend:/app
+    networks:
+      - hsl-network
+
+  frontend:
+    container_name: hsl-frontend
+    build: 
+      context: ./frontend
+      target: development
+    ports: 
+      - 5173:5173
+    environment:
+      - VITE_REACT_APP_GRAPHQL_URI=${VITE_REACT_APP_GRAPHQL_URI}
+      - GRAPHQL_API_TOKEN=${GRAPHQL_API_TOKEN}
+      - GRAPHQL_ENDPOINT=${GRAPHQL_ENDPOINT}
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - hsl-network
+
+networks:
+  hsl-network:
+    name: hsl-network
+    driver: bridge

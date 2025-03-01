@@ -1,0 +1,19 @@
+query vehicleParkings {
+  vehicleParkings {
+    id
+    carPlaces
+    capacity {
+      bicycleSpaces
+      carSpaces
+      wheelchairAccessibleCarSpaces
+    }
+    lat
+    lon
+    name(language: "en")
+    realtime
+    wheelchairAccessibleCarPlaces
+    tags
+    state
+    bicyclePlaces
+  }
+}
