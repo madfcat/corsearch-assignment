@@ -1,9 +1,14 @@
-import "./App.css";
+import "./App.scss";
 import "leaflet/dist/leaflet.css";
 import Map from "./components/map/Map";
-import usePlannedRoutesPolylines from "./features/planned-routes/usePlannedRoutesPolylines";
+import createPlannedRoutesPolylines from "./features/planned-routes/createPlannedRoutesPolylines";
 import { useState } from "react";
-import { usePlanConnectionQuery } from "./gql/graphql";
+import {
+	// PlanConnection,
+	// PlanConnectionQuery,
+	usePlanConnectionQuery,
+} from "./gql/graphql";
+import AvailableRoutes from "./widgets/available-routes/AvailableRoutes";
 
 const coords = {
 	originLat: 60.169718,
@@ -17,41 +22,23 @@ function App() {
 	const { loading, error, data } = usePlanConnectionQuery({
 		variables: coords,
 	});
-	const routesPolylines = usePlannedRoutesPolylines(data);
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error occured...</p>;
+
+	const edges = data?.planConnection?.edges || [];
+	const routesPolylines = createPlannedRoutesPolylines(edges);
 	console.log(routesPolylines);
 	if (routesPolylines.length === 0) return <p>No data...</p>;
 
-	const edge = data?.planConnection?.edges?.[choice];
-	if (!edge) return <p>No edge data available</p>;
-
-	const legs = edge?.node?.legs;
-
 	return (
-		<>
-			{legs?.map((leg, index) => {
-				console.log("leg", leg);
-				return (
-					<p key={index}>
-						{leg?.mode || "Unknown Mode"} - {leg?.route?.shortName}<br/>
-						From: {leg?.from.stop?.code} - {leg?.from.stop?.name}<br/>
-						To: {leg?.to.stop?.code} - {leg?.to.stop?.name}<br/>
-					</p>
-				);
-			})}
-			<select
-				onChange={(e) => setChoice(parseInt(e.target.value))}
-				value={choice}
-			>
-				{routesPolylines.map((_, index) => (
-					<option key={index} value={index}>
-						Route {index + 1}
-					</option>
-				))}
-			</select>
-			<Map leafletNodes={routesPolylines[choice]} />
-		</>
+		<div>
+			<div>
+				<AvailableRoutes edges={edges} setChoice={setChoice} />
+			</div>
+			<div>
+				<Map leafletNodes={routesPolylines[choice]} />
+			</div>
+		</div>
 	);
 }
 

@@ -4589,7 +4589,7 @@ export type PlanConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PlanConnectionQuery = { __typename?: 'QueryType', planConnection?: { __typename?: 'PlanConnection', edges?: Array<{ __typename?: 'PlanEdge', node: { __typename?: 'Itinerary', walkDistance?: number | null, walkTime?: any | null, waitingTime?: any | null, start?: any | null, numberOfTransfers: number, generalizedCost?: number | null, end?: any | null, elevationLost?: number | null, elevationGained?: number | null, duration?: any | null, arrivedAtDestinationWithRentedBicycle?: boolean | null, accessibilityScore?: number | null, legs: Array<{ __typename?: 'Leg', id?: string | null, duration?: number | null, mode?: Mode | null, distance?: number | null, realtimeState?: RealtimeState | null, start: { __typename?: 'LegTime', scheduledTime: any }, end: { __typename?: 'LegTime', scheduledTime: any }, legGeometry?: { __typename?: 'Geometry', length?: number | null, points?: any | null } | null, route?: { __typename?: 'Route', longName?: string | null, shortName?: string | null } | null, from: { __typename?: 'Place', stop?: { __typename?: 'Stop', lon?: number | null, name: string, code?: string | null, lat?: number | null } | null }, to: { __typename?: 'Place', stop?: { __typename?: 'Stop', name: string, code?: string | null, lat?: number | null, lon?: number | null } | null } } | null> } } | null> | null } | null };
+export type PlanConnectionQuery = { __typename?: 'QueryType', planConnection?: { __typename?: 'PlanConnection', edges?: Array<{ __typename?: 'PlanEdge', node: { __typename?: 'Itinerary', walkDistance?: number | null, walkTime?: any | null, waitingTime?: any | null, start?: any | null, numberOfTransfers: number, generalizedCost?: number | null, end?: any | null, elevationLost?: number | null, elevationGained?: number | null, duration?: any | null, arrivedAtDestinationWithRentedBicycle?: boolean | null, legs: Array<{ __typename?: 'Leg', id?: string | null, duration?: number | null, mode?: Mode | null, distance?: number | null, realtimeState?: RealtimeState | null, start: { __typename?: 'LegTime', scheduledTime: any }, end: { __typename?: 'LegTime', scheduledTime: any }, legGeometry?: { __typename?: 'Geometry', length?: number | null, points?: any | null } | null, route?: { __typename?: 'Route', longName?: string | null, shortName?: string | null } | null, from: { __typename?: 'Place', stop?: { __typename?: 'Stop', lon?: number | null, name: string, code?: string | null, lat?: number | null, vehicleMode?: Mode | null } | null }, to: { __typename?: 'Place', stop?: { __typename?: 'Stop', name: string, code?: string | null, lat?: number | null, lon?: number | null, vehicleMode?: Mode | null } | null } } | null> } } | null> | null } | null };
 
 export type RentalStationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4788,6 +4788,7 @@ export const PlanConnectionDocument = gql`
               name(language: "en")
               code
               lat
+              vehicleMode
             }
           }
           to {
@@ -4796,6 +4797,7 @@ export const PlanConnectionDocument = gql`
               code
               lat
               lon
+              vehicleMode
             }
           }
         }
@@ -4808,7 +4810,6 @@ export const PlanConnectionDocument = gql`
         elevationGained
         duration
         arrivedAtDestinationWithRentedBicycle
-        accessibilityScore
       }
     }
   }

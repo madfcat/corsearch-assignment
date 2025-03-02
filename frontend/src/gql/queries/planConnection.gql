@@ -33,6 +33,7 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               name(language: "en")
               code
               lat
+              vehicleMode
             }
           }
           to {
@@ -41,6 +42,7 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               code
               lat
               lon
+              vehicleMode
             }
           }
         }
@@ -53,7 +55,6 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
         elevationGained
         duration
         arrivedAtDestinationWithRentedBicycle
-        accessibilityScore
       }
     }
   }

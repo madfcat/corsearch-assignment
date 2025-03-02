@@ -1,34 +1,26 @@
 import { Marker, Polyline, Popup } from "react-leaflet";
-import { Mode, PlanConnectionQuery } from "../../gql/graphql";
 import polyline from "polyline";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { JSX } from "react";
+import { Edges, PickedMode } from "../../types/types";
+import { Mode } from "../../gql/graphql";
 
-type PickedMode =
-	| Mode.Bus
-	| Mode.Tram
-	| Mode.Subway
-	| Mode.Walk
-	| Mode.Rail
-	| "DEFAULT";
-
-const colors: Record<PickedMode, string> = {
+export const colors: Record<PickedMode, string> = {
 	[Mode.Bus]: "#ff8800",
 	[Mode.Tram]: "#00ff00",
 	[Mode.Subway]: "#0000FF",
 	[Mode.Walk]: "#FF0000",
 	[Mode.Rail]: "#800080",
+	[Mode.Ferry]: "#00eeff",
 	DEFAULT: "#7b7b7b",
 };
 
-export default function usePlannedRoutesPolylines(
-	data: PlanConnectionQuery | undefined
-) {
+export default function createPlannedRoutesPolylines(edges: Edges) {
 	const routesPolylines: JSX.Element[][] = [];
 
-	console.log("data:", data);
+	console.log("edges:", edges);
 
-	data?.planConnection?.edges?.forEach((edge) => {
+	edges?.forEach((edge) => {
 		const legs = edge?.node?.legs;
 		if (legs?.length === 0) return null;
 
@@ -65,7 +57,10 @@ export default function usePlannedRoutesPolylines(
 			if (fromLat && fromLon) {
 				const fromPosition: LatLngExpression = [fromLat, fromLon];
 				LegPolylines.push(
-					<Marker position={fromPosition}>
+					<Marker
+						position={fromPosition}
+						key={`${leg?.legGeometry?.points}-${leg?.from.stop?.code}`}
+					>
 						<Popup>
 							{leg?.from.stop?.code} - {leg?.from.stop?.name}
 						</Popup>
@@ -77,7 +72,10 @@ export default function usePlannedRoutesPolylines(
 			if (toLat && toLon) {
 				const toPosition: LatLngExpression = [toLat, toLon];
 				LegPolylines.push(
-					<Marker position={toPosition}>
+					<Marker
+						position={toPosition}
+						key={`${leg?.legGeometry?.points}-${leg?.to.stop?.code}`}
+					>
 						<Popup>
 							{leg?.to.stop?.code} - {leg?.to.stop?.name}
 						</Popup>
