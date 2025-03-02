@@ -23,6 +23,26 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
             length
             points
           }
+          route {
+            longName(language: "en")
+            shortName
+          }
+          from {
+            stop {
+              lon
+              name(language: "en")
+              code
+              lat
+            }
+          }
+          to {
+            stop {
+              name
+              code
+              lat
+              lon
+            }
+          }
         }
         waitingTime
         start

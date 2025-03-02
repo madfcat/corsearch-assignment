@@ -1,30 +1,30 @@
-import { Polyline } from "react-leaflet";
-import { Mode, usePlanConnectionQuery } from "../../gql/graphql";
+import { Marker, Polyline, Popup } from "react-leaflet";
+import { Mode, PlanConnectionQuery } from "../../gql/graphql";
 import polyline from "polyline";
-import { LatLngTuple } from "leaflet";
+import { LatLngExpression, LatLngTuple } from "leaflet";
 import { JSX } from "react";
 
-type Variables = {
-	originLat: number;
-	originLon: number;
-	destinationLat: number;
-	destinationLon: number;
-};
-
-type PickedMode = Mode.Bus | Mode.Tram | Mode.Subway | Mode.Walk | "DEFAULT";
+type PickedMode =
+	| Mode.Bus
+	| Mode.Tram
+	| Mode.Subway
+	| Mode.Walk
+	| Mode.Rail
+	| "DEFAULT";
 
 const colors: Record<PickedMode, string> = {
 	[Mode.Bus]: "#ff8800",
 	[Mode.Tram]: "#00ff00",
 	[Mode.Subway]: "#0000FF",
 	[Mode.Walk]: "#FF0000",
-	DEFAULT: "#ff00e1",
+	[Mode.Rail]: "#800080",
+	DEFAULT: "#7b7b7b",
 };
 
-export default function usePlannedRoutesPolylines(variables: Variables) {
-	const { loading, error, data } = usePlanConnectionQuery({ variables });
+export default function usePlannedRoutesPolylines(
+	data: PlanConnectionQuery | undefined
+) {
 	const routesPolylines: JSX.Element[][] = [];
-	if (loading || error) return routesPolylines;
 
 	console.log("data:", data);
 
@@ -60,6 +60,30 @@ export default function usePlannedRoutesPolylines(variables: Variables) {
 					weight={5}
 				/>
 			);
+			const fromLat = leg?.from.stop?.lat;
+			const fromLon = leg?.from.stop?.lon;
+			if (fromLat && fromLon) {
+				const fromPosition: LatLngExpression = [fromLat, fromLon];
+				LegPolylines.push(
+					<Marker position={fromPosition}>
+						<Popup>
+							{leg?.from.stop?.code} - {leg?.from.stop?.name}
+						</Popup>
+					</Marker>
+				);
+			}
+			const toLat = leg?.to.stop?.lat;
+			const toLon = leg?.to.stop?.lon;
+			if (toLat && toLon) {
+				const toPosition: LatLngExpression = [toLat, toLon];
+				LegPolylines.push(
+					<Marker position={toPosition}>
+						<Popup>
+							{leg?.to.stop?.code} - {leg?.to.stop?.name}
+						</Popup>
+					</Marker>
+				);
+			}
 		});
 
 		routesPolylines.push(LegPolylines);
