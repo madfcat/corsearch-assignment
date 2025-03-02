@@ -1,0 +1,23 @@
+# BUS, FERRY, SUBWAY, TRAM, RAIL
+
+query routes {
+  routes(transportModes: BUS) {
+    id
+    shortName
+    longName(language: "en")
+    stops {
+      desc(language: "en")
+      code
+      name(language: "en")
+      lat
+      lon
+      geometries {
+        geoJson
+        googleEncoded {
+          length
+          points
+        }
+      }
+    }
+  }
+}

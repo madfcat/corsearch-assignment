@@ -1,6 +1,8 @@
 query vehicleParkings {
   vehicleParkings {
     id
+    bicyclePlaces
+    anyCarPlaces
     carPlaces
     capacity {
       bicycleSpaces
@@ -14,6 +16,8 @@ query vehicleParkings {
     wheelchairAccessibleCarPlaces
     tags
     state
-    bicyclePlaces
+    openingHours {
+      osm
+    }
   }
 }

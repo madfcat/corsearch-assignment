@@ -23,10 +23,6 @@ query rentalStations {
         }
       }
     }
-    rentalNetwork {
-      networkId
-      url
-    }
     availableSpaces {
       byType {
         count

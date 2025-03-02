@@ -1,0 +1,40 @@
+query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!) {
+  planConnection(
+    origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
+    destination: {location: {coordinate: {latitude: $destinationLat, longitude: $destinationLon}}}
+  ) {
+    edges {
+      node {
+        walkDistance
+        walkTime
+        legs {
+          id
+          duration
+          mode
+          distance
+          start {
+            scheduledTime
+          }
+          end {
+            scheduledTime
+          }
+          realtimeState
+          legGeometry {
+            length
+            points
+          }
+        }
+        waitingTime
+        start
+        numberOfTransfers
+        generalizedCost
+        end
+        elevationLost
+        elevationGained
+        duration
+        arrivedAtDestinationWithRentedBicycle
+        accessibilityScore
+      }
+    }
+  }
+}

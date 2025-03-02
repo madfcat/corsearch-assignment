@@ -23,8 +23,8 @@ const config: CodegenConfig = {
 			},
 		},
 	],
-	// documents: ["src/gql/**/*.gql"],
-	documents: ["src/gql/**/*.tsx"],
+	documents: ["src/gql/**/*.gql"],
+	// documents: ["src/gql/**/*.tsx"],
 	ignoreNoDocuments: true, // for better experience with the watcher
 	generates: {
 		"./src/gql/graphql.tsx": {

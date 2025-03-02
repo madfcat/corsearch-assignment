@@ -4571,12 +4571,271 @@ export type StopAtDistanceEdge = {
   node?: Maybe<StopAtDistance>;
 };
 
+export type AlertsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AlertsQuery = { __typename?: 'QueryType', alerts?: Array<{ __typename?: 'Alert', alertCause?: AlertCauseType | null, alertDescriptionText: string, effectiveEndDate?: any | null, effectiveStartDate?: any | null, entities?: Array<{ __typename?: 'Agency' } | { __typename?: 'Pattern' } | { __typename?: 'Route', id: string, longName?: string | null, shortName?: string | null, stops?: Array<{ __typename?: 'Stop', name: string, code?: string | null, routes?: Array<{ __typename?: 'Route', longName?: string | null, shortName?: string | null }> | null } | null> | null } | { __typename?: 'RouteType' } | { __typename?: 'Stop' } | { __typename?: 'StopOnRoute' } | { __typename?: 'StopOnTrip' } | { __typename?: 'Trip' } | { __typename?: 'Unknown' } | null> | null } | null> | null };
+
+export type NearestQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NearestQuery = { __typename?: 'QueryType', nearest?: { __typename?: 'placeAtDistanceConnection', edges?: Array<{ __typename?: 'placeAtDistanceEdge', node?: { __typename?: 'placeAtDistance', distance?: number | null, id: string, place?: { __typename?: 'BikePark', id: string, name: string, lat?: number | null, lon?: number | null, tags?: Array<string | null> | null } | { __typename?: 'BikeRentalStation', id: string, name: string, lat?: number | null, lon?: number | null, capacity?: number | null, bikesAvailable?: number | null } | { __typename?: 'CarPark', lon?: number | null, lat?: number | null } | { __typename?: 'DepartureRow', lon?: number | null, lat?: number | null } | { __typename?: 'RentalVehicle', lon?: number | null, lat?: number | null } | { __typename?: 'Stop', id: string, name: string, lat?: number | null, lon?: number | null, code?: string | null, desc?: string | null } | { __typename?: 'VehicleParking', lon?: number | null, lat?: number | null } | { __typename?: 'VehicleRentalStation', lon?: number | null, lat?: number | null } | null } | null } | null> | null } | null };
+
+export type PlanConnectionQueryVariables = Exact<{
+  originLat: Scalars['CoordinateValue']['input'];
+  originLon: Scalars['CoordinateValue']['input'];
+  destinationLat: Scalars['CoordinateValue']['input'];
+  destinationLon: Scalars['CoordinateValue']['input'];
+}>;
+
+
+export type PlanConnectionQuery = { __typename?: 'QueryType', planConnection?: { __typename?: 'PlanConnection', edges?: Array<{ __typename?: 'PlanEdge', node: { __typename?: 'Itinerary', walkDistance?: number | null, walkTime?: any | null, waitingTime?: any | null, start?: any | null, numberOfTransfers: number, generalizedCost?: number | null, end?: any | null, elevationLost?: number | null, elevationGained?: number | null, duration?: any | null, arrivedAtDestinationWithRentedBicycle?: boolean | null, accessibilityScore?: number | null, legs: Array<{ __typename?: 'Leg', id?: string | null, duration?: number | null, mode?: Mode | null, distance?: number | null, realtimeState?: RealtimeState | null, start: { __typename?: 'LegTime', scheduledTime: any }, end: { __typename?: 'LegTime', scheduledTime: any }, legGeometry?: { __typename?: 'Geometry', length?: number | null, points?: any | null } | null } | null> } } | null> | null } | null };
+
 export type RentalStationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RentalStationsQuery = { __typename?: 'QueryType', vehicleRentalStations?: Array<{ __typename?: 'VehicleRentalStation', allowDropoff?: boolean | null, allowDropoffNow?: boolean | null, allowOverloading?: boolean | null, allowPickup?: boolean | null, allowPickupNow?: boolean | null, id: string, lat?: number | null, lon?: number | null, name: string, operative?: boolean | null, realtime?: boolean | null, stationId?: string | null, capacity?: number | null, availableVehicles?: { __typename?: 'RentalVehicleEntityCounts', total: number, byType: Array<{ __typename?: 'RentalVehicleTypeCount', count: number, vehicleType: { __typename?: 'RentalVehicleType', formFactor?: FormFactor | null, propulsionType?: PropulsionType | null } }> } | null, rentalNetwork: { __typename?: 'VehicleRentalNetwork', networkId: string, url?: string | null }, availableSpaces?: { __typename?: 'RentalVehicleEntityCounts', total: number, byType: Array<{ __typename?: 'RentalVehicleTypeCount', count: number, vehicleType: { __typename?: 'RentalVehicleType', formFactor?: FormFactor | null, propulsionType?: PropulsionType | null } }> } | null } | null> | null };
+export type RentalStationsQuery = { __typename?: 'QueryType', vehicleRentalStations?: Array<{ __typename?: 'VehicleRentalStation', allowDropoff?: boolean | null, allowDropoffNow?: boolean | null, allowOverloading?: boolean | null, allowPickup?: boolean | null, allowPickupNow?: boolean | null, id: string, lat?: number | null, lon?: number | null, name: string, operative?: boolean | null, realtime?: boolean | null, stationId?: string | null, capacity?: number | null, availableVehicles?: { __typename?: 'RentalVehicleEntityCounts', total: number, byType: Array<{ __typename?: 'RentalVehicleTypeCount', count: number, vehicleType: { __typename?: 'RentalVehicleType', formFactor?: FormFactor | null, propulsionType?: PropulsionType | null } }> } | null, availableSpaces?: { __typename?: 'RentalVehicleEntityCounts', total: number, byType: Array<{ __typename?: 'RentalVehicleTypeCount', count: number, vehicleType: { __typename?: 'RentalVehicleType', formFactor?: FormFactor | null, propulsionType?: PropulsionType | null } }> } | null } | null> | null };
+
+export type RentalVehiclesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
+export type RentalVehiclesQuery = { __typename?: 'QueryType', rentalVehicles?: Array<{ __typename?: 'RentalVehicle', allowPickupNow?: boolean | null, id: string, lat?: number | null, lon?: number | null, name: string, operative?: boolean | null, vehicleId?: string | null, rentalNetwork: { __typename?: 'VehicleRentalNetwork', networkId: string, url?: string | null }, rentalUris?: { __typename?: 'VehicleRentalUris', android?: string | null, ios?: string | null, web?: string | null } | null, vehicleType?: { __typename?: 'RentalVehicleType', formFactor?: FormFactor | null, propulsionType?: PropulsionType | null } | null } | null> | null };
+
+export type RoutesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RoutesQuery = { __typename?: 'QueryType', routes?: Array<{ __typename?: 'Route', id: string, shortName?: string | null, longName?: string | null, stops?: Array<{ __typename?: 'Stop', desc?: string | null, code?: string | null, name: string, lat?: number | null, lon?: number | null, geometries?: { __typename?: 'StopGeometries', geoJson?: any | null, googleEncoded?: Array<{ __typename?: 'Geometry', length?: number | null, points?: any | null } | null> | null } | null } | null> | null } | null> | null };
+
+export type VehicleParkingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VehicleParkingsQuery = { __typename?: 'QueryType', vehicleParkings?: Array<{ __typename?: 'VehicleParking', id: string, bicyclePlaces?: boolean | null, anyCarPlaces?: boolean | null, carPlaces?: boolean | null, lat?: number | null, lon?: number | null, name: string, realtime?: boolean | null, wheelchairAccessibleCarPlaces?: boolean | null, tags?: Array<string | null> | null, state?: VehicleParkingState | null, capacity?: { __typename?: 'VehicleParkingSpaces', bicycleSpaces?: number | null, carSpaces?: number | null, wheelchairAccessibleCarSpaces?: number | null } | null, openingHours?: { __typename?: 'OpeningHours', osm?: string | null } | null } | null> | null };
+
+
+export const AlertsDocument = gql`
+    query alerts {
+  alerts {
+    alertCause
+    alertDescriptionText(language: "en")
+    effectiveEndDate
+    effectiveStartDate
+    entities {
+      ... on Route {
+        id
+        longName(language: "en")
+        shortName
+        stops {
+          name(language: "en")
+          code
+          routes {
+            longName(language: "en")
+            shortName
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export type AlertsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<AlertsQuery, AlertsQueryVariables>, 'query'>;
+
+    export const AlertsComponent = (props: AlertsComponentProps) => (
+      <ApolloReactComponents.Query<AlertsQuery, AlertsQueryVariables> query={AlertsDocument} {...props} />
+    );
+    
+
+/**
+ * __useAlertsQuery__
+ *
+ * To run a query within a React component, call `useAlertsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAlertsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAlertsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAlertsQuery(baseOptions?: Apollo.QueryHookOptions<AlertsQuery, AlertsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AlertsQuery, AlertsQueryVariables>(AlertsDocument, options);
+      }
+export function useAlertsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AlertsQuery, AlertsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AlertsQuery, AlertsQueryVariables>(AlertsDocument, options);
+        }
+export function useAlertsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AlertsQuery, AlertsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<AlertsQuery, AlertsQueryVariables>(AlertsDocument, options);
+        }
+export type AlertsQueryHookResult = ReturnType<typeof useAlertsQuery>;
+export type AlertsLazyQueryHookResult = ReturnType<typeof useAlertsLazyQuery>;
+export type AlertsSuspenseQueryHookResult = ReturnType<typeof useAlertsSuspenseQuery>;
+export type AlertsQueryResult = Apollo.QueryResult<AlertsQuery, AlertsQueryVariables>;
+export const NearestDocument = gql`
+    query nearest {
+  nearest(lat: 60.1699, lon: 24.9384) {
+    edges {
+      node {
+        place {
+          lon
+          lat
+          ... on BikePark {
+            id
+            name
+            lat
+            lon
+            tags
+          }
+          ... on BikeRentalStation {
+            id
+            name
+            lat
+            lon
+            capacity
+            bikesAvailable
+          }
+          ... on Stop {
+            id
+            name
+            lat
+            lon
+            code
+            desc(language: "en")
+          }
+        }
+        distance
+        id
+      }
+    }
+  }
+}
+    `;
+export type NearestComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<NearestQuery, NearestQueryVariables>, 'query'>;
+
+    export const NearestComponent = (props: NearestComponentProps) => (
+      <ApolloReactComponents.Query<NearestQuery, NearestQueryVariables> query={NearestDocument} {...props} />
+    );
+    
+
+/**
+ * __useNearestQuery__
+ *
+ * To run a query within a React component, call `useNearestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNearestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNearestQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNearestQuery(baseOptions?: Apollo.QueryHookOptions<NearestQuery, NearestQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NearestQuery, NearestQueryVariables>(NearestDocument, options);
+      }
+export function useNearestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NearestQuery, NearestQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NearestQuery, NearestQueryVariables>(NearestDocument, options);
+        }
+export function useNearestSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<NearestQuery, NearestQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<NearestQuery, NearestQueryVariables>(NearestDocument, options);
+        }
+export type NearestQueryHookResult = ReturnType<typeof useNearestQuery>;
+export type NearestLazyQueryHookResult = ReturnType<typeof useNearestLazyQuery>;
+export type NearestSuspenseQueryHookResult = ReturnType<typeof useNearestSuspenseQuery>;
+export type NearestQueryResult = Apollo.QueryResult<NearestQuery, NearestQueryVariables>;
+export const PlanConnectionDocument = gql`
+    query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!) {
+  planConnection(
+    origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
+    destination: {location: {coordinate: {latitude: $destinationLat, longitude: $destinationLon}}}
+  ) {
+    edges {
+      node {
+        walkDistance
+        walkTime
+        legs {
+          id
+          duration
+          mode
+          distance
+          start {
+            scheduledTime
+          }
+          end {
+            scheduledTime
+          }
+          realtimeState
+          legGeometry {
+            length
+            points
+          }
+        }
+        waitingTime
+        start
+        numberOfTransfers
+        generalizedCost
+        end
+        elevationLost
+        elevationGained
+        duration
+        arrivedAtDestinationWithRentedBicycle
+        accessibilityScore
+      }
+    }
+  }
+}
+    `;
+export type PlanConnectionComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<PlanConnectionQuery, PlanConnectionQueryVariables>, 'query'> & ({ variables: PlanConnectionQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const PlanConnectionComponent = (props: PlanConnectionComponentProps) => (
+      <ApolloReactComponents.Query<PlanConnectionQuery, PlanConnectionQueryVariables> query={PlanConnectionDocument} {...props} />
+    );
+    
+
+/**
+ * __usePlanConnectionQuery__
+ *
+ * To run a query within a React component, call `usePlanConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePlanConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePlanConnectionQuery({
+ *   variables: {
+ *      originLat: // value for 'originLat'
+ *      originLon: // value for 'originLon'
+ *      destinationLat: // value for 'destinationLat'
+ *      destinationLon: // value for 'destinationLon'
+ *   },
+ * });
+ */
+export function usePlanConnectionQuery(baseOptions: Apollo.QueryHookOptions<PlanConnectionQuery, PlanConnectionQueryVariables> & ({ variables: PlanConnectionQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PlanConnectionQuery, PlanConnectionQueryVariables>(PlanConnectionDocument, options);
+      }
+export function usePlanConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PlanConnectionQuery, PlanConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PlanConnectionQuery, PlanConnectionQueryVariables>(PlanConnectionDocument, options);
+        }
+export function usePlanConnectionSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PlanConnectionQuery, PlanConnectionQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<PlanConnectionQuery, PlanConnectionQueryVariables>(PlanConnectionDocument, options);
+        }
+export type PlanConnectionQueryHookResult = ReturnType<typeof usePlanConnectionQuery>;
+export type PlanConnectionLazyQueryHookResult = ReturnType<typeof usePlanConnectionLazyQuery>;
+export type PlanConnectionSuspenseQueryHookResult = ReturnType<typeof usePlanConnectionSuspenseQuery>;
+export type PlanConnectionQueryResult = Apollo.QueryResult<PlanConnectionQuery, PlanConnectionQueryVariables>;
 export const RentalStationsDocument = gql`
     query rentalStations {
   vehicleRentalStations {
@@ -4602,10 +4861,6 @@ export const RentalStationsDocument = gql`
           propulsionType
         }
       }
-    }
-    rentalNetwork {
-      networkId
-      url
     }
     availableSpaces {
       byType {
@@ -4658,3 +4913,191 @@ export type RentalStationsQueryHookResult = ReturnType<typeof useRentalStationsQ
 export type RentalStationsLazyQueryHookResult = ReturnType<typeof useRentalStationsLazyQuery>;
 export type RentalStationsSuspenseQueryHookResult = ReturnType<typeof useRentalStationsSuspenseQuery>;
 export type RentalStationsQueryResult = Apollo.QueryResult<RentalStationsQuery, RentalStationsQueryVariables>;
+export const RentalVehiclesDocument = gql`
+    query rentalVehicles {
+  rentalVehicles(formFactors: SCOOTER) {
+    allowPickupNow
+    id
+    lat
+    lon
+    name
+    operative
+    vehicleId
+    rentalNetwork {
+      networkId
+      url
+    }
+    rentalUris {
+      android
+      ios
+      web
+    }
+    vehicleType {
+      formFactor
+      propulsionType
+    }
+  }
+}
+    `;
+export type RentalVehiclesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<RentalVehiclesQuery, RentalVehiclesQueryVariables>, 'query'>;
+
+    export const RentalVehiclesComponent = (props: RentalVehiclesComponentProps) => (
+      <ApolloReactComponents.Query<RentalVehiclesQuery, RentalVehiclesQueryVariables> query={RentalVehiclesDocument} {...props} />
+    );
+    
+
+/**
+ * __useRentalVehiclesQuery__
+ *
+ * To run a query within a React component, call `useRentalVehiclesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRentalVehiclesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRentalVehiclesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRentalVehiclesQuery(baseOptions?: Apollo.QueryHookOptions<RentalVehiclesQuery, RentalVehiclesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RentalVehiclesQuery, RentalVehiclesQueryVariables>(RentalVehiclesDocument, options);
+      }
+export function useRentalVehiclesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RentalVehiclesQuery, RentalVehiclesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RentalVehiclesQuery, RentalVehiclesQueryVariables>(RentalVehiclesDocument, options);
+        }
+export function useRentalVehiclesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<RentalVehiclesQuery, RentalVehiclesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<RentalVehiclesQuery, RentalVehiclesQueryVariables>(RentalVehiclesDocument, options);
+        }
+export type RentalVehiclesQueryHookResult = ReturnType<typeof useRentalVehiclesQuery>;
+export type RentalVehiclesLazyQueryHookResult = ReturnType<typeof useRentalVehiclesLazyQuery>;
+export type RentalVehiclesSuspenseQueryHookResult = ReturnType<typeof useRentalVehiclesSuspenseQuery>;
+export type RentalVehiclesQueryResult = Apollo.QueryResult<RentalVehiclesQuery, RentalVehiclesQueryVariables>;
+export const RoutesDocument = gql`
+    query routes {
+  routes(transportModes: BUS) {
+    id
+    shortName
+    longName(language: "en")
+    stops {
+      desc(language: "en")
+      code
+      name(language: "en")
+      lat
+      lon
+      geometries {
+        geoJson
+        googleEncoded {
+          length
+          points
+        }
+      }
+    }
+  }
+}
+    `;
+export type RoutesComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<RoutesQuery, RoutesQueryVariables>, 'query'>;
+
+    export const RoutesComponent = (props: RoutesComponentProps) => (
+      <ApolloReactComponents.Query<RoutesQuery, RoutesQueryVariables> query={RoutesDocument} {...props} />
+    );
+    
+
+/**
+ * __useRoutesQuery__
+ *
+ * To run a query within a React component, call `useRoutesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRoutesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRoutesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRoutesQuery(baseOptions?: Apollo.QueryHookOptions<RoutesQuery, RoutesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RoutesQuery, RoutesQueryVariables>(RoutesDocument, options);
+      }
+export function useRoutesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RoutesQuery, RoutesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RoutesQuery, RoutesQueryVariables>(RoutesDocument, options);
+        }
+export function useRoutesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<RoutesQuery, RoutesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<RoutesQuery, RoutesQueryVariables>(RoutesDocument, options);
+        }
+export type RoutesQueryHookResult = ReturnType<typeof useRoutesQuery>;
+export type RoutesLazyQueryHookResult = ReturnType<typeof useRoutesLazyQuery>;
+export type RoutesSuspenseQueryHookResult = ReturnType<typeof useRoutesSuspenseQuery>;
+export type RoutesQueryResult = Apollo.QueryResult<RoutesQuery, RoutesQueryVariables>;
+export const VehicleParkingsDocument = gql`
+    query vehicleParkings {
+  vehicleParkings {
+    id
+    bicyclePlaces
+    anyCarPlaces
+    carPlaces
+    capacity {
+      bicycleSpaces
+      carSpaces
+      wheelchairAccessibleCarSpaces
+    }
+    lat
+    lon
+    name(language: "en")
+    realtime
+    wheelchairAccessibleCarPlaces
+    tags
+    state
+    openingHours {
+      osm
+    }
+  }
+}
+    `;
+export type VehicleParkingsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<VehicleParkingsQuery, VehicleParkingsQueryVariables>, 'query'>;
+
+    export const VehicleParkingsComponent = (props: VehicleParkingsComponentProps) => (
+      <ApolloReactComponents.Query<VehicleParkingsQuery, VehicleParkingsQueryVariables> query={VehicleParkingsDocument} {...props} />
+    );
+    
+
+/**
+ * __useVehicleParkingsQuery__
+ *
+ * To run a query within a React component, call `useVehicleParkingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVehicleParkingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVehicleParkingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useVehicleParkingsQuery(baseOptions?: Apollo.QueryHookOptions<VehicleParkingsQuery, VehicleParkingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<VehicleParkingsQuery, VehicleParkingsQueryVariables>(VehicleParkingsDocument, options);
+      }
+export function useVehicleParkingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<VehicleParkingsQuery, VehicleParkingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<VehicleParkingsQuery, VehicleParkingsQueryVariables>(VehicleParkingsDocument, options);
+        }
+export function useVehicleParkingsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<VehicleParkingsQuery, VehicleParkingsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<VehicleParkingsQuery, VehicleParkingsQueryVariables>(VehicleParkingsDocument, options);
+        }
+export type VehicleParkingsQueryHookResult = ReturnType<typeof useVehicleParkingsQuery>;
+export type VehicleParkingsLazyQueryHookResult = ReturnType<typeof useVehicleParkingsLazyQuery>;
+export type VehicleParkingsSuspenseQueryHookResult = ReturnType<typeof useVehicleParkingsSuspenseQuery>;
+export type VehicleParkingsQueryResult = Apollo.QueryResult<VehicleParkingsQuery, VehicleParkingsQueryVariables>;
