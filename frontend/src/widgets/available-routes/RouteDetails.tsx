@@ -3,10 +3,12 @@ import { metersToDistance, secondsToTime } from "../../shared/converters";
 
 type Props = {
 	edge: Edges[number];
-}
+};
 
-export default function AvailableRouteDetails({edge}: Props) {
-	const legs = edge?.node?.legs;
+export default function RouteDetails({ edge }: Props) {
+	if (!edge || !edge.node) return <div>No edge data available</div>;
+
+	const legs = edge.node.legs;
 	return (
 		<div>
 			<p>Duration: {secondsToTime(edge?.node.duration)}</p>

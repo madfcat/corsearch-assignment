@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Edges } from "../../types/types";
-import AvailableRouteDetails from "./AvailableRouteDetails";
+import RouteDetails from "./RouteDetails";
 import styles from "./styles.module.scss";
-import { secondsToTime } from "../../shared/converters";
-import RouteName from "./RouteName";
+import RouteTab from "./RouteTab";
 
 type Props = { edges: Edges; setChoice: (index: number) => void };
 
@@ -21,16 +20,6 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 		}
 	}, [indexDetailsOpen]);
 
-	function handleClick(index: number, event: React.MouseEvent) {
-		event.preventDefault();
-		// setIndexDetailsOpen(index === indexDetailsOpen ? -1 : index);
-		setIndexDetailsOpen(index);
-		setChoice(index);
-		if (initialLoad) {
-			setInitialLoad(false);
-		}
-	}
-
 	return (
 		<div>
 			{edges.map((edge, index) => {
@@ -42,23 +31,15 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 						key={index}
 						open={index === indexDetailsOpen}
 					>
-						<summary onClick={(event) => handleClick(index, event)}>
-							<div className={styles["route-name-container"]}>
-								<RouteName legs={edge.node.legs} />
-							</div>
-							<div>
-								{edge.node.duration ? (
-									<span>{secondsToTime(edge.node.duration)}</span>
-								) : (
-									<span>Unknown duration</span>
-								)}
-							</div>
-						</summary>
-						{!edge ? (
-							<p>No edge data available</p>
-						) : (
-							<AvailableRouteDetails edge={edge} />
-						)}
+						<RouteTab
+							index={index}
+							edge={edge}
+							setIndexDetailsOpen={setIndexDetailsOpen}
+							initialLoad={initialLoad}
+							setInitialLoad={setInitialLoad}
+							setChoice={setChoice}
+						/>
+						<RouteDetails edge={edge} />
 					</details>
 				);
 			})}
