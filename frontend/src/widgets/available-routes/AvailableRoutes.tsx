@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Edges, Leg } from "../../types/types";
 import AvailableRouteDetails from "./AvailableRouteDetails";
+import styles from "./styles.module.scss";
+import { secondsToTime } from "../../shared/time";
 
 type Props = { edges: Edges; setChoice: (index: number) => void };
 
@@ -19,7 +21,8 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 
 	function handleClick(index: number, event: React.MouseEvent) {
 		event.preventDefault();
-		setIndexDetailsOpen(index === indexDetailsOpen ? -1 : index);
+		// setIndexDetailsOpen(index === indexDetailsOpen ? -1 : index);
+		setIndexDetailsOpen(index);
 		setChoice(index);
 	}
 
@@ -28,9 +31,22 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 			{edges.map((edge, index) => {
 				if (!edge) return null;
 				return (
-					<details key={index} open={index === indexDetailsOpen}>
+					<details
+						className={styles["available-route"]}
+						key={index}
+						open={index === indexDetailsOpen}
+					>
 						<summary onClick={(event) => handleClick(index, event)}>
-							{createRouteName(edge.node.legs)}
+							<div className={styles["route-name"]}>
+								{createRouteName(edge.node.legs)}
+							</div>
+							<div>
+								{edge.node.duration ? (
+									<span>{secondsToTime(edge.node.duration)}</span>
+								) : (
+									<span>Unknown duration</span>
+								)}
+							</div>
 						</summary>
 						{!edge ? (
 							<p>No edge data available</p>

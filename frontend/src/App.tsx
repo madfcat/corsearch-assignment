@@ -1,6 +1,5 @@
 import "./App.scss";
 import "leaflet/dist/leaflet.css";
-import Map from "./components/map/Map";
 import createPlannedRoutesPolylines from "./features/planned-routes/createPlannedRoutesPolylines";
 import { useState } from "react";
 import {
@@ -8,7 +7,7 @@ import {
 	// PlanConnectionQuery,
 	usePlanConnectionQuery,
 } from "./gql/graphql";
-import AvailableRoutes from "./widgets/available-routes/AvailableRoutes";
+import RoutesMap from "./modules/routes-map/RoutesMap";
 
 const coords = {
 	originLat: 60.169718,
@@ -31,14 +30,14 @@ function App() {
 	if (routesPolylines.length === 0) return <p>No data...</p>;
 
 	return (
-		<div>
-			<div>
-				<AvailableRoutes edges={edges} setChoice={setChoice} />
-			</div>
-			<div>
-				<Map leafletNodes={routesPolylines[choice]} />
-			</div>
-		</div>
+		<>
+			<RoutesMap
+				edges={edges}
+				routesPolylines={routesPolylines}
+				choice={choice}
+				setChoice={setChoice}
+			/>
+		</>
 	);
 }
 

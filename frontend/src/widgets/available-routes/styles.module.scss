@@ -1,0 +1,20 @@
+.available-route {
+	background-color: var(--color-element-background);
+	border-radius: var(--border-radius-big);
+	margin-bottom: 16px;
+
+	> summary {
+		list-style: none;
+		cursor: pointer;
+		background-color: var(--color-button);
+		border-radius: var(--border-radius-big);
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		.route-name {
+
+		}
+	}
+}

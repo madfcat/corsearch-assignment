@@ -1,40 +1,33 @@
+
+import styles from "./styles.module.scss";
 import { MapContainer, TileLayer } from "react-leaflet";
-// import "leaflet/dist/leaflet.css";
+// import MapResizer from "./MapResizer";
+import "leaflet/dist/leaflet.css";
 
 type Props = {
 	leafletNodes: React.ReactNode;
 };
 
-export default function Map({ leafletNodes }: Props) {
-	const styles = {
-		width: "1000px",
-		height: "1000px",
-	};
-
-	// console.log(markers);
+export default function InteractiveMap({ leafletNodes }: Props) {
 	return (
-		<div>
-			<MapContainer
-				className="map"
-				style={styles}
-				center={[60.1699, 24.9384]}
-				zoom={13}
-				scrollWheelZoom={false}
-			>
-				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				/>
-				{leafletNodes}
-				{/* <Marker position={[51.505, -0.09]}>
-		<Popup>
-			A pretty CSS3 popup. <br /> Easily customizable.
-		</Popup>
-	</Marker> */}
-			</MapContainer>
-		</div>
+		<MapContainer
+			// style={{ width: "100%", height: "100%" }}
+			className={styles["map-container"]}
+			center={[60.1699, 24.9384]}
+			zoom={13}
+			scrollWheelZoom={false}
+		>
+			<TileLayer
+				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+			/>
+			{/* <MapResizer width={windowSize.width} height={windowSize.height} /> */}
+			{/* <MapResizer windowSize={windowSize} /> */}
+			{leafletNodes}
+		</MapContainer>
 	);
 }
+
 
 // import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 // import "leaflet/dist/leaflet.css";

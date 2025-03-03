@@ -43,6 +43,7 @@ Build a web application that loads, analyses, and visualises public transport da
 - Add filtering by transport type
 - Add filtering by speed, stops, walking distance, CO2 emission
 - I could've used radix ui or other headless component library but for now I will just use vanilla HTML/SCSS/TS as much as I can.
+- Leaflet map responsiveness almost made me end up in ugly hacky ResizeObservers solution. But I have managed it with styles.
 
 ### Idea
 

@@ -34,12 +34,13 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 				encodedPolyline
 			) as LatLngTuple[];
 
-			// const path = decodedPath.map(([lat, lng]) => [lat, lng]);
 			const mode: PickedMode =
 				leg?.mode === Mode.Bus ||
 				leg?.mode === Mode.Tram ||
 				leg?.mode === Mode.Subway ||
-				leg?.mode === Mode.Walk
+				leg?.mode === Mode.Walk ||
+				leg?.mode === Mode.Rail ||
+				leg?.mode === Mode.Ferry
 					? leg?.mode
 					: "DEFAULT";
 			const color = colors[mode];
