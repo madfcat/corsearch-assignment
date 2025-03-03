@@ -1,5 +1,5 @@
 import { Edges } from "../../types/types";
-import { secondsToTime } from "../../shared/time";
+import { metersToDistance, secondsToTime } from "../../shared/converters";
 
 type Props = {
 	edge: Edges[number];
@@ -10,11 +10,14 @@ export default function AvailableRouteDetails({edge}: Props) {
 	return (
 		<div>
 			<p>Duration: {secondsToTime(edge?.node.duration)}</p>
+			{/* <p>Distance: {secondsToTime(edge?.node.)}</p> */}
 			{legs?.map((leg, index) => {
 				console.log("leg", leg);
 				return (
 					<p key={index}>
 						Duration: {secondsToTime(leg?.duration)}
+						<br />
+						Distance: {metersToDistance(leg?.distance)}
 						<br />
 						{leg?.mode || "Unknown Mode"} - {leg?.route?.shortName}
 						<br />

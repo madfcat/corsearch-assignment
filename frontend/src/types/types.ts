@@ -1,10 +1,10 @@
 import { Mode, PlanConnectionQuery } from "../gql/graphql";
 
 export type PickedMode =
+	| Mode.Walk
 	| Mode.Bus
 	| Mode.Tram
 	| Mode.Subway
-	| Mode.Walk
 	| Mode.Rail
 	| Mode.Ferry
 	| "DEFAULT";

@@ -1,29 +1,34 @@
-import { useState } from "react";
-import { Edges, Leg } from "../../types/types";
+import { useEffect, useState } from "react";
+import { Edges } from "../../types/types";
 import AvailableRouteDetails from "./AvailableRouteDetails";
 import styles from "./styles.module.scss";
-import { secondsToTime } from "../../shared/time";
+import { secondsToTime } from "../../shared/converters";
+import RouteName from "./RouteName";
 
 type Props = { edges: Edges; setChoice: (index: number) => void };
 
-function createRouteName(legs: Leg[]) {
-	return legs
-		.map((leg) => {
-			const mode = leg?.mode || "Unknown Mode";
-			const route = leg?.route?.shortName || "Unknown Route";
-			return `${mode} - ${route}`;
-		})
-		.join(" -> ");
-}
-
 export default function AvailableRoutes({ edges, setChoice }: Props) {
 	const [indexDetailsOpen, setIndexDetailsOpen] = useState<number>(0);
+	const [initialLoad, setInitialLoad] = useState<boolean>(true);
+
+	useEffect(() => {
+		if (!initialLoad) {
+			document
+				?.getElementById(`available-route-${indexDetailsOpen}`)
+				?.scrollIntoView({
+					behavior: "smooth",
+				});
+		}
+	}, [indexDetailsOpen]);
 
 	function handleClick(index: number, event: React.MouseEvent) {
 		event.preventDefault();
 		// setIndexDetailsOpen(index === indexDetailsOpen ? -1 : index);
 		setIndexDetailsOpen(index);
 		setChoice(index);
+		if (initialLoad) {
+			setInitialLoad(false);
+		}
 	}
 
 	return (
@@ -33,12 +38,13 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 				return (
 					<details
 						className={styles["available-route"]}
+						id={`available-route-${index}`}
 						key={index}
 						open={index === indexDetailsOpen}
 					>
 						<summary onClick={(event) => handleClick(index, event)}>
-							<div className={styles["route-name"]}>
-								{createRouteName(edge.node.legs)}
+							<div className={styles["route-name-container"]}>
+								<RouteName legs={edge.node.legs} />
 							</div>
 							<div>
 								{edge.node.duration ? (

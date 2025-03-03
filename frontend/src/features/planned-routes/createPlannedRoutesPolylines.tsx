@@ -6,10 +6,10 @@ import { Edges, PickedMode } from "../../types/types";
 import { Mode } from "../../gql/graphql";
 
 export const colors: Record<PickedMode, string> = {
+	[Mode.Walk]: "#FF0000",
 	[Mode.Bus]: "#ff8800",
 	[Mode.Tram]: "#00ff00",
 	[Mode.Subway]: "#0000FF",
-	[Mode.Walk]: "#FF0000",
 	[Mode.Rail]: "#800080",
 	[Mode.Ferry]: "#00eeff",
 	DEFAULT: "#7b7b7b",

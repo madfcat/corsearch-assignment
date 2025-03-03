@@ -29,6 +29,7 @@ Build a web application that loads, analyses, and visualises public transport da
 - SASS modules
 - Docker
 - CI/CD using GitHub Actions for automated testing and deployment
+- Leaflet free and open-source map
 - Icons: Google Material UI
 - No scrolling screen. App takes the screen
 - Mobile version (Can be scrolled).
