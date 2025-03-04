@@ -1,6 +1,7 @@
 .available-routes {
 	overflow-y: auto;
 	max-height: 100%;
+	padding-right: 10px;
 
 	.available-route {
 		background-color: var(--color-element-background);
@@ -12,6 +13,7 @@
 			cursor: pointer;
 			background-color: var(--color-button);
 			border-radius: var(--border-radius-big);
+			padding: 14px 20px;
 
 			&::-webkit-details-marker {
 				display: none;
@@ -21,7 +23,12 @@
 				display: flex;
 				flex-direction: row;
 				justify-content: space-between;
-				padding: 14px 20px;
+				margin-bottom: 10px;
+			}
+
+			.route-details {
+				display: flex;
+				justify-content: space-between;
 			}
 		}
 	}
@@ -32,5 +39,21 @@
 		.route-leg-name {
 			font-size: 20px;
 		}
+	}
+}
+
+.trips-header-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-left: var(--border-radius-big);
+	margin-bottom: 10px;
+	
+	.trips-header-text {
+		font-size: 24px;
+		font-weight: var(--font-weight-semi-bold);
+	}
+
+	.trips-header-button {
 	}
 }

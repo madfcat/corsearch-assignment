@@ -17,7 +17,6 @@ export default function AvailableRoutes() {
 	);
 
 	useEffect(() => {
-		console.log("indexDetailsOpen, initialLoad:", indexDetailsOpen, initialLoad);
 		if (!initialLoad) {
 			document
 				?.getElementById(`available-route-${indexDetailsOpen}`)

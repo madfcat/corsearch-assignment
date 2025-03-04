@@ -7,25 +7,9 @@
 	gap: 30px;
 
 	.trips-container {
-		padding-right: 20px;
 		// overflow-y: auto;
 		display: flex;
 		flex-direction: column;
-
-		.trips-header-container {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			margin-bottom: 10px;
-		}
-
-		.trips-header-text {
-			font-size: 24px;
-			font-weight: var(--font-weight-semi-bold);
-		}
-
-		.trips-header-button {
-		}
 	}
 
 	.trips-container,

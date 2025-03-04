@@ -26,7 +26,7 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 
 		const LegPolylines: JSX.Element[] = [];
 		legs?.forEach((leg, index) => {
-			console.log(leg?.mode);
+			// console.log(leg?.mode);
 			const encodedPolyline = leg?.legGeometry?.points;
 			if (!encodedPolyline) return null;
 

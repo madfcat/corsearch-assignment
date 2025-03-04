@@ -5,6 +5,12 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
   ) {
     edges {
       node {
+        elevationLost
+        elevationGained
+        duration
+        emissionsPerPerson {
+          co2
+        }
         walkDistance
         walkTime
         legs {
@@ -22,10 +28,6 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
           legGeometry {
             length
             points
-          }
-          route {
-            longName(language: "en")
-            shortName
           }
           from {
             stop {
@@ -45,16 +47,20 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               vehicleMode
             }
           }
+          intermediateStops {
+            code
+            desc(language: "en")
+          }
+          route {
+            longName(language: "en")
+            shortName
+          }
         }
         waitingTime
         start
         numberOfTransfers
         generalizedCost
         end
-        elevationLost
-        elevationGained
-        duration
-        arrivedAtDestinationWithRentedBicycle
       }
     }
   }
