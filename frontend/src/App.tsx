@@ -1,11 +1,9 @@
 import "./App.scss";
 import "leaflet/dist/leaflet.css";
-import createPlannedRoutesPolylines from "./features/planned-routes/createPlannedRoutesPolylines";
-import { useState } from "react";
-import {
-	usePlanConnectionQuery,
-} from "./gql/graphql";
+import { usePlanConnectionQuery } from "./gql/graphql";
 import RoutesMap from "./modules/routes-map/RoutesMap";
+import { useDispatch } from "react-redux";
+import { setEdges } from "./features/edgesSlice";
 
 const coords = {
 	originLat: 60.169718,
@@ -15,26 +13,19 @@ const coords = {
 };
 
 function App() {
-	const [choice, setChoice] = useState<number>(0);
 	const { loading, error, data } = usePlanConnectionQuery({
 		variables: coords,
 	});
+	const dispatch = useDispatch();
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error occured...</p>;
 
 	const edges = data?.planConnection?.edges || [];
-	const routesPolylines = createPlannedRoutesPolylines(edges);
-	console.log(routesPolylines);
-	if (routesPolylines.length === 0) return <p>No data...</p>;
+	dispatch(setEdges(edges));
 
 	return (
 		<>
-			<RoutesMap
-				edges={edges}
-				routesPolylines={routesPolylines}
-				choice={choice}
-				setChoice={setChoice}
-			/>
+			<RoutesMap />
 		</>
 	);
 }

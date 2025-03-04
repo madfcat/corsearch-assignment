@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
-import { Edges } from "../../types/types";
+import { useEffect } from "react";
 import RouteDetails from "./RouteDetails";
 import styles from "./styles.module.scss";
 import RouteTab from "./RouteTab";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
-type Props = { edges: Edges; setChoice: (index: number) => void };
-
-export default function AvailableRoutes({ edges, setChoice }: Props) {
-	const indexDetailsOpen = useSelector((state: RootState) => state.routes.indexDetailsOpen);
-	const [initialLoad, setInitialLoad] = useState<boolean>(true);
+export default function AvailableRoutes() {
+	const indexDetailsOpen = useSelector(
+		(state: RootState) => state.routes.indexDetailsOpen
+	);
+	const initialLoad = useSelector(
+		(state: RootState) => state.routes.initialLoad
+	);
+	const edges = useSelector(
+		(state: RootState) => state.edges.edges
+	);
 
 	useEffect(() => {
+		console.log("indexDetailsOpen, initialLoad:", indexDetailsOpen, initialLoad);
 		if (!initialLoad) {
 			document
 				?.getElementById(`available-route-${indexDetailsOpen}`)
@@ -22,8 +27,10 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 		}
 	}, [indexDetailsOpen, initialLoad]);
 
+
+
 	return (
-		<div>
+		<div className={styles["available-routes"]}>
 			{edges.map((edge, index) => {
 				if (!edge) return null;
 				return (
@@ -36,9 +43,6 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 						<RouteTab
 							index={index}
 							edge={edge}
-							initialLoad={initialLoad}
-							setInitialLoad={setInitialLoad}
-							setChoice={setChoice}
 						/>
 						<RouteDetails edge={edge} />
 					</details>

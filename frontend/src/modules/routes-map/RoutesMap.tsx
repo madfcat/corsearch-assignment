@@ -3,21 +3,8 @@ import AvailableRoutes from "../../widgets/available-routes/AvailableRoutes";
 import InteractiveMap from "../../widgets/interactive-map/InteractiveMap";
 import IconButton from "../../components/icon-button/IconButton";
 import Icon from "../../components/icon/Icon";
-// import Refresh from '@material-design-icons/svg/round/refresh.svg?react';
 
-type Props = {
-	edges: any;
-	routesPolylines: any;
-	choice: any;
-	setChoice: any;
-};
-
-export default function RoutesMap({
-	edges,
-	routesPolylines,
-	choice,
-	setChoice,
-}: Props) {
+export default function RoutesMap() {
 	return (
 		<div className={styles["routes-map"]}>
 			<div className={styles["trips-container"]}>
@@ -29,10 +16,10 @@ export default function RoutesMap({
 						</IconButton>
 					</div>
 				</div>
-				<AvailableRoutes edges={edges} setChoice={setChoice} />
+				<AvailableRoutes />
 			</div>
 			<div className={styles["map-container"]}>
-				<InteractiveMap leafletNodes={routesPolylines[choice]} />
+				<InteractiveMap />
 			</div>
 		</div>
 	);

@@ -2,37 +2,31 @@ import styles from "./styles.module.scss";
 import RouteName from "./RouteName";
 import { Edges } from "../../types/types";
 import { secondsToTime } from "../../shared/converters";
-// import { RootState } from "../../store/store";
-import { useDispatch } from "react-redux";
-import { setIndexDetailsOpen } from "../../features/routesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	setIndexDetailsOpen,
+	setInitialLoad,
+} from "../../features/routesSlice";
+import { RootState } from "../../store/store";
 
 type Props = {
-	index: number,
+	index: number;
 	edge: NonNullable<Edges[number]>;
-	initialLoad: boolean;
-	setInitialLoad: (initialLoad: boolean) => void;
-	setChoice: (index: number) => void;
 };
 
-export default function RouteTab({
-	index,
-	edge,
-	initialLoad,
-	setInitialLoad,
-	setChoice,
-}: Props) {
-	// const indexDetailsOpen = useSelector((state: RootState) => state.routes.indexDetailsOpen);
+export default function RouteTab({ index, edge }: Props) {
 	const dispatch = useDispatch();
-	const setIndexDetailsOpenAction = (index: number) => {dispatch(setIndexDetailsOpen(index))};
+	const initialLoad = useSelector(
+		(state: RootState) => state.routes.initialLoad
+	);
 
 	function handleClick(index: number, event: React.MouseEvent) {
 		console.log("handleClick");
 		console.log("index", index);
 		event.preventDefault();
-		setIndexDetailsOpenAction(index);
-		setChoice(index);
+		dispatch(setIndexDetailsOpen(index));
 		if (initialLoad) {
-			setInitialLoad(false);
+			dispatch(setInitialLoad(false));
 		}
 	}
 

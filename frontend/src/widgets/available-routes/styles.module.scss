@@ -1,31 +1,36 @@
-.available-route {
-	background-color: var(--color-element-background);
-	border-radius: var(--border-radius-big);
-	margin-bottom: 16px;
+.available-routes {
+	overflow-y: auto;
+	max-height: 100%;
 
-	> summary {
-		list-style: none;
-		cursor: pointer;
-		background-color: var(--color-button);
+	.available-route {
+		background-color: var(--color-element-background);
 		border-radius: var(--border-radius-big);
+		margin-bottom: 16px;
 
-		&::-webkit-details-marker {
-			display: none;
-		}
+		> summary {
+			list-style: none;
+			cursor: pointer;
+			background-color: var(--color-button);
+			border-radius: var(--border-radius-big);
 
-		.route-name-container {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			padding: 14px 20px;
+			&::-webkit-details-marker {
+				display: none;
+			}
+
+			.route-name-container {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				padding: 14px 20px;
+			}
 		}
 	}
-}
 
-.route-name {
-	display: flex;
-	flex-direction: row;
-	.route-leg-name {
-		font-size: 20px;
+	.route-name {
+		display: flex;
+		flex-direction: row;
+		.route-leg-name {
+			font-size: 20px;
+		}
 	}
 }
