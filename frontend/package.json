@@ -22,13 +22,15 @@
 		"@graphql-codegen/typescript-react-apollo": "^4.3.2",
 		"@material-design-icons/svg": "^0.14.15",
 		"@parcel/watcher": "^2.5.1",
+		"@reduxjs/toolkit": "^2.6.0",
 		"concurrently": "^9.1.2",
 		"graphql": "^16.10.0",
 		"leaflet": "^1.9.4",
 		"polyline": "^0.2.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"react-leaflet": "^5.0.0"
+		"react-leaflet": "^5.0.0",
+		"react-redux": "^9.2.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.19.0",

@@ -3,8 +3,6 @@ import "leaflet/dist/leaflet.css";
 import createPlannedRoutesPolylines from "./features/planned-routes/createPlannedRoutesPolylines";
 import { useState } from "react";
 import {
-	// PlanConnection,
-	// PlanConnectionQuery,
 	usePlanConnectionQuery,
 } from "./gql/graphql";
 import RoutesMap from "./modules/routes-map/RoutesMap";

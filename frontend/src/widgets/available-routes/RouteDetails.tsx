@@ -14,7 +14,7 @@ export default function RouteDetails({ edge }: Props) {
 			<p>Duration: {secondsToTime(edge?.node.duration)}</p>
 			{/* <p>Distance: {secondsToTime(edge?.node.)}</p> */}
 			{legs?.map((leg, index) => {
-				console.log("leg", leg);
+				// console.log("leg", leg);
 				return (
 					<p key={index}>
 						Duration: {secondsToTime(leg?.duration)}

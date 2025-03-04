@@ -2,11 +2,13 @@ import styles from "./styles.module.scss";
 import RouteName from "./RouteName";
 import { Edges } from "../../types/types";
 import { secondsToTime } from "../../shared/converters";
+// import { RootState } from "../../store/store";
+import { useDispatch } from "react-redux";
+import { setIndexDetailsOpen } from "../../features/routesSlice";
 
 type Props = {
-	index: number;
+	index: number,
 	edge: NonNullable<Edges[number]>;
-	setIndexDetailsOpen: (index: number) => void;
 	initialLoad: boolean;
 	setInitialLoad: (initialLoad: boolean) => void;
 	setChoice: (index: number) => void;
@@ -15,14 +17,19 @@ type Props = {
 export default function RouteTab({
 	index,
 	edge,
-	setIndexDetailsOpen,
 	initialLoad,
 	setInitialLoad,
 	setChoice,
 }: Props) {
+	// const indexDetailsOpen = useSelector((state: RootState) => state.routes.indexDetailsOpen);
+	const dispatch = useDispatch();
+	const setIndexDetailsOpenAction = (index: number) => {dispatch(setIndexDetailsOpen(index))};
+
 	function handleClick(index: number, event: React.MouseEvent) {
+		console.log("handleClick");
+		console.log("index", index);
 		event.preventDefault();
-		setIndexDetailsOpen(index);
+		setIndexDetailsOpenAction(index);
 		setChoice(index);
 		if (initialLoad) {
 			setInitialLoad(false);

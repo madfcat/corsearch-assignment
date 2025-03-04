@@ -3,11 +3,13 @@ import { Edges } from "../../types/types";
 import RouteDetails from "./RouteDetails";
 import styles from "./styles.module.scss";
 import RouteTab from "./RouteTab";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 type Props = { edges: Edges; setChoice: (index: number) => void };
 
 export default function AvailableRoutes({ edges, setChoice }: Props) {
-	const [indexDetailsOpen, setIndexDetailsOpen] = useState<number>(0);
+	const indexDetailsOpen = useSelector((state: RootState) => state.routes.indexDetailsOpen);
 	const [initialLoad, setInitialLoad] = useState<boolean>(true);
 
 	useEffect(() => {
@@ -18,7 +20,7 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 					behavior: "smooth",
 				});
 		}
-	}, [indexDetailsOpen]);
+	}, [indexDetailsOpen, initialLoad]);
 
 	return (
 		<div>
@@ -34,7 +36,6 @@ export default function AvailableRoutes({ edges, setChoice }: Props) {
 						<RouteTab
 							index={index}
 							edge={edge}
-							setIndexDetailsOpen={setIndexDetailsOpen}
 							initialLoad={initialLoad}
 							setInitialLoad={setInitialLoad}
 							setChoice={setChoice}
