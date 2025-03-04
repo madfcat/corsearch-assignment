@@ -49,11 +49,63 @@
 }
 
 .route-information {
-	.stop-name {
-		.stop-name-code {
+	padding-bottom: 15px;
+
+	.leg {
+		padding: 15px 20px 20px;
+		border-bottom: 1px solid #c3c1b5;
+
+		&:last-child {
+			border-bottom: none;
 		}
 
-		.stop-name-text {
+		.leg-header {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 15px;
+			.leg-header-transport {
+			}
+			.leg-header-stats {
+				.leg-header-stats-duration,
+				.leg-header-stats-distance {
+					// color: #7c7a6b;
+					text-align: right;
+				}
+				.leg-header-stats-duration {
+					font-size: 14px;
+				}
+				.leg-header-stats-distance {
+					font-size: 12px;
+				}
+			}
+		}
+
+		.leg-stop-and-time {
+			display: flex;
+			justify-content: space-between;
+
+			.stop-name {
+				.stop-name-code {
+					border-radius: var(--border-radius-small);
+					padding: 1px 3px;
+					margin-right: 6px;
+				}
+
+				.stop-name-text {
+				}
+
+				.stop-name-code-BUS {
+					color: white;
+				}
+
+				.stop-name-code-RAIL {
+					color: white;
+				}
+			}
+
+			.stop-departure-time {
+				// color: #7c7a6b;
+			}
 		}
 	}
 }

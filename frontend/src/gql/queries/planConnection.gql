@@ -37,6 +37,7 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               lat
               vehicleMode
             }
+            departureTime
           }
           to {
             stop {
@@ -46,6 +47,7 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               lon
               vehicleMode
             }
+            departureTime
           }
           intermediateStops {
             code

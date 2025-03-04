@@ -8,7 +8,9 @@ export function secondsToTime(seconds: number | null | undefined): string {
 	const hoursString = hours ? `${hours}h` : "";
 	const minutesString = minutes ? `${minutes}m` : "";
 	const secondsString = secondsLeft ? `${secondsLeft}s` : "";
-	return `${hoursString} ${minutesString} ${secondsString}`.trim().replace("  ", " ");
+	return `${hoursString} ${minutesString} ${secondsString}`
+		.trim()
+		.replace("  ", " ");
 }
 
 export function metersToDistance(meters: number | null | undefined) {
@@ -20,4 +22,11 @@ export function metersToDistance(meters: number | null | undefined) {
 	const kilometersString = kilometers ? `${kilometers}km` : "";
 	const metersString = metersLeft ? `${metersLeft}m` : "";
 	return `${kilometersString} ${metersString}`.trim().replace("  ", " ");
+}
+
+export function msToHoursMinutes(ms: number): string {
+	const date = new Date(ms);
+	const hours = date.getUTCHours().toString().padStart(2, "0");
+	const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+	return `${hours}:${minutes}`;
 }

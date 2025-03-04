@@ -44,7 +44,7 @@ export default function AvailableRoutesHeader() {
 					handleClick={handleRefresh}
 					disabled={disabled}
 				>
-					<Icon svgIconName="refresh" />
+					<Icon svgIconName="update" />
 				</IconButton>
 			</div>
 		</div>

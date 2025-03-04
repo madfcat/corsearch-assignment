@@ -18,7 +18,7 @@ function App() {
 	});
 	const dispatch = useDispatch();
 	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error occured...</p>;
+	if (error) return <p>Error occured: {error.cause?.message}</p>;
 
 	const edges = data?.planConnection?.edges || [];
 	dispatch(setEdges(edges));
