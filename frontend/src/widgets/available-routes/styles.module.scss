@@ -13,10 +13,15 @@
 			cursor: pointer;
 			background-color: var(--color-button);
 			border-radius: var(--border-radius-big);
-			padding: 14px 20px;
+			padding: 14px 26px 14px 20px;
 
 			&::-webkit-details-marker {
 				display: none;
+			}
+
+			.route-details,
+			.route-name-container {
+				flex-wrap: wrap;
 			}
 
 			.route-name-container {
@@ -24,11 +29,17 @@
 				flex-direction: row;
 				justify-content: space-between;
 				margin-bottom: 10px;
+
+				.route-duration {
+					display: flex;
+					align-items: center;
+				}
 			}
 
 			.route-details {
 				display: flex;
 				justify-content: space-between;
+				padding-left: 6px;
 			}
 		}
 	}
@@ -48,7 +59,7 @@
 	justify-content: space-between;
 	padding-left: var(--border-radius-big);
 	margin-bottom: 10px;
-	
+
 	.trips-header-text {
 		font-size: 24px;
 		font-weight: var(--font-weight-semi-bold);

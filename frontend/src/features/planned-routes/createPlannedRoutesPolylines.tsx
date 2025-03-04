@@ -2,19 +2,9 @@ import { Polyline, Popup } from "react-leaflet";
 import polyline from "polyline";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { JSX } from "react";
-import { Edges, PickedMode } from "../../types/types";
-import { Mode } from "../../gql/graphql";
+import { Edges } from "../../types/types";
 import RoundMarker from "../../components/round-marker/RoundMarker";
-
-export const colors: Record<PickedMode, string> = {
-	[Mode.Walk]: "#FF0000",
-	[Mode.Bus]: "#ff8800",
-	[Mode.Tram]: "#00ff00",
-	[Mode.Subway]: "#0000FF",
-	[Mode.Rail]: "#800080",
-	[Mode.Ferry]: "#00eeff",
-	DEFAULT: "#7b7b7b",
-};
+import pickTransportColor from "../../shared/pickTransportColor";
 
 export default function createPlannedRoutesPolylines(edges: Edges) {
 	const routesPolylines: JSX.Element[][] = [];
@@ -27,17 +17,7 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 
 		const LegPolylines: JSX.Element[] = [];
 		legs?.forEach((leg, index) => {
-			// console.log(leg?.mode);
-			const mode: PickedMode =
-				leg?.mode === Mode.Bus ||
-				leg?.mode === Mode.Tram ||
-				leg?.mode === Mode.Subway ||
-				leg?.mode === Mode.Walk ||
-				leg?.mode === Mode.Rail ||
-				leg?.mode === Mode.Ferry
-					? leg?.mode
-					: "DEFAULT";
-			const color = colors[mode];
+			const color = pickTransportColor(leg?.mode);
 
 			// Route
 			const encodedPolyline = leg?.legGeometry?.points;
@@ -66,7 +46,7 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 						position={fromPosition}
 						key={`${leg?.legGeometry?.points}-${leg?.from.stop?.code}`}
 						color={color}
-						iconSize={{ width: 22, height: 22 }}
+						iconSize={{ width: 24, height: 24 }}
 					>
 						<Popup>
 							{leg?.from.stop?.code} - {leg?.from.stop?.name}
@@ -85,7 +65,7 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 						position={toPosition}
 						key={`${leg?.legGeometry?.points}-${leg?.to.stop?.code}`}
 						color={color}
-						iconSize={{ width: 22, height: 22 }}
+						iconSize={{ width: 24, height: 24 }}
 					>
 						<Popup>
 							{leg?.to.stop?.code} - {leg?.to.stop?.name}
@@ -105,7 +85,7 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 							position={toPosition}
 							key={`${leg?.legGeometry?.points}-${stop.code}`}
 							color={color}
-							iconSize={{ width: 18, height: 18 }}
+							iconSize={{ width: 17, height: 17 }}
 						>
 							<Popup>
 								{stop.code} - {stop.name}

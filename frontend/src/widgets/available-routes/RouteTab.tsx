@@ -39,7 +39,7 @@ export default function RouteTab({ index, edge }: Props) {
 		<summary onClick={(event) => handleClick(index, event)}>
 			<div className={styles["route-name-container"]}>
 				<RouteName legs={edge.node.legs} />
-				<div>
+				<div className={styles["route-duration"]}>
 					{edge.node.duration ? (
 						<span>{secondsToTime(edge.node.duration)}</span>
 					) : (
