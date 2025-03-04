@@ -50,6 +50,9 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
           intermediateStops {
             code
             desc(language: "en")
+            lat
+            lon
+            name(language: "en")
           }
           route {
             longName(language: "en")

@@ -1,5 +1,6 @@
 import { Edges } from "../../types/types";
 import { metersToDistance, secondsToTime } from "../../shared/converters";
+import TransportIcon from "../../components/transport-icon/TransportIcon";
 
 type Props = {
 	edge: Edges[number];
@@ -11,7 +12,6 @@ export default function RouteDetails({ edge }: Props) {
 	const legs = edge.node.legs;
 	return (
 		<div>
-			<p>Duration: {secondsToTime(edge?.node.duration)}</p>
 			{/* <p>Distance: {secondsToTime(edge?.node.)}</p> */}
 			{legs?.map((leg, index) => {
 				// console.log("leg", leg);
@@ -21,7 +21,7 @@ export default function RouteDetails({ edge }: Props) {
 						<br />
 						Distance: {metersToDistance(leg?.distance)}
 						<br />
-						{leg?.mode || "Unknown Mode"} - {leg?.route?.shortName}
+						<TransportIcon mode={leg?.mode}/>{leg?.route?.shortName}
 						<br />
 						From: {leg?.from.stop?.code} - {leg?.from.stop?.name}
 						<br />

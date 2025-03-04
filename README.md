@@ -57,3 +57,4 @@ Build a web application that loads, analyses, and visualises public transport da
 ### Improvements that can be done
 
 - Adding authorization for frontend - backend communications to secure the backend from third party request abuse
+- Stops could be placed more precisely on the polyline routes (visible when zoomed in). API provides not consistent coordinates. It can be solved mathematically.

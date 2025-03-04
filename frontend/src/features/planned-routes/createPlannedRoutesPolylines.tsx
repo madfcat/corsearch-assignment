@@ -1,9 +1,10 @@
-import { Marker, Polyline, Popup } from "react-leaflet";
+import { Polyline, Popup } from "react-leaflet";
 import polyline from "polyline";
 import { LatLngExpression, LatLngTuple } from "leaflet";
 import { JSX } from "react";
 import { Edges, PickedMode } from "../../types/types";
 import { Mode } from "../../gql/graphql";
+import RoundMarker from "../../components/round-marker/RoundMarker";
 
 export const colors: Record<PickedMode, string> = {
 	[Mode.Walk]: "#FF0000",
@@ -27,13 +28,6 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 		const LegPolylines: JSX.Element[] = [];
 		legs?.forEach((leg, index) => {
 			// console.log(leg?.mode);
-			const encodedPolyline = leg?.legGeometry?.points;
-			if (!encodedPolyline) return null;
-
-			const decodedCoordinates = polyline.decode(
-				encodedPolyline
-			) as LatLngTuple[];
-
 			const mode: PickedMode =
 				leg?.mode === Mode.Bus ||
 				leg?.mode === Mode.Tram ||
@@ -45,6 +39,14 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 					: "DEFAULT";
 			const color = colors[mode];
 
+			// Route
+			const encodedPolyline = leg?.legGeometry?.points;
+			if (!encodedPolyline) return null;
+
+			const decodedCoordinates = polyline.decode(
+				encodedPolyline
+			) as LatLngTuple[];
+
 			LegPolylines.push(
 				<Polyline
 					key={leg?.legGeometry?.points || index}
@@ -53,36 +55,65 @@ export default function createPlannedRoutesPolylines(edges: Edges) {
 					weight={5}
 				/>
 			);
+
+			// From Stop
 			const fromLat = leg?.from.stop?.lat;
 			const fromLon = leg?.from.stop?.lon;
 			if (fromLat && fromLon) {
 				const fromPosition: LatLngExpression = [fromLat, fromLon];
 				LegPolylines.push(
-					<Marker
+					<RoundMarker
 						position={fromPosition}
 						key={`${leg?.legGeometry?.points}-${leg?.from.stop?.code}`}
+						color={color}
+						iconSize={{ width: 22, height: 22 }}
 					>
 						<Popup>
 							{leg?.from.stop?.code} - {leg?.from.stop?.name}
 						</Popup>
-					</Marker>
+					</RoundMarker>
 				);
 			}
+
+			// To Stop
 			const toLat = leg?.to.stop?.lat;
 			const toLon = leg?.to.stop?.lon;
 			if (toLat && toLon) {
 				const toPosition: LatLngExpression = [toLat, toLon];
 				LegPolylines.push(
-					<Marker
+					<RoundMarker
 						position={toPosition}
 						key={`${leg?.legGeometry?.points}-${leg?.to.stop?.code}`}
+						color={color}
+						iconSize={{ width: 22, height: 22 }}
 					>
 						<Popup>
 							{leg?.to.stop?.code} - {leg?.to.stop?.name}
 						</Popup>
-					</Marker>
+					</RoundMarker>
 				);
 			}
+
+			// Intermediate Stops
+			leg?.intermediateStops?.forEach((stop) => {
+				const interLat = stop?.lat;
+				const interLon = stop?.lon;
+				if (interLat && interLon) {
+					const toPosition: LatLngExpression = [interLat, interLon];
+					LegPolylines.push(
+						<RoundMarker
+							position={toPosition}
+							key={`${leg?.legGeometry?.points}-${stop.code}`}
+							color={color}
+							iconSize={{ width: 18, height: 18 }}
+						>
+							<Popup>
+								{stop.code} - {stop.name}
+							</Popup>
+						</RoundMarker>
+					);
+				}
+			});
 		});
 
 		routesPolylines.push(LegPolylines);
