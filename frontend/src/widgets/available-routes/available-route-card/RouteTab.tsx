@@ -1,24 +1,25 @@
 import styles from "./styles.module.scss";
 import RouteName from "./RouteName";
-import { Edges } from "../../types/types";
-import { metersToDistance, secondsToTime } from "../../shared/converters";
+import { Leg } from "../../../types/types";
+import { metersToDistance, secondsToTime } from "../../../shared/converters";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setIndexDetailsOpen,
 	setInitialLoad,
-} from "../../features/routesSlice";
-import { RootState } from "../../store/store";
+} from "../../../features/routesSlice";
+import { RootState } from "../../../store/store";
 import {
 	calculateLegsDistance,
 	calculateLegsIntermediateStopsCount,
-} from "../../features/calculateStats";
+} from "../../../features/calculateStats";
 
 type Props = {
 	index: number;
-	edge: NonNullable<Edges[number]>;
+	duration: number;
+	legs: Leg[];
 };
 
-export default function RouteTab({ index, edge }: Props) {
+export default function RouteTab({ index, duration, legs }: Props) {
 	const dispatch = useDispatch();
 	const initialLoad = useSelector(
 		(state: RootState) => state.routes.initialLoad
@@ -34,22 +35,22 @@ export default function RouteTab({ index, edge }: Props) {
 		}
 	}
 
-	const stopsCount = calculateLegsIntermediateStopsCount(edge.node.legs);
+	const stopsCount = calculateLegsIntermediateStopsCount(legs);
 	return (
 		<summary onClick={(event) => handleClick(index, event)}>
 			<div className={styles["route-name-container"]}>
-				<RouteName legs={edge.node.legs} />
+				<RouteName legs={legs} />
 				<div className={styles["route-duration"]}>
-					{edge.node.duration ? (
-						<span>{secondsToTime(edge.node.duration)}</span>
+					{duration ? (
+						<span>{secondsToTime(duration)}</span>
 					) : (
 						<span>Unknown duration</span>
 					)}
 				</div>
 			</div>
-			<div className={styles["route-details"]}>
+			<div className={styles["route-stats"]}>
 				<div>{stopsCount ? `${stopsCount} intermediate stops` : ""}</div>
-				<div>{metersToDistance(calculateLegsDistance(edge.node.legs))}</div>
+				<div>{metersToDistance(calculateLegsDistance(legs))}</div>
 			</div>
 		</summary>
 	);

@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-import RouteDetails from "./RouteDetails";
 import styles from "./styles.module.scss";
-import RouteTab from "./RouteTab";
+import { useEffect } from "react";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import AvailableRouteCard from "./available-route-card/AvailableRouteCard";
 
 export default function AvailableRoutes() {
 	const indexDetailsOpen = useSelector(
@@ -12,9 +11,7 @@ export default function AvailableRoutes() {
 	const initialLoad = useSelector(
 		(state: RootState) => state.routes.initialLoad
 	);
-	const edges = useSelector(
-		(state: RootState) => state.edges.edges
-	);
+	const edges = useSelector((state: RootState) => state.edges.edges);
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -26,25 +23,17 @@ export default function AvailableRoutes() {
 		}
 	}, [indexDetailsOpen, initialLoad]);
 
-
-
 	return (
 		<div className={styles["available-routes"]}>
 			{edges.map((edge, index) => {
 				if (!edge) return null;
 				return (
-					<details
-						className={styles["available-route"]}
-						id={`available-route-${index}`}
+					<AvailableRouteCard
 						key={index}
-						open={index === indexDetailsOpen}
-					>
-						<RouteTab
-							index={index}
-							edge={edge}
-						/>
-						<RouteDetails edge={edge} />
-					</details>
+						index={index}
+						edge={edge}
+						indexDetailsOpen={indexDetailsOpen}
+					/>
 				);
 			})}
 		</div>

@@ -1,0 +1,59 @@
+.available-route {
+	background-color: var(--color-element-background);
+	border-radius: var(--border-radius-big);
+	margin-bottom: 16px;
+
+	> summary {
+		list-style: none;
+		cursor: pointer;
+		background-color: var(--color-button);
+		border-radius: var(--border-radius-big);
+		padding: 14px 26px 14px 20px;
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+
+		.route-stats,
+		.route-name-container {
+			flex-wrap: wrap;
+		}
+
+		.route-name-container {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			margin-bottom: 10px;
+
+			.route-name {
+				display: flex;
+				flex-direction: row;
+
+				.route-leg-name {
+					font-size: 20px;
+				}
+			}
+
+			.route-duration {
+				display: flex;
+				align-items: center;
+			}
+		}
+
+		.route-stats {
+			display: flex;
+			justify-content: space-between;
+			padding-left: 6px;
+		}
+	}
+}
+
+.route-information {
+	.stop-name {
+		.stop-name-code {
+		}
+
+		.stop-name-text {
+		}
+	}
+}

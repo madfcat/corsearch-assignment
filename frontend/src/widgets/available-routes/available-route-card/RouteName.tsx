@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss";
-import TransportIcon from "../../components/transport-icon/TransportIcon";
-import { Leg } from "../../types/types";
-import Icon from "../../components/icon/Icon";
+import TransportIcon from "../../../components/transport-icon/TransportIcon";
+import { Leg } from "../../../types/types";
+import Icon from "../../../components/icon/Icon";
 
 type Props = {
 	legs: Leg[];

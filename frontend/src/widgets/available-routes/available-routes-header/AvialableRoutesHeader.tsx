@@ -1,9 +1,9 @@
 import styles from "./styles.module.scss";
-import IconButton from "../../components/icon-button/IconButton";
-import Icon from "../../components/icon/Icon";
+import IconButton from "../../../components/icon-button/IconButton";
+import Icon from "../../../components/icon/Icon";
 import { useDispatch } from "react-redux";
-import { usePlanConnectionQuery } from "../../gql/graphql";
-import { setEdges } from "../../features/edgesSlice";
+import { usePlanConnectionQuery } from "../../../gql/graphql";
+import { setEdges } from "../../../features/edgesSlice";
 import { useState } from "react";
 
 const coords = {
@@ -13,7 +13,7 @@ const coords = {
 	destinationLon: 24.95928,
 };
 
-export default function AvilableRoutesHeader() {
+export default function AvailableRoutesHeader() {
 	const [disabled, setDisabled] = useState(false);
 	const dispatch = useDispatch();
 	const { refetch } = usePlanConnectionQuery({
