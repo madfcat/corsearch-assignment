@@ -1,5 +1,9 @@
 import { Leg } from "../../../types/types";
-import { metersToDistance, msToHoursMinutes, secondsToTime } from "../../../shared/converters";
+import {
+	metersToDistance,
+	msToHoursMinutes,
+	secondsToTime,
+} from "../../../shared/converters";
 import TransportIcon from "../../../components/transport-icon/TransportIcon";
 import styles from "./styles.module.scss";
 import pickTransportColor from "../../../shared/pickTransportColor";
@@ -51,7 +55,7 @@ export default function RouteInformation({ legs }: Props) {
 						<div className={styles["leg-header"]}>
 							<div className={styles["leg-header-transport"]}>
 								<TransportIcon mode={leg?.mode} />
-								{leg?.route?.shortName}
+								<div className={styles["leg-header-transport-short-name"]}>{leg?.route?.shortName}</div>
 							</div>
 							<div className={styles["leg-header-stats"]}>
 								<div className={styles["leg-header-stats-duration"]}>
@@ -64,11 +68,15 @@ export default function RouteInformation({ legs }: Props) {
 						</div>
 						<div className={styles["leg-stop-and-time"]}>
 							<StopName stop={leg?.from.stop} />
-							<div className={styles["stop-departure-time"]}>{msToHoursMinutes(leg?.from.departureTime)}</div>
+							<div className={styles["stop-departure-time"]}>
+								{msToHoursMinutes(leg?.from.departureTime)}
+							</div>
 						</div>
 						<div className={styles["leg-stop-and-time"]}>
 							<StopName stop={leg?.to.stop} />
-							<div className={styles["stop-departure-time"]}>{msToHoursMinutes(leg?.to.departureTime)}</div>
+							<div className={styles["stop-departure-time"]}>
+								{msToHoursMinutes(leg?.to.departureTime)}
+							</div>
 						</div>
 					</div>
 				);

@@ -16,7 +16,7 @@ export default function RouteName({ legs }: Props) {
 		return (
 			<div className={styles["route-leg-name"]} key={index}>
 				<TransportIcon mode={mode} />
-				<span>{route}</span>
+				<div>{route}</div>
 				{separator}
 			</div>
 		);

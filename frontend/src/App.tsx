@@ -1,7 +1,7 @@
 import "./App.scss";
 import "leaflet/dist/leaflet.css";
 import { usePlanConnectionQuery } from "./gql/graphql";
-import RoutesMap from "./modules/routes-map/RoutesMap";
+import RoutesMap from "./pages/routes-map/RoutesMap";
 import { useDispatch } from "react-redux";
 import { setEdges } from "./features/edgesSlice";
 

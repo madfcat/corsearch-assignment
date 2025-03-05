@@ -27,8 +27,6 @@ export default function RouteTab({ index, duration, legs, arrivalTime, departure
 		(state: RootState) => state.routes.initialLoad
 	);
 
-	console.log(departureTime, arrivalTime);
-
 	function handleClick(index: number, event: React.MouseEvent) {
 		console.log("handleClick");
 		console.log("index", index);

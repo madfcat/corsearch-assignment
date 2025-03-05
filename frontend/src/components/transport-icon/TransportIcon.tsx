@@ -27,8 +27,8 @@ const getIconSvgName = (mode: Props["mode"]) => {
 
 export default function TransportIcon({ mode }: Props) {
 	return (
-		<span className={styles["transport-icon"]}>
+		<div className={styles["transport-icon"]}>
 			<Icon svgIconName={getIconSvgName(mode) ?? ""} />
-		</span>
+		</div>
 	);
 }

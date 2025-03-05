@@ -33,6 +33,7 @@ Build a web application that loads, analyses, and visualises public transport da
 - Icons: Google Material UI
 - No scrolling screen. App takes the screen
 - Mobile version (Can be scrolled).
+- FSD-inspired architecture
 
 ## Plan and challenges
 
@@ -41,6 +42,7 @@ Build a web application that loads, analyses, and visualises public transport da
 	- https://portal-api.digitransit.fi/api-details#api=routing-v2-hsl-gtfs
 - Design a prototype in Figma
 - Backend is not specified in the assignment. I decided to add simple Express.js server because it is not safe to expose API tokens to the client. All the request should me made through the intermediate request from the backend.
+- Container dev setup had conflicts on ARM architecture. I could not add node_modules to the volume so it would work in container and host. As a workaround, contianer has it''s own node_modules installed for Linux virtual environment. That's why `make fclean && make dev` after installation of new modules is needed.
 - Add filtering by transport type
 - Add filtering by speed, stops, walking distance, CO2 emission
 - I could've used radix ui or other headless component library but for now I will just use vanilla HTML/SCSS/TS as much as I can.
@@ -52,7 +54,7 @@ Build a web application that loads, analyses, and visualises public transport da
 
 - Make possible to create a route
 - Analyse the route through the date, when it will be the fastest to get form one point to other point during 24h
-- 
+- ECharts, Chart.js, Vega
 
 ### Improvements that can be done
 

@@ -30,6 +30,8 @@
 				flex-direction: row;
 
 				.route-leg-name {
+					display: flex;
+					align-items: center;
 					font-size: 20px;
 				}
 			}
@@ -63,8 +65,17 @@
 			display: flex;
 			justify-content: space-between;
 			margin-bottom: 15px;
+
 			.leg-header-transport {
+				display: flex;
+				align-items: center;
+
+				.leg-header-transport-short-name {
+					font-size: 20px;
+					font-weight: var(--font-weight-medium);
+				}
 			}
+
 			.leg-header-stats {
 				.leg-header-stats-duration,
 				.leg-header-stats-distance {
@@ -94,11 +105,9 @@
 				.stop-name-text {
 				}
 
-				.stop-name-code-BUS {
-					color: white;
-				}
-
-				.stop-name-code-RAIL {
+				.stop-name-code-BUS,
+				.stop-name-code-RAIL,
+				.stop-name-code-SUBWAY {
 					color: white;
 				}
 			}
