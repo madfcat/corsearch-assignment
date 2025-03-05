@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss";
 import RouteName from "./RouteName";
 import { Leg } from "../../../types/types";
-import { metersToDistance, secondsToTime } from "../../../shared/converters";
+import { formatToHHMM, metersToDistance, secondsToTime } from "../../../shared/converters";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setIndexDetailsOpen,
@@ -17,13 +17,17 @@ type Props = {
 	index: number;
 	duration: number;
 	legs: Leg[];
+	arrivalTime: string;
+	departureTime: string;
 };
 
-export default function RouteTab({ index, duration, legs }: Props) {
+export default function RouteTab({ index, duration, legs, arrivalTime, departureTime }: Props) {
 	const dispatch = useDispatch();
 	const initialLoad = useSelector(
 		(state: RootState) => state.routes.initialLoad
 	);
+
+	console.log(departureTime, arrivalTime);
 
 	function handleClick(index: number, event: React.MouseEvent) {
 		console.log("handleClick");
@@ -41,11 +45,8 @@ export default function RouteTab({ index, duration, legs }: Props) {
 			<div className={styles["route-name-container"]}>
 				<RouteName legs={legs} />
 				<div className={styles["route-duration"]}>
-					{duration ? (
-						<span>{secondsToTime(duration)}</span>
-					) : (
-						<span>Unknown duration</span>
-					)}
+					<span>{secondsToTime(duration)}</span>
+					<span>{`${formatToHHMM(departureTime)}-${formatToHHMM(arrivalTime)}`}</span>
 				</div>
 			</div>
 			<div className={styles["route-stats"]}>

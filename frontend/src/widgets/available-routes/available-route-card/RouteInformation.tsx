@@ -18,10 +18,10 @@ function StopName({ stop }: StopNameProps) {
 		backgroundColor: pickTransportColor(stop?.vehicleMode),
 	};
 
-	console.log(
-		"`stop-name-code-${stop?.vehicleMode}`",
-		`stop-name-code-${stop?.vehicleMode}`
-	);
+	// console.log(
+	// 	"`stop-name-code-${stop?.vehicleMode}`",
+	// 	`stop-name-code-${stop?.vehicleMode}`
+	// );
 	return (
 		<div className={styles["stop-name"]}>
 			<span
