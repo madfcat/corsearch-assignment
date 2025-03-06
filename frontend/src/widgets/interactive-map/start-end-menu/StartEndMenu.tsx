@@ -1,3 +1,5 @@
+import styles from "./styles.module.scss";
+
 type Props = {
 	contextMenu: {
 		lat: number;
@@ -13,19 +15,20 @@ export default function StartEndMenu({ contextMenu, handleSelect }: Props) {
 
 	return (
 		<div
+			className={styles["start-end-menu"]}
 			style={{
-				position: "absolute",
 				top: contextMenu.y,
 				left: contextMenu.x,
-				backgroundColor: "white",
-				boxShadow: "0px 2px 10px rgba(0,0,0,0.2)",
-				padding: "8px",
-				borderRadius: "5px",
-				zIndex: 1000,
 			}}
 		>
-			<button onClick={() => handleSelect("start")}>Set as Start</button>
-			<button onClick={() => handleSelect("end")}>Set as End</button>
+			<div>
+				<button onClick={() => handleSelect("start")}>
+					Direction from here
+				</button>
+			</div>
+			<div>
+				<button onClick={() => handleSelect("end")}>Direction to here</button>
+			</div>
 		</div>
 	);
 }

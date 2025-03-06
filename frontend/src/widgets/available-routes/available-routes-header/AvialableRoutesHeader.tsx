@@ -1,10 +1,11 @@
 import styles from "./styles.module.scss";
 import IconButton from "../../../components/icon-button/IconButton";
 import Icon from "../../../components/icon/Icon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePlanConnectionQuery } from "../../../gql/graphql";
 import { setEdges } from "../../../features/edgesSlice";
 import { useState } from "react";
+import { RootState } from "../../../store/store";
 
 const coords = {
 	originLat: 60.179918,
@@ -19,6 +20,7 @@ export default function AvailableRoutesHeader() {
 	const { refetch } = usePlanConnectionQuery({
 		variables: coords,
 	});
+	const availableRoutesCount = useSelector((state: RootState) => state).edges.edges.length;
 
 	async function handleRefresh() {
 		console.log("Refresh");
@@ -35,9 +37,10 @@ export default function AvailableRoutesHeader() {
 		}
 	}
 
+	const availableRoutesCountString = availableRoutesCount ? ` (${availableRoutesCount})` : "";
 	return (
 		<div className={styles["trips-header-container"]}>
-			<div className={styles["trips-header-text"]}>Available trips</div>
+			<div className={styles["trips-header-text"]}>{`Available trips${availableRoutesCountString}`}</div>
 			<div className={styles["trips-header-refresh"]}>
 				<IconButton
 					ariaLabel="refresh"

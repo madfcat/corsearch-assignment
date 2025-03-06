@@ -1,0 +1,41 @@
+.start-end-menu {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	background-color: white;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+	// padding: 8px;
+	border-radius: 5px;
+	z-index: 1000;
+	transform: translate(-16px, 8px);
+
+	/* Add a triangle */
+	&::before {
+		content: "";
+		position: relative;
+		top: -8px;
+		left: 12px;
+		width: 0;
+		height: 0;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-bottom: 8px solid white; // Matches background color of the menu
+	}
+
+	> div {
+		&:first-child {
+			border-bottom: 1px solid var(--color-separator);
+		}
+		button {
+			border: unset;
+			background-color: transparent;
+			text-align: left;
+			border-radius: 0;
+			width: 100%;
+
+			&:hover {
+				background-color: var(--color-separator);
+			}
+		}
+	}
+}

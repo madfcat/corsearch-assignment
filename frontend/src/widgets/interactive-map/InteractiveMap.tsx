@@ -1,5 +1,5 @@
 import styles from "./styles.module.scss";
-import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import createPlannedRoutesPolylines from "../../features/planned-routes/createPlannedRoutesPolylines";
 import { RootState } from "../../store/store";
@@ -9,6 +9,19 @@ import { setEdges } from "../../features/edgesSlice";
 import L from "leaflet";
 import { usePlanConnectionQuery } from "../../gql/graphql";
 import StartEndMenu from "./start-end-menu/StartEndMenu";
+import Flag from "@material-design-icons/svg/round/flag.svg?react";
+import LocationOn from "@material-design-icons/svg/round/location_on.svg?react";
+import { renderToStaticMarkup } from "react-dom/server";
+// import { MuiIcon } from "../../types/types";
+
+function renderMarkerIcon(iconSize: { width: number; height: number }, muiIcon: React.ReactNode) {
+	return L.divIcon({
+		className: "custom-marker",
+		html: renderToStaticMarkup(muiIcon),
+		iconSize: [iconSize.width, iconSize.height],
+		iconAnchor: [iconSize.width / 2, iconSize.height],
+	});
+}
 
 export default function InteractiveMap() {
 	const [contextMenu, setContextMenu] = useState<{
@@ -41,6 +54,7 @@ export default function InteractiveMap() {
 			refetch();
 			try {
 				const { data } = await refetch(); // Triggers a new fetch
+				console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
 				console.log("Refreshed data:", edges);
@@ -72,7 +86,7 @@ export default function InteractiveMap() {
 			},
 			click() {
 				setContextMenu(null);
-			}
+			},
 		});
 
 		return null;
@@ -87,10 +101,14 @@ export default function InteractiveMap() {
 		}
 	}
 
+	console.log("Edges on the map:", edges);
+	console.log("startPoint:", startPoint);
+	console.log("endPoint:", endPoint);
 	const routesPolylines = createPlannedRoutesPolylines(edges);
 	// console.log(routesPolylines);
-	if (routesPolylines.length === 0) return <p>No data...</p>;
-	const leafletNodes = routesPolylines[indexDetailsOpen];
+	let leafletNodes: React.JSX.Element[] | null = null;
+	if (routesPolylines.length !== 0)
+		leafletNodes = routesPolylines[indexDetailsOpen];
 
 	return (
 		<>
@@ -109,6 +127,18 @@ export default function InteractiveMap() {
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 				{leafletNodes}
+				{startPoint && (
+					<Marker
+						position={startPoint}
+						icon={renderMarkerIcon({ width: 20, height: 20 }, <LocationOn />)}
+					/>
+				)}
+				{endPoint && (
+					<Marker
+						position={endPoint}
+						icon={renderMarkerIcon({ width: 20, height: 20 }, <Flag />)}
+					/>
+				)}
 			</MapContainer>
 		</>
 	);

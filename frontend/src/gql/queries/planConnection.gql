@@ -1,7 +1,16 @@
+# An ISO-8601-formatted datetime with offset, i.e. 2023-06-13T14:30+03:00 for 2:30pm on June 13th 2023 at Helsinki's offset from UTC at that time.
+
+# ISO-8601 allows many different formats but OTP will only return the profile specified in RFC3339.
+
+
+# Duration
+# Duration in a lenient ISO-8601 duration format. Example P2DT2H12M40S, 2d2h12m40s or 1h
+
 query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!) {
   planConnection(
     origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
     destination: {location: {coordinate: {latitude: $destinationLat, longitude: $destinationLon}}}
+    searchWindow: "PT5H"
   ) {
     edges {
       node {
@@ -37,7 +46,9 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               lat
               vehicleMode
             }
-            departureTime
+            departure {
+              scheduledTime
+            }
           }
           to {
             stop {
@@ -47,7 +58,9 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
               lon
               vehicleMode
             }
-            departureTime
+            departure {
+              scheduledTime
+            }
           }
           intermediateStops {
             code

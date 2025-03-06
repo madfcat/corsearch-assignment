@@ -61,3 +61,4 @@ Build a web application that loads, analyses, and visualises public transport da
 - Adding authorization for frontend - backend communications to secure the backend from third party request abuse
 - Stops could be placed more precisely on the polyline routes (visible when zoomed in). API provides not consistent coordinates. It can be solved mathematically.
 - Time could be converted related to the users system time, not API data.
+- I did not do a lot optimizations in terms of memoization. This area of the project could be improved in the real-life project.

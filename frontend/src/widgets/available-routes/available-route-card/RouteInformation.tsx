@@ -69,13 +69,13 @@ export default function RouteInformation({ legs }: Props) {
 						<div className={styles["leg-stop-and-time"]}>
 							<StopName stop={leg?.from.stop} />
 							<div className={styles["stop-departure-time"]}>
-								{msToHoursMinutes(leg?.from.departureTime)}
+								{msToHoursMinutes(leg?.from.departure?.scheduledTime)}
 							</div>
 						</div>
 						<div className={styles["leg-stop-and-time"]}>
 							<StopName stop={leg?.to.stop} />
 							<div className={styles["stop-departure-time"]}>
-								{msToHoursMinutes(leg?.to.departureTime)}
+								{msToHoursMinutes(leg?.to.departure?.scheduledTime)}
 							</div>
 						</div>
 					</div>

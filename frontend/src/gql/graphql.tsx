@@ -4589,7 +4589,7 @@ export type PlanConnectionQueryVariables = Exact<{
 }>;
 
 
-export type PlanConnectionQuery = { __typename?: 'QueryType', planConnection?: { __typename?: 'PlanConnection', edges?: Array<{ __typename?: 'PlanEdge', node: { __typename?: 'Itinerary', elevationLost?: number | null, elevationGained?: number | null, duration?: any | null, walkDistance?: number | null, walkTime?: any | null, waitingTime?: any | null, start?: any | null, numberOfTransfers: number, generalizedCost?: number | null, end?: any | null, emissionsPerPerson?: { __typename?: 'Emissions', co2?: any | null } | null, legs: Array<{ __typename?: 'Leg', id?: string | null, duration?: number | null, mode?: Mode | null, distance?: number | null, realtimeState?: RealtimeState | null, start: { __typename?: 'LegTime', scheduledTime: any }, end: { __typename?: 'LegTime', scheduledTime: any }, legGeometry?: { __typename?: 'Geometry', length?: number | null, points?: any | null } | null, from: { __typename?: 'Place', departureTime: any, stop?: { __typename?: 'Stop', lon?: number | null, name: string, code?: string | null, lat?: number | null, vehicleMode?: Mode | null } | null }, to: { __typename?: 'Place', departureTime: any, stop?: { __typename?: 'Stop', name: string, code?: string | null, lat?: number | null, lon?: number | null, vehicleMode?: Mode | null } | null }, intermediateStops?: Array<{ __typename?: 'Stop', code?: string | null, desc?: string | null, lat?: number | null, lon?: number | null, name: string } | null> | null, route?: { __typename?: 'Route', longName?: string | null, shortName?: string | null } | null } | null> } } | null> | null } | null };
+export type PlanConnectionQuery = { __typename?: 'QueryType', planConnection?: { __typename?: 'PlanConnection', edges?: Array<{ __typename?: 'PlanEdge', node: { __typename?: 'Itinerary', elevationLost?: number | null, elevationGained?: number | null, duration?: any | null, walkDistance?: number | null, walkTime?: any | null, waitingTime?: any | null, start?: any | null, numberOfTransfers: number, generalizedCost?: number | null, end?: any | null, emissionsPerPerson?: { __typename?: 'Emissions', co2?: any | null } | null, legs: Array<{ __typename?: 'Leg', id?: string | null, duration?: number | null, mode?: Mode | null, distance?: number | null, realtimeState?: RealtimeState | null, start: { __typename?: 'LegTime', scheduledTime: any }, end: { __typename?: 'LegTime', scheduledTime: any }, legGeometry?: { __typename?: 'Geometry', length?: number | null, points?: any | null } | null, from: { __typename?: 'Place', stop?: { __typename?: 'Stop', lon?: number | null, name: string, code?: string | null, lat?: number | null, vehicleMode?: Mode | null } | null, departure?: { __typename?: 'LegTime', scheduledTime: any } | null }, to: { __typename?: 'Place', stop?: { __typename?: 'Stop', name: string, code?: string | null, lat?: number | null, lon?: number | null, vehicleMode?: Mode | null } | null, departure?: { __typename?: 'LegTime', scheduledTime: any } | null }, intermediateStops?: Array<{ __typename?: 'Stop', code?: string | null, desc?: string | null, lat?: number | null, lon?: number | null, name: string } | null> | null, route?: { __typename?: 'Route', longName?: string | null, shortName?: string | null } | null } | null> } } | null> | null } | null };
 
 export type RentalStationsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4757,6 +4757,7 @@ export const PlanConnectionDocument = gql`
   planConnection(
     origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
     destination: {location: {coordinate: {latitude: $destinationLat, longitude: $destinationLon}}}
+    searchWindow: "PT5H"
   ) {
     edges {
       node {
@@ -4792,7 +4793,9 @@ export const PlanConnectionDocument = gql`
               lat
               vehicleMode
             }
-            departureTime
+            departure {
+              scheduledTime
+            }
           }
           to {
             stop {
@@ -4802,7 +4805,9 @@ export const PlanConnectionDocument = gql`
               lon
               vehicleMode
             }
-            departureTime
+            departure {
+              scheduledTime
+            }
           }
           intermediateStops {
             code

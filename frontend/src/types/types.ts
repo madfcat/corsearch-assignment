@@ -7,7 +7,7 @@ export type PickedMode =
 	| Mode.Subway
 	| Mode.Rail
 	| Mode.Ferry;
-	// | "DEFAULT";
+// | "DEFAULT";
 
 export type Edges = NonNullable<
 	NonNullable<PlanConnectionQuery["planConnection"]>["edges"]
@@ -20,3 +20,12 @@ export type Leg = NonNullable<
 >["node"]["legs"][number];
 
 // type Edges = PlanConnection["edges"];
+
+export type MuiIcon = React.FunctionComponent<
+	React.SVGProps<SVGSVGElement> & {
+		title?: string;
+		titleId?: string;
+		desc?: string;
+		descId?: string;
+	}
+>;
