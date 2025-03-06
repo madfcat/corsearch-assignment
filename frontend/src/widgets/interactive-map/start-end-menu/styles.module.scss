@@ -13,8 +13,9 @@
 	&::before {
 		content: "";
 		position: relative;
-		top: -8px;
+		top: 0;
 		left: 12px;
+		margin-top: -8px;
 		width: 0;
 		height: 0;
 		border-left: 8px solid transparent;
@@ -23,9 +24,6 @@
 	}
 
 	> div {
-		&:first-child {
-			border-bottom: 1px solid var(--color-separator);
-		}
 		button {
 			border: unset;
 			background-color: transparent;
@@ -35,6 +33,22 @@
 
 			&:hover {
 				background-color: var(--color-separator);
+			}
+		}
+		
+		&:first-child {
+			border-bottom: 1px solid var(--color-separator);
+
+			button {
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+		}
+
+		&:last-child {
+			button {
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
 			}
 		}
 	}

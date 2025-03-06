@@ -93,6 +93,9 @@ export default function InteractiveMap() {
 			dragstart() {
 				setContextMenu(null);
 			},
+			resize() {
+				setContextMenu(null);
+			}
 		});
 
 		return null;
