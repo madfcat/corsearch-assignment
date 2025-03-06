@@ -12,6 +12,7 @@ export default function AvailableRoutes() {
 		(state: RootState) => state.routes.initialLoad
 	);
 	const edges = useSelector((state: RootState) => state.edges.edges);
+	const order = useSelector((state: RootState) => state.order.order);
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -23,8 +24,10 @@ export default function AvailableRoutes() {
 		}
 	}, [indexDetailsOpen, initialLoad]);
 
+	const flexDirection = order === "asc" ?  "column" : "column-reverse";
+
 	return (
-		<div className={styles["available-routes"]}>
+		<div className={styles["available-routes"]} style={{flexDirection}}>
 			{edges.map((edge, index) => {
 				if (!edge) return null;
 				return (

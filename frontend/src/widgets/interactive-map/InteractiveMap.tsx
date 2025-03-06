@@ -14,7 +14,10 @@ import LocationOn from "@material-design-icons/svg/round/location_on.svg?react";
 import { renderToStaticMarkup } from "react-dom/server";
 // import { MuiIcon } from "../../types/types";
 
-function renderMarkerIcon(iconSize: { width: number; height: number }, muiIcon: React.ReactNode) {
+function renderMarkerIcon(
+	iconSize: { width: number; height: number },
+	muiIcon: React.ReactNode
+) {
 	return L.divIcon({
 		className: "custom-marker",
 		html: renderToStaticMarkup(muiIcon),
@@ -85,6 +88,9 @@ export default function InteractiveMap() {
 				});
 			},
 			click() {
+				setContextMenu(null);
+			},
+			dragstart() {
 				setContextMenu(null);
 			},
 		});

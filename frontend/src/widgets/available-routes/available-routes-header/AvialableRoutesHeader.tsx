@@ -6,30 +6,33 @@ import { usePlanConnectionQuery } from "../../../gql/graphql";
 import { setEdges } from "../../../features/edgesSlice";
 import { useState } from "react";
 import { RootState } from "../../../store/store";
-
-const coords = {
-	originLat: 60.179918,
-	originLon: 24.939700,
-	destinationLat: 60.19956365,
-	destinationLon: 24.95928,
-};
+import { toggleOrder } from "../../../features/orderSlice";
 
 export default function AvailableRoutesHeader() {
 	const [disabled, setDisabled] = useState(false);
 	const dispatch = useDispatch();
+	const availableRoutesCount = useSelector((state: RootState) => state.edges).edges.length;
+	const order = useSelector((state: RootState) => state.order.order);
+
+	const map = useSelector((state: RootState) => state.map);
+	const coords = {
+		originLat: map.startPoint?.lat,
+		originLon: map.startPoint?.lng,
+		destinationLat: map.endPoint?.lat,
+		destinationLon: map.endPoint?.lng,
+	};
 	const { refetch } = usePlanConnectionQuery({
 		variables: coords,
 	});
-	const availableRoutesCount = useSelector((state: RootState) => state).edges.edges.length;
 
-	async function handleRefresh() {
-		console.log("Refresh");
+	async function handleUpdate() {
+		console.log("Update");
 		try {
 			setDisabled(true);
-			const { data } = await refetch(); // Triggers a new fetch
+			const { data } = await refetch();
 			const edges = data?.planConnection?.edges || [];
 			dispatch(setEdges(edges));
-			console.log("Refreshed data:", edges);
+			console.log("Updated data:", edges);
 		} catch (error) {
 			console.error("Error fetching data:", error);
 		} finally {
@@ -37,14 +40,32 @@ export default function AvailableRoutesHeader() {
 		}
 	}
 
-	const availableRoutesCountString = availableRoutesCount ? ` (${availableRoutesCount})` : "";
+	function handleOrder() {
+		console.log("handleOrder");
+		dispatch(toggleOrder());
+	}
+
+	const availableRoutesCountString = availableRoutesCount
+		? ` (${availableRoutesCount})`
+		: "";
 	return (
 		<div className={styles["trips-header-container"]}>
-			<div className={styles["trips-header-text"]}>{`Available trips${availableRoutesCountString}`}</div>
+			<div
+				className={styles["trips-header-text"]}
+			>{`Available trips${availableRoutesCountString}`}</div>
 			<div className={styles["trips-header-refresh"]}>
 				<IconButton
-					ariaLabel="refresh"
-					handleClick={handleRefresh}
+					ariaLabel="order"
+					handleClick={handleOrder}
+					disabled={disabled}
+				>
+					<Icon
+						svgIconName={order === "asc" ? "arrow_drop_down" : "arrow_drop_up"}
+					/>
+				</IconButton>
+				<IconButton
+					ariaLabel="update"
+					handleClick={handleUpdate}
 					disabled={disabled}
 				>
 					<Icon svgIconName="update" />

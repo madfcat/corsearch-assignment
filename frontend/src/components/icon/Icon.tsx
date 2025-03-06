@@ -12,6 +12,8 @@ import Update from "@material-design-icons/svg/round/update.svg?react";
 import CO2 from "@material-design-icons/svg/round/co2.svg?react";
 import Schedule from "@material-design-icons/svg/round/schedule.svg?react";
 import SyncAlt from "@material-design-icons/svg/round/sync_alt.svg?react";
+import ArrowDropUp from "@material-design-icons/svg/round/arrow_drop_up.svg?react";
+import ArrowDropDown from "@material-design-icons/svg/round/arrow_drop_down.svg?react";
 
 type Props = {
 	svgIconName: string;
@@ -31,6 +33,8 @@ const ICON_MAP: Record<string, React.FC | undefined> = {
 	co2: CO2,
 	schedule: Schedule,
 	sync_alt: SyncAlt,
+	arrow_drop_up: ArrowDropUp,
+	arrow_drop_down: ArrowDropDown,
 };
 
 export default function Icon({ svgIconName }: Props) {

@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import routesReducer from "../features/routesSlice";
 import edgesReducer from "../features/edgesSlice";
+import orderReducer from "../features/orderSlice";
+import mapReducer from "../features/mapSlice";
 
 export const store = configureStore({
 	reducer: {
 		routes: routesReducer,
-		edges: edgesReducer
+		edges: edgesReducer,
+		order: orderReducer,
+		map: mapReducer,
 	},
 });
 
