@@ -1,7 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.scss";
 import { RootState } from "../../../store/store";
-import { setEndName, setStartName } from "../../../features/mapSlice";
+import {
+	setStartName,
+	setStartPoint,
+	setEndName,
+	setEndPoint,
+} from "../../../features/mapSlice";
 import { BACKEND_URL } from "../../../config";
 import { useState } from "react";
 import { PeliasResponse } from "../../../types/types";
@@ -11,6 +16,10 @@ type Props = {
 	name: "from" | "to";
 	placeholder?: string;
 };
+
+function convertGeometryCoordanitesToPoint(arr: [number, number]) {
+	return { lat: arr[1], lng: arr[0] };
+}
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function debounce<T extends (...args: any[]) => Promise<any>>(
@@ -56,6 +65,7 @@ const debouncedChange = debounce(
 export default function LocationInput({ title, name, placeholder }: Props) {
 	const [features, setFeatures] = useState<PeliasResponse["features"]>([]);
 	const [isLoading, setIsLoading] = useState(false);
+	// const [isComplete, setIsComplete] = useState(false);
 	const nameValue = useSelector((state: RootState) => {
 		if (name === "from") {
 			return state.map.startName;
@@ -63,11 +73,15 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 			return state.map.endName;
 		}
 	});
-	const [value, setValue] = useState(nameValue || "");
 	const dispatch = useDispatch();
+	const [value, setValue] = useState(nameValue || "");
 
 	async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		console.log("handle change!");
+		if (name === "from")
+			dispatch(setStartName(""));
+		if (name === "to")
+			dispatch(setEndName(""));
 		setIsLoading(true);
 		e.preventDefault();
 		setValue(e.target.value);
@@ -79,11 +93,26 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 		setIsLoading(false);
 		console.log("data pelias", data);
 		if (data?.features) setFeatures([...data.features]);
+	}
+
+	function handleClick(feature: PeliasResponse["features"][number]) {
+		setValue(feature.properties.label);
 		if (name === "from") {
-			dispatch(setStartName(e.target.value));
+			dispatch(setStartName(feature.properties.label));
+			dispatch(
+				setStartPoint(
+					convertGeometryCoordanitesToPoint(feature.geometry.coordinates)
+				)
+			);
 		} else if (name === "to") {
-			dispatch(setEndName(e.target.value));
+			dispatch(setEndName(feature.properties.label));
+			dispatch(
+				setEndPoint(
+					convertGeometryCoordanitesToPoint(feature.geometry.coordinates)
+				)
+			);
 		}
+		setFeatures([]);
 	}
 
 	return (
@@ -99,6 +128,7 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 					onChange={handleChange}
 					value={value}
 					list={name}
+					autoComplete="off"
 				/>
 				{value && (
 					<div className={styles["data-list"]}>
@@ -109,12 +139,16 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 										className={styles["data-list-element"]}
 										key={feature.properties.id}
 									>
-										<button>{feature.properties.label}</button>
+										<button onClick={() => handleClick(feature)}>
+											{feature.properties.label}
+										</button>
 									</div>
 								);
 							})
 						) : (
-							<div>{isLoading ? "Loading..." : "No suggestion..."}</div>
+							!nameValue && <div className={styles["data-list-status"]}>
+								{isLoading ? "Loading..." : "No suggestion..."}
+							</div>
 						)}
 					</div>
 				)}

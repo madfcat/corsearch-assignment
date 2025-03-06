@@ -12,6 +12,7 @@ import StartEndMenu from "./start-end-menu/StartEndMenu";
 import Flag from "@material-design-icons/svg/round/flag.svg?react";
 import LocationOn from "@material-design-icons/svg/round/location_on.svg?react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { setEndPoint, setStartPoint } from "../../features/mapSlice";
 // import { MuiIcon } from "../../types/types";
 
 function renderMarkerIcon(
@@ -33,8 +34,9 @@ export default function InteractiveMap() {
 		x: number;
 		y: number;
 	} | null>(null);
-	const [startPoint, setStartPoint] = useState<L.LatLng | null>(null);
-	const [endPoint, setEndPoint] = useState<L.LatLng | null>(null);
+
+	const startPoint = useSelector((state: RootState) => state.map.startPoint);
+	const endPoint = useSelector((state: RootState) => state.map.endPoint);
 
 	const indexDetailsOpen = useSelector(
 		(state: RootState) => state.routes.indexDetailsOpen
@@ -71,6 +73,7 @@ export default function InteractiveMap() {
 		}
 
 		if (startPoint && endPoint) {
+			console.log("startPoint && endPoint", startPoint, endPoint)
 			updateEdges();
 		}
 	}, [startPoint, endPoint, refetch, dispatch]);
@@ -103,9 +106,11 @@ export default function InteractiveMap() {
 
 	async function handleSelect(option: "start" | "end") {
 		if (contextMenu) {
+			const latLng = L.latLng(contextMenu.lat, contextMenu.lon)
 			if (option === "start")
-				setStartPoint(L.latLng(contextMenu.lat, contextMenu.lon));
-			else setEndPoint(L.latLng(contextMenu.lat, contextMenu.lon));
+				dispatch(setStartPoint({lat: latLng.lat, lng: latLng.lng}));
+			else
+				dispatch(setEndPoint({lat: latLng.lat, lng: latLng.lng}));
 			setContextMenu(null); // Close menu after selection
 		}
 	}

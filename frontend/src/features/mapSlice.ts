@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type MapState = {
-	startPoint: L.LatLng | null;
+	startPoint: { lat: number; lng: number } | null;
 	startName: string;
-	endPoint: L.LatLng | null;
+	endPoint: { lat: number; lng: number } | null;
 	endName: string;
 };
 
@@ -18,20 +18,21 @@ const mapSlice = createSlice({
 	name: "map",
 	initialState,
 	reducers: {
-		setStartPoint(state, action) {
+		setStartPoint(state, action: PayloadAction<MapState["startPoint"]>) {
 			state.startPoint = action.payload;
 		},
-		setStartName(state, action) {
+		setStartName(state, action: PayloadAction<MapState["startName"]>) {
 			state.startName = action.payload;
 		},
-		setEndPoint(state, action) {
+		setEndPoint(state, action: PayloadAction<MapState["endPoint"]>) {
 			state.endPoint = action.payload;
 		},
-		setEndName(state, action) {
+		setEndName(state, action: PayloadAction<MapState["endName"]>) {
 			state.endName = action.payload;
 		},
 	},
 });
 
-export const { setStartPoint,setStartName, setEndPoint, setEndName } = mapSlice.actions;
+export const { setStartPoint, setStartName, setEndPoint, setEndName } =
+	mapSlice.actions;
 export default mapSlice.reducer;

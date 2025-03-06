@@ -32,6 +32,10 @@
 			border-radius: var(--border-radius-small);
 			z-index: 1420;
 
+			.data-list-status {
+				padding: 8px;
+			}
+
 			.data-list-element {
 				border-bottom: 1px solid var(--color-separator);
 
@@ -41,6 +45,7 @@
 					text-align: left;
 					border-radius: 0;
 					width: 100%;
+					padding: 8px;
 
 					&:hover {
 						background-color: var(--color-separator);
