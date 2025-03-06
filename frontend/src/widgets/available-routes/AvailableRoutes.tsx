@@ -24,21 +24,31 @@ export default function AvailableRoutes() {
 		}
 	}, [indexDetailsOpen, initialLoad]);
 
-	const flexDirection = order === "asc" ?  "column" : "column-reverse";
+	const flexDirection = order === "asc" ? "column" : "column-reverse";
 
 	return (
-		<div className={styles["available-routes"]} style={{flexDirection}}>
-			{edges.map((edge, index) => {
-				if (!edge) return null;
-				return (
-					<AvailableRouteCard
-						key={index}
-						index={index}
-						edge={edge}
-						indexDetailsOpen={indexDetailsOpen}
-					/>
-				);
-			})}
+		<div className={styles["available-routes"]} style={{ flexDirection }}>
+			{edges.length > 0 ? (
+				edges.map((edge, index) => {
+					if (!edge) return null;
+					return (
+						<AvailableRouteCard
+							key={index}
+							index={index}
+							edge={edge}
+							indexDetailsOpen={indexDetailsOpen}
+						/>
+					);
+				})
+			) : (
+				<div className={styles["available-routes-instructions"]}>
+					<p>Available routes will be shown here.</p>
+					<p>
+						Please, fill your location and destination into the above fields
+						or use right click mouse button on the map directly.
+					</p>
+				</div>
+			)}
 		</div>
 	);
 }

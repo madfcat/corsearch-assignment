@@ -30,9 +30,18 @@ const mapSlice = createSlice({
 		setEndName(state, action: PayloadAction<MapState["endName"]>) {
 			state.endName = action.payload;
 		},
+		swapStartWithEnd(state) {
+			[state.startPoint, state.endPoint] = [state.endPoint, state.startPoint];
+			[state.startName, state.endName] = [state.endName, state.startName];
+		},
 	},
 });
 
-export const { setStartPoint, setStartName, setEndPoint, setEndName } =
-	mapSlice.actions;
+export const {
+	setStartPoint,
+	setStartName,
+	setEndPoint,
+	setEndName,
+	swapStartWithEnd,
+} = mapSlice.actions;
 export default mapSlice.reducer;

@@ -1,10 +1,16 @@
+import { useDispatch } from "react-redux";
 import IconButton from "../../components/icon-button/IconButton";
 import Icon from "../../components/icon/Icon";
 import LocationInput from "./location-input/LocationInput";
 import styles from "./styles.module.scss";
+import { swapStartWithEnd } from "../../features/mapSlice";
 
 export default function SearchFilter() {
-	// const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data)
+	const dispatch = useDispatch();
+
+	function swapLocations() {
+		dispatch(swapStartWithEnd());
+	}
 	return (
 		<div className={styles["search-filter"]}>
 			<div className={styles["location-destination"]}>
@@ -17,7 +23,7 @@ export default function SearchFilter() {
 							/>
 						</div>
 						<div>
-							<IconButton ariaLabel="swap" handleClick={() => {}}>
+							<IconButton ariaLabel="swap" handleClick={swapLocations}>
 								<Icon svgIconName="sync_alt" />
 							</IconButton>
 						</div>
