@@ -49,6 +49,7 @@ Build a web application that loads, analyses, and visualises public transport da
 - Leaflet map responsiveness almost made me end up in ugly hacky ResizeObservers solution. But I have managed it with styles.
 - Instant transport filter
 - Filter, search and reverse route debounce
+- I thought going with react-hook-form for the filter inputs and selections, but as I use custom submission logic and controlled inputs dependent on the global state and custom debounce logic and not much validation, I have decided to just to use custom controlled components
 
 ### Idea
 

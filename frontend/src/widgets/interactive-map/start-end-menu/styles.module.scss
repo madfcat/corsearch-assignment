@@ -5,7 +5,7 @@
 	background-color: white;
 	box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
 	// padding: 8px;
-	border-radius: 5px;
+	border-radius: var(--border-radius-small);
 	z-index: 1000;
 	transform: translate(-16px, 8px);
 

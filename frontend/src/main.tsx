@@ -5,13 +5,11 @@ import { store } from "./store/store";
 import "./index.scss";
 import App from "./App.tsx";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-
-const GRAPHQL_URI =
-	import.meta.env.VITE_REACT_APP_GRAPHQL_URI || "http://localhost:4000/graphql";
+import { BACKEND_URL } from "./config";
 
 const client = new ApolloClient({
 	// uri: '/api/graphql',
-	uri: GRAPHQL_URI,
+	uri: `${BACKEND_URL}/graphql`,
 	cache: new InMemoryCache(),
 });
 

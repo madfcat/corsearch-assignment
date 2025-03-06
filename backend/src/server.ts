@@ -3,9 +3,11 @@ import cors from "cors";
 
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 const GRAPHQL_API_TOKEN = process.env.GRAPHQL_API_TOKEN;
-if (!GRAPHQL_ENDPOINT || !GRAPHQL_API_TOKEN) {
+const GEOCODING_ENDPOINT = process.env.GEOCODING_ENDPOINT;
+// console.log(GRAPHQL_ENDPOINT, GRAPHQL_API_TOKEN, GEOCODING_ENDPOINT);
+if (!GRAPHQL_ENDPOINT || !GRAPHQL_API_TOKEN || !GEOCODING_ENDPOINT) {
 	throw new Error(
-		"GRAPHQL_ENDPOINT or GRAPHQL_API_TOKEN is not defined in environment variables."
+		"GRAPHQL_ENDPOINT or GRAPHQL_API_TOKEN or GEOCODING_ENDPOINT is not defined in environment variables."
 	);
 }
 
@@ -24,7 +26,10 @@ const allowedOrigins =
 		  ];
 
 const corsOptions = {
-	origin: (origin: string | undefined, callback: (err: Error | null, allowed?: boolean) => void) => {
+	origin: (
+		origin: string | undefined,
+		callback: (err: Error | null, allowed?: boolean) => void
+	) => {
 		if (allowedOrigins.includes(origin as string) || !origin) {
 			// Allow requests with no origin (like mobile or Postman)
 			callback(null, true);
@@ -42,15 +47,17 @@ app.use(cors(corsOptions));
 // This middleware will add the token to the request headers
 app.use(express.json()); // Make sure you can parse JSON bodies
 
+const headers = {
+	"Content-Type": "application/json",
+	"digitransit-subscription-key": GRAPHQL_API_TOKEN,
+};
+
 // This middleware will add the token to the request headers
 app.use("/graphql", async (req: Request, res: Response) => {
 	try {
 		const response = await fetch(GRAPHQL_ENDPOINT, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"digitransit-subscription-key": GRAPHQL_API_TOKEN,
-			},
+			headers,
 			body: JSON.stringify(req.body),
 		});
 
@@ -58,7 +65,52 @@ app.use("/graphql", async (req: Request, res: Response) => {
 
 		res.json(data);
 	} catch (error) {
-		res.status(500).json({ error: "Error fetching data from GraphQL API" });
+		if (error instanceof Error) {
+			console.error(error.message);
+		} else {
+			res.status(500).json({ error: "Error fetching data from GraphQL API" });
+		}
+	}
+});
+
+app.use("/geo/autocomplete", async (req: Request, res: Response) => {
+	try {
+		console.log(req.body);
+		const response = await fetch(`${GEOCODING_ENDPOINT}/autocomplete?text=${req.body.text}&region=Uusimaa`, {
+			method: "POST",
+			headers,
+			// body: JSON.stringify(req.body),
+		});
+
+		const data = await response.json();
+
+		res.json(data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		} else {
+			res.status(500).json({ error: "Error fetching data from Geo search" });
+		}
+	}
+});
+
+app.use("/geo/reverse", async (req: Request, res: Response) => {
+	try {
+		const response = await fetch(`${GEOCODING_ENDPOINT}/reverse`, {
+			method: "POST",
+			headers,
+			body: JSON.stringify(req.body),
+		});
+
+		const data = await response.json();
+
+		res.json(data);
+	} catch (error) {
+		if (error instanceof Error) {
+			console.error(error.message);
+		} else {
+			res.status(500).json({ error: "Error fetching data from Geo reverse" });
+		}
 	}
 });
 
