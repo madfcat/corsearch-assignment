@@ -4,6 +4,7 @@ import Icon from "../icon/Icon";
 
 type Props = {
 	mode: Mode | null | undefined;
+	fill?: string;
 };
 
 const getIconSvgName = (mode: Props["mode"]) => {
@@ -25,10 +26,10 @@ const getIconSvgName = (mode: Props["mode"]) => {
 	}
 };
 
-export default function TransportIcon({ mode }: Props) {
+export default function TransportIcon({ mode, fill = "black" }: Props) {
 	return (
-		<div className={styles["transport-icon"]}>
-			<Icon svgIconName={getIconSvgName(mode) ?? ""} />
-		</div>
+		<span className={styles["transport-icon"]}>
+			<Icon svgIconName={getIconSvgName(mode) ?? ""} fill={fill} />
+		</span>
 	);
 }

@@ -7,6 +7,7 @@ import { setEdges } from "../../../features/edgesSlice";
 import { useState } from "react";
 import { RootState } from "../../../store/store";
 import { toggleOrder } from "../../../features/orderSlice";
+import { setMapUpdating } from "../../../features/mapSlice";
 
 export default function AvailableRoutesHeader() {
 	const [disabled, setDisabled] = useState(false);
@@ -29,6 +30,7 @@ export default function AvailableRoutesHeader() {
 		console.log("Update");
 		try {
 			setDisabled(true);
+			dispatch(setMapUpdating(true));
 			const { data } = await refetch();
 			const edges = data?.planConnection?.edges || [];
 			dispatch(setEdges(edges));
@@ -37,6 +39,7 @@ export default function AvailableRoutesHeader() {
 			console.error("Error fetching data:", error);
 		} finally {
 			setDisabled(false);
+			dispatch(setMapUpdating(false));
 		}
 	}
 

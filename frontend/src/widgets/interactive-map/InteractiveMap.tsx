@@ -38,11 +38,15 @@ function renderMarkerIcon(
 }
 
 const debouncedSelect = debounce(
-	async (point: {
-		lat: number;
-		lon: number;
-	}): Promise<PeliasReverseResponse> => {
+	async (
+		point: {
+			lat: number;
+			lon: number;
+		},
+		callbackFunc: () => void
+	): Promise<PeliasReverseResponse> => {
 		console.log("handle change from debounce");
+		callbackFunc();
 		const res = await fetch(`${BACKEND_URL}/geo/reverse`, {
 			method: "POST",
 			headers: {
@@ -90,9 +94,10 @@ export default function InteractiveMap() {
 	useEffect(() => {
 		async function updateEdges() {
 			console.log("Refetching data from map...");
-			dispatch(setMapUpdating(true));
+			// dispatch(setMapUpdating(true));
 			refetch();
 			try {
+				dispatch(setMapUpdating(true))
 				const { data } = await refetch(); // Triggers a new fetch
 				console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
@@ -101,11 +106,11 @@ export default function InteractiveMap() {
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
-			// finally {
-			// 	setStartPoint(null);
-			// 	setEndPoint(null);
-			// }
-			dispatch(setMapUpdating(false));
+			finally {
+				// setStartPoint(null);
+				// setEndPoint(null);
+				dispatch(setMapUpdating(false));
+			}
 		}
 
 		if (startPoint && endPoint) {
@@ -147,7 +152,7 @@ export default function InteractiveMap() {
 				lon: contextMenu.lon,
 			};
 			setContextMenu(null); // Close menu after selection
-			const data = await debouncedSelect(point);
+			const data = await debouncedSelect(point, () => dispatch(setMapUpdating(true)));
 
 			const locationName = data.features[0].properties.label;
 			if (option === "start") {
@@ -157,6 +162,7 @@ export default function InteractiveMap() {
 				dispatch(setEndName(locationName));
 				dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
 			}
+			dispatch(setMapUpdating(false));
 		}
 	}
 

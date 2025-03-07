@@ -14,6 +14,8 @@ export default function AvailableRoutes() {
 	);
 	const edges = useSelector((state: RootState) => state.edges.edges);
 	const order = useSelector((state: RootState) => state.order.order);
+	const startName = useSelector((state: RootState) => state.map.startName);
+	const endName = useSelector((state: RootState) => state.map.endName);
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -45,11 +47,15 @@ export default function AvailableRoutes() {
 						})
 					) : (
 						<div className={styles["available-routes-instructions"]}>
+							{(!startName && !endName) ? (<>
 							<p>Available routes will be shown here.</p>
 							<p>
 								Please, fill your location and destination into the above fields
 								or use right click mouse button on the map directly.
 							</p>
+							</>) : (
+								<p>No routes found. Try other locations.</p>
+							)}
 						</div>
 					)}
 				</>

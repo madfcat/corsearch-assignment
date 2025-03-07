@@ -62,8 +62,8 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 
 	async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		console.log("handle change!");
-		if (name === "from") dispatch(setStartName(""));
-		if (name === "to") dispatch(setEndName(""));
+		// if (name === "from") dispatch(setStartName(""));
+		// if (name === "to") dispatch(setEndName(""));
 		setIsLoading(true);
 		e.preventDefault();
 		setValue(e.target.value);

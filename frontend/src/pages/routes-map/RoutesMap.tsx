@@ -1,6 +1,6 @@
 import styles from "./styles.module.scss";
 import AvailableRoutes from "../../widgets/available-routes/AvailableRoutes";
-import AvailableRoutesHeader from "../../widgets/available-routes/available-routes-header/AvialableRoutesHeader";
+import AvailableRoutesHeader from "../../widgets/available-routes/available-routes-header/AvailableRoutesHeader";
 import InteractiveMap from "../../widgets/interactive-map/InteractiveMap";
 import SearchFilter from "../../widgets/search-filter/SearchFilter";
 

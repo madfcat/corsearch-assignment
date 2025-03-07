@@ -17,6 +17,7 @@ import ArrowDropDown from "@material-design-icons/svg/round/arrow_drop_down.svg?
 
 type Props = {
 	svgIconName: string;
+	fill?: string;
 };
 
 const ICON_MAP: Record<string, React.FC | undefined> = {
@@ -37,12 +38,12 @@ const ICON_MAP: Record<string, React.FC | undefined> = {
 	arrow_drop_down: ArrowDropDown,
 };
 
-export default function Icon({ svgIconName }: Props) {
+export default function Icon({ svgIconName, fill = "black" }: Props) {
 	const IconComponent = ICON_MAP[svgIconName] || PriorityHigh;
 
 	return (
-		<div className={styles["icon"]}>
-			<IconComponent />
-		</div>
+		<span className={styles["icon"]}>
+			<IconComponent style={{ fill }} />
+		</span>
 	);
 }

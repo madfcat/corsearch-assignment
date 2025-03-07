@@ -1,12 +1,29 @@
 .search-filter {
-	height: 225px;
-	background-color: #efebcb;
-	padding: 20px var(--space-side-padding);
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	// height: 225px;
+	background-color: #f7f3d7;
+	padding: 20px 50px;
 
 	.location-form {
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
 		gap: 20px;
+		flex-wrap: wrap;
+	}
+	.filter-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+
+		.filter-buttons-transport,
+		.filter-buttons-general {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 12px;
+		}
 	}
 }
