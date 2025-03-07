@@ -47,7 +47,7 @@ export default function AvailableRoutes() {
 						})
 					) : (
 						<div className={styles["available-routes-instructions"]}>
-							{(!startName && !endName) ? (<>
+							{(!(startName && endName)) ? (<>
 							<p>Available routes will be shown here.</p>
 							<p>
 								Please, fill your location and destination into the above fields

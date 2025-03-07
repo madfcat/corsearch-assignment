@@ -1,0 +1,16 @@
+.filter-button {
+	display: inline-block;
+
+	button {
+		display: flex;
+		gap: 7px;
+		align-items: center;
+		border-width: 2px;
+		border-style: solid;
+		border-color: black;
+		color: black;
+		padding: 5px 15px;
+		background-color: #fffef4;
+		white-space: nowrap;
+	}
+}

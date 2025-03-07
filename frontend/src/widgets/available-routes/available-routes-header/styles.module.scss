@@ -10,6 +10,11 @@
 		font-weight: var(--font-weight-semi-bold);
 	}
 
+	.trips-header-buttons {
+		display: flex;
+		gap: 10px;
+	}
+
 	.trips-header-button {
 	}
 }

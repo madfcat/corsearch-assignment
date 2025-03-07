@@ -12,7 +12,8 @@ import { setMapUpdating } from "../../../features/mapSlice";
 export default function AvailableRoutesHeader() {
 	const [disabled, setDisabled] = useState(false);
 	const dispatch = useDispatch();
-	const availableRoutesCount = useSelector((state: RootState) => state.edges).edges.length;
+	const availableRoutesCount = useSelector((state: RootState) => state.edges)
+		.edges.length;
 	const order = useSelector((state: RootState) => state.order.order);
 
 	const map = useSelector((state: RootState) => state.map);
@@ -51,12 +52,12 @@ export default function AvailableRoutesHeader() {
 	const availableRoutesCountString = availableRoutesCount
 		? ` (${availableRoutesCount})`
 		: "";
-	return (
+	return availableRoutesCount > 0 ? (
 		<div className={styles["trips-header-container"]}>
 			<div
 				className={styles["trips-header-text"]}
 			>{`Available trips${availableRoutesCountString}`}</div>
-			<div className={styles["trips-header-refresh"]}>
+			<div className={styles["trips-header-buttons"]}>
 				<IconButton
 					ariaLabel="order"
 					handleClick={handleOrder}
@@ -75,5 +76,5 @@ export default function AvailableRoutesHeader() {
 				</IconButton>
 			</div>
 		</div>
-	);
+	) : null;
 }
