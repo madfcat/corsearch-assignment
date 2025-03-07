@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import AvailableRouteCard from "./available-route-card/AvailableRouteCard";
 
 export default function AvailableRoutes() {
+	const mapUpdating = useSelector((state: RootState) => state.map.mapUpdating);
 	const indexDetailsOpen = useSelector(
 		(state: RootState) => state.routes.indexDetailsOpen
 	);
@@ -28,26 +29,32 @@ export default function AvailableRoutes() {
 
 	return (
 		<div className={styles["available-routes"]} style={{ flexDirection }}>
-			{edges.length > 0 ? (
-				edges.map((edge, index) => {
-					if (!edge) return null;
-					return (
-						<AvailableRouteCard
-							key={index}
-							index={index}
-							edge={edge}
-							indexDetailsOpen={indexDetailsOpen}
-						/>
-					);
-				})
+			{!mapUpdating ? (
+				<>
+					{edges.length > 0 ? (
+						edges.map((edge, index) => {
+							if (!edge) return null;
+							return (
+								<AvailableRouteCard
+									key={index}
+									index={index}
+									edge={edge}
+									indexDetailsOpen={indexDetailsOpen}
+								/>
+							);
+						})
+					) : (
+						<div className={styles["available-routes-instructions"]}>
+							<p>Available routes will be shown here.</p>
+							<p>
+								Please, fill your location and destination into the above fields
+								or use right click mouse button on the map directly.
+							</p>
+						</div>
+					)}
+				</>
 			) : (
-				<div className={styles["available-routes-instructions"]}>
-					<p>Available routes will be shown here.</p>
-					<p>
-						Please, fill your location and destination into the above fields
-						or use right click mouse button on the map directly.
-					</p>
-				</div>
+				<div>Loading...</div>
 			)}
 		</div>
 	);

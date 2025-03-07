@@ -12,7 +12,17 @@ import StartEndMenu from "./start-end-menu/StartEndMenu";
 import Flag from "@material-design-icons/svg/round/flag.svg?react";
 import LocationOn from "@material-design-icons/svg/round/location_on.svg?react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { setEndPoint, setStartPoint } from "../../features/mapSlice";
+import {
+	setEndName,
+	setEndPoint,
+	setMapUpdating,
+	setStartName,
+	setStartPoint,
+} from "../../features/mapSlice";
+import { debounce } from "../../shared/debounce";
+import { BACKEND_URL } from "../../config";
+import { PeliasReverseResponse } from "../../types/types";
+import Spinner from "../../components/spinner/Spinner";
 // import { MuiIcon } from "../../types/types";
 
 function renderMarkerIcon(
@@ -27,6 +37,29 @@ function renderMarkerIcon(
 	});
 }
 
+const debouncedSelect = debounce(
+	async (point: {
+		lat: number;
+		lon: number;
+	}): Promise<PeliasReverseResponse> => {
+		console.log("handle change from debounce");
+		const res = await fetch(`${BACKEND_URL}/geo/reverse`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ point }),
+		});
+		if (!res) {
+			throw new Error(`Response failed: ${res}`);
+		}
+		const data = await res.json();
+		console.log(data);
+		return data;
+	},
+	500
+);
+
 export default function InteractiveMap() {
 	const [contextMenu, setContextMenu] = useState<{
 		lat: number;
@@ -35,6 +68,7 @@ export default function InteractiveMap() {
 		y: number;
 	} | null>(null);
 
+	const mapUpdating = useSelector((state: RootState) => state.map.mapUpdating);
 	const startPoint = useSelector((state: RootState) => state.map.startPoint);
 	const endPoint = useSelector((state: RootState) => state.map.endPoint);
 
@@ -56,6 +90,7 @@ export default function InteractiveMap() {
 	useEffect(() => {
 		async function updateEdges() {
 			console.log("Refetching data from map...");
+			dispatch(setMapUpdating(true));
 			refetch();
 			try {
 				const { data } = await refetch(); // Triggers a new fetch
@@ -70,10 +105,11 @@ export default function InteractiveMap() {
 			// 	setStartPoint(null);
 			// 	setEndPoint(null);
 			// }
+			dispatch(setMapUpdating(false));
 		}
 
 		if (startPoint && endPoint) {
-			console.log("startPoint && endPoint", startPoint, endPoint)
+			console.log("startPoint && endPoint", startPoint, endPoint);
 			updateEdges();
 		}
 	}, [startPoint, endPoint, refetch, dispatch]);
@@ -98,7 +134,7 @@ export default function InteractiveMap() {
 			},
 			resize() {
 				setContextMenu(null);
-			}
+			},
 		});
 
 		return null;
@@ -106,12 +142,21 @@ export default function InteractiveMap() {
 
 	async function handleSelect(option: "start" | "end") {
 		if (contextMenu) {
-			const latLng = L.latLng(contextMenu.lat, contextMenu.lon)
-			if (option === "start")
-				dispatch(setStartPoint({lat: latLng.lat, lng: latLng.lng}));
-			else
-				dispatch(setEndPoint({lat: latLng.lat, lng: latLng.lng}));
+			const point = {
+				lat: contextMenu.lat,
+				lon: contextMenu.lon,
+			};
 			setContextMenu(null); // Close menu after selection
+			const data = await debouncedSelect(point);
+
+			const locationName = data.features[0].properties.label;
+			if (option === "start") {
+				dispatch(setStartName(locationName));
+				dispatch(setStartPoint({ lat: point.lat, lng: point.lon }));
+			} else {
+				dispatch(setEndName(locationName));
+				dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
+			}
 		}
 	}
 
@@ -126,7 +171,7 @@ export default function InteractiveMap() {
 
 	return (
 		<>
-			{contextMenu && (
+			{contextMenu && !mapUpdating && (
 				<StartEndMenu contextMenu={contextMenu} handleSelect={handleSelect} />
 			)}
 			<MapContainer
@@ -135,12 +180,17 @@ export default function InteractiveMap() {
 				zoom={13}
 				scrollWheelZoom={false}
 			>
+				{mapUpdating && (
+					<div className={styles["loading-spinner-container"]}>
+						<div className={styles["loading-background"]}></div>
+						<Spinner className={styles["loading-spinner"]} />
+					</div>
+				)}
 				<MapEventHandler />
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				{leafletNodes}
 				{startPoint && (
 					<Marker
 						position={startPoint}
@@ -153,6 +203,7 @@ export default function InteractiveMap() {
 						icon={renderMarkerIcon({ width: 20, height: 20 }, <Flag />)}
 					/>
 				)}
+				{!mapUpdating ? <>{leafletNodes}</> : <div>Loading...</div>}
 			</MapContainer>
 		</>
 	);

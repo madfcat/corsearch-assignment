@@ -76,7 +76,7 @@ app.use("/graphql", async (req: Request, res: Response) => {
 app.use("/geo/autocomplete", async (req: Request, res: Response) => {
 	try {
 		console.log(req.body);
-		const response = await fetch(`${GEOCODING_ENDPOINT}/autocomplete?text=${req.body.text}&region=Uusimaa`, {
+		const response = await fetch(`${GEOCODING_ENDPOINT}/autocomplete?text=${req.body.text}&lang=en`, {
 			method: "POST",
 			headers,
 			// body: JSON.stringify(req.body),
@@ -96,7 +96,8 @@ app.use("/geo/autocomplete", async (req: Request, res: Response) => {
 
 app.use("/geo/reverse", async (req: Request, res: Response) => {
 	try {
-		const response = await fetch(`${GEOCODING_ENDPOINT}/reverse`, {
+		console.log(req.body);
+		const response = await fetch(`${GEOCODING_ENDPOINT}/reverse?point.lat=${req.body.point.lat}&point.lon=${req.body.point.lon}&size=1s&lang=en`, {
 			method: "POST",
 			headers,
 			body: JSON.stringify(req.body),

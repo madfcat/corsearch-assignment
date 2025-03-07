@@ -5,6 +5,7 @@ type MapState = {
 	startName: string;
 	endPoint: { lat: number; lng: number } | null;
 	endName: string;
+	mapUpdating: boolean;
 };
 
 const initialState: MapState = {
@@ -12,6 +13,7 @@ const initialState: MapState = {
 	startName: "",
 	endPoint: null,
 	endName: "",
+	mapUpdating: false,
 };
 
 const mapSlice = createSlice({
@@ -34,6 +36,9 @@ const mapSlice = createSlice({
 			[state.startPoint, state.endPoint] = [state.endPoint, state.startPoint];
 			[state.startName, state.endName] = [state.endName, state.startName];
 		},
+		setMapUpdating(state, action: PayloadAction<MapState["mapUpdating"]>) {
+			state.mapUpdating = action.payload;
+		},
 	},
 });
 
@@ -43,5 +48,6 @@ export const {
 	setEndPoint,
 	setEndName,
 	swapStartWithEnd,
+	setMapUpdating,
 } = mapSlice.actions;
 export default mapSlice.reducer;

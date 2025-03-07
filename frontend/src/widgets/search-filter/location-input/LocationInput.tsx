@@ -8,7 +8,8 @@ import {
 	setEndPoint,
 } from "../../../features/mapSlice";
 import { BACKEND_URL } from "../../../config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { debounce } from "../../../shared/debounce";
 import { PeliasResponse } from "../../../types/types";
 
 type Props = {
@@ -19,28 +20,6 @@ type Props = {
 
 function convertGeometryCoordanitesToPoint(arr: [number, number]) {
 	return { lat: arr[1], lng: arr[0] };
-}
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-function debounce<T extends (...args: any[]) => Promise<any>>(
-	func: T,
-	timeout: number = 300
-) {
-	console.log("debounce");
-	let timer: ReturnType<typeof setTimeout>;
-	let resolveRef: ((value: Awaited<ReturnType<T>>) => void) | null = null;
-
-	return (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
-		return new Promise((resolve) => {
-			if (timer) clearTimeout(timer);
-			resolveRef = resolve;
-
-			timer = setTimeout(async () => {
-				const result = await func(...args);
-				if (resolveRef) resolveRef(result);
-			}, timeout);
-		});
-	};
 }
 
 const debouncedChange = debounce(
@@ -65,7 +44,6 @@ const debouncedChange = debounce(
 export default function LocationInput({ title, name, placeholder }: Props) {
 	const [features, setFeatures] = useState<PeliasResponse["features"]>([]);
 	const [isLoading, setIsLoading] = useState(false);
-	// const [isComplete, setIsComplete] = useState(false);
 	const nameValue = useSelector((state: RootState) => {
 		if (name === "from") {
 			return state.map.startName;
@@ -74,14 +52,18 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 		}
 	});
 	const dispatch = useDispatch();
-	const [value, setValue] = useState(nameValue || "");
+	console.log("nameValue", nameValue);
+	const [value, setValue] = useState("");
+
+	// sync from the global state
+	useEffect(() => {
+		setValue(nameValue || "");
+	}, [nameValue]);
 
 	async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		console.log("handle change!");
-		if (name === "from")
-			dispatch(setStartName(""));
-		if (name === "to")
-			dispatch(setEndName(""));
+		if (name === "from") dispatch(setStartName(""));
+		if (name === "to") dispatch(setEndName(""));
 		setIsLoading(true);
 		e.preventDefault();
 		setValue(e.target.value);
@@ -132,24 +114,24 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 				/>
 				{value && (
 					<div className={styles["data-list"]}>
-						{features.length > 0 ? (
-							features.map((feature) => {
-								return (
-									<div
-										className={styles["data-list-element"]}
-										key={feature.properties.id}
-									>
-										<button onClick={() => handleClick(feature)}>
-											{feature.properties.label}
-										</button>
+						{features.length > 0
+							? features.map((feature) => {
+									return (
+										<div
+											className={styles["data-list-element"]}
+											key={feature.properties.id}
+										>
+											<button onClick={() => handleClick(feature)}>
+												{feature.properties.label}
+											</button>
+										</div>
+									);
+							  })
+							: !nameValue && (
+									<div className={styles["data-list-status"]}>
+										{isLoading ? "Loading..." : "No suggestion..."}
 									</div>
-								);
-							})
-						) : (
-							!nameValue && <div className={styles["data-list-status"]}>
-								{isLoading ? "Loading..." : "No suggestion..."}
-							</div>
-						)}
+							  )}
 					</div>
 				)}
 			</div>

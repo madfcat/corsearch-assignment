@@ -1,0 +1,16 @@
+.spinner {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	border: 9px solid;
+	// border-color: #d9d8c4;
+	border-color: var(--color-background);
+	border-right-color: rgb(78, 78, 78);
+	animation: spinner 1s infinite linear;
+}
+
+@keyframes spinner {
+	to {
+		transform: rotate(1turn);
+	}
+}
