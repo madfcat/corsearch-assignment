@@ -3,6 +3,7 @@ import routesReducer from "../features/routesSlice";
 import edgesReducer from "../features/edgesSlice";
 import orderReducer from "../features/orderSlice";
 import mapReducer from "../features/mapSlice";
+import filterReducer from "../features/filterSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
 		edges: edgesReducer,
 		order: orderReducer,
 		map: mapReducer,
+		filter: filterReducer,
 	},
 });
 

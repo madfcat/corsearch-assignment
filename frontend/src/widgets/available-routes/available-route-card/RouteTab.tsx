@@ -28,8 +28,6 @@ export default function RouteTab({ index, duration, legs, arrivalTime, departure
 	);
 
 	function handleClick(index: number, event: React.MouseEvent) {
-		console.log("handleClick");
-		console.log("index", index);
 		event.preventDefault();
 		dispatch(setIndexDetailsOpen(index));
 		if (initialLoad) {

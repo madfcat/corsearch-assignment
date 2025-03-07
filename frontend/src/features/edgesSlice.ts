@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Edges } from "../types/types";
+import { getFilterCallback } from "./filterCallbacks";
 
 type EdgesState = {
 	edges: Edges;
@@ -16,8 +17,12 @@ const edgesSlice = createSlice({
 		setEdges(state, action: PayloadAction<Edges>) {
 			state.edges = action.payload;
 		},
+		sortEdges(state, action: PayloadAction<string | undefined>) {
+			if (!action.payload || state.edges.length === 0) return;
+			state.edges = [...state.edges].sort(getFilterCallback(action.payload));
+		},
 	},
 });
 
-export const { setEdges } = edgesSlice.actions;
+export const { setEdges, sortEdges } = edgesSlice.actions;
 export default edgesSlice.reducer;

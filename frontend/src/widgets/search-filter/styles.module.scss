@@ -25,5 +25,14 @@
 			flex-wrap: wrap;
 			gap: 12px;
 		}
+		.filter-button-disabled button {
+			background-color: #d9d8c4 !important;
+			color: #9b9a8a !important;
+			border-color: #9b9a8a !important;
+
+			svg {
+				fill: #9b9a8a !important;
+			}
+		}
 	}
 }

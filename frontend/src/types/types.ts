@@ -13,13 +13,15 @@ export type Edges = NonNullable<
 	NonNullable<PlanConnectionQuery["planConnection"]>["edges"]
 >;
 
+export type Edge = Edges[number];
+
 export type Leg = NonNullable<
 	NonNullable<
 		NonNullable<PlanConnectionQuery["planConnection"]>["edges"]
 	>[number]
 >["node"]["legs"][number];
 
-// type Edges = PlanConnection["edges"];
+export type SortFilterCallback = (a: Edge, b: Edge) => number;
 
 export type MuiIcon = React.FunctionComponent<
 	React.SVGProps<SVGSVGElement> & {

@@ -1,35 +1,45 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IconButton from "../../components/icon-button/IconButton";
 import Icon from "../../components/icon/Icon";
 import LocationInput from "./location-input/LocationInput";
 import styles from "./styles.module.scss";
 import { swapStartWithEnd } from "../../features/mapSlice";
-import { Mode } from "../../gql/graphql";
-import TransportFilterButton from "./transport-filter-button/TransportFilterButton";
-
-const transportFilterButtonsData = [
-	{ mode: Mode.Bus, text: "Bus" },
-	{ mode: Mode.Rail, text: "Rail" },
-	{ mode: Mode.Ferry, text: "Ferry" },
-	{ mode: Mode.Tram, text: "Tram" },
-	{ mode: Mode.Subway, text: "Subway" },
-];
-
-const generalFilterButtonsData = [
-	{ text: "Faster" },
-	{ text: "Less stops" },
-	{ text: "Shorter walks" },
-	{ text: "Less hill walking" },
-	{ text: "Greener" },
-	{ text: "Shorter route" },
-];
+import FilterButton from "./filter-button/FilterButton";
+import { RootState } from "../../store/store";
+import {
+	setChosenGeneralButton,
+	toggleChosenTransportButton,
+} from "../../features/filterSlice";
+import classNames from "classnames";
+import { sortEdges } from "../../features/edgesSlice";
 
 export default function SearchFilter() {
+	const transportFilterButtonsData = useSelector(
+		(state: RootState) => state.filter.transportFilterButtonsData
+	);
+	const generalFilterButtonsData = useSelector(
+		(state: RootState) => state.filter.generalFilterButtonsData
+	);
 	const dispatch = useDispatch();
 
 	function swapLocations() {
 		dispatch(swapStartWithEnd());
 	}
+
+	function handleFilterButtonClick(index: number) {
+		console.log("transport", index);
+		dispatch(toggleChosenTransportButton(index));
+	}
+
+	function handleGeneralFilterButtonClick(
+		index: number,
+		callbackKey: string
+	) {
+		console.log("general", index);
+		dispatch(setChosenGeneralButton(index));
+		dispatch(sortEdges(callbackKey));
+	}
+
 	return (
 		<div className={styles["search-filter"]}>
 			<div className={styles["location-destination"]}>
@@ -52,21 +62,43 @@ export default function SearchFilter() {
 			</div>
 			<div className={styles["filter-buttons"]}>
 				<div className={styles["filter-buttons-transport"]}>
-					{transportFilterButtonsData.map((buttonData) => (
-						<TransportFilterButton
-							className={styles["filter-button-transport"]}
-							mode={buttonData.mode}
-							text={buttonData.text}
-						/>
-					))}
+					{transportFilterButtonsData.map((buttonData, index) => {
+						const handleClick = () => handleFilterButtonClick(index);
+						const chosenClassName = !buttonData.chosen
+							? styles["filter-button-disabled"]
+							: null;
+						return (
+							<FilterButton
+								mode={buttonData.mode}
+								className={classNames(
+									styles["filter-button-transport"],
+									chosenClassName
+								)}
+								key={index}
+								text={buttonData.text}
+								handleClick={handleClick}
+							/>
+						);
+					})}
 				</div>
 				<div className={styles["filter-buttons-general"]}>
-					{generalFilterButtonsData.map((buttonData) => (
-						<TransportFilterButton
-							className={styles["filter-button-transport"]}
-							text={buttonData.text}
-						/>
-					))}
+					{generalFilterButtonsData.map((buttonData, index) => {
+						const handleClick = () => handleGeneralFilterButtonClick(index, buttonData.callbackKey);
+						const chosenClassName = !buttonData.chosen
+							? styles["filter-button-disabled"]
+							: null;
+						return (
+							<FilterButton
+								className={classNames(
+									styles["filter-button-transport"],
+									chosenClassName
+								)}
+								key={index}
+								text={buttonData.text}
+								handleClick={handleClick}
+							/>
+						);
+					})}
 				</div>
 				<div></div>
 			</div>

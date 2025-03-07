@@ -3,11 +3,13 @@ import IconButton from "../../../components/icon-button/IconButton";
 import Icon from "../../../components/icon/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { usePlanConnectionQuery } from "../../../gql/graphql";
-import { setEdges } from "../../../features/edgesSlice";
+import { setEdges, sortEdges } from "../../../features/edgesSlice";
 import { useState } from "react";
 import { RootState } from "../../../store/store";
 import { toggleOrder } from "../../../features/orderSlice";
 import { setMapUpdating } from "../../../features/mapSlice";
+import { getChosenGeneralButton } from "../../../features/filterSlice";
+// import { getChosenGeneralButton } from "../../../features/filterSlice";
 
 export default function AvailableRoutesHeader() {
 	const [disabled, setDisabled] = useState(false);
@@ -23,6 +25,8 @@ export default function AvailableRoutesHeader() {
 		destinationLat: map.endPoint?.lat,
 		destinationLon: map.endPoint?.lng,
 	};
+	const chosenGeneralButton = useSelector(getChosenGeneralButton);
+
 	const { refetch } = usePlanConnectionQuery({
 		variables: coords,
 	});
@@ -35,6 +39,7 @@ export default function AvailableRoutesHeader() {
 			const { data } = await refetch();
 			const edges = data?.planConnection?.edges || [];
 			dispatch(setEdges(edges));
+			dispatch(sortEdges(chosenGeneralButton?.callbackKey));
 			console.log("Updated data:", edges);
 		} catch (error) {
 			console.error("Error fetching data:", error);
