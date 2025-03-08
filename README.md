@@ -34,6 +34,8 @@ Build a web application that loads, analyses, and visualises public transport da
 - No scrolling screen. App takes the screen
 - Mobile version (Can be scrolled).
 - FSD-inspired architecture
+- Debounce reverse location name fetching from Geolocation API and legs from Routing API on map points change
+- Debounce location name fetching from on typing location name from Geolocation API
 
 ## Plan and challenges
 

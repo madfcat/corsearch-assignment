@@ -190,8 +190,6 @@ export default function InteractiveMap() {
 			dispatch(setShouldRefetch(true));
 		} catch (error) {
 			console.error("Error selecting location:", error);
-		} finally {
-			dispatch(setMapUpdating(false));
 		}
 	};
 
@@ -220,6 +218,7 @@ export default function InteractiveMap() {
 	console.log("Edges on the map:", edges);
 	console.log("startPoint:", startPoint);
 	console.log("endPoint:", endPoint);
+	// const routesPolylines = createPlannedRoutesPolylines(edges);
 	const routesPolylines = useMemo(
 		() => createPlannedRoutesPolylines(edges),
 		[edges]
