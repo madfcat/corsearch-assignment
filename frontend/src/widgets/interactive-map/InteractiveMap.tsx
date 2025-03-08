@@ -193,9 +193,10 @@ export default function InteractiveMap() {
 		}
 	};
 
-	const debounceSelectFetching = useRef(
-		debounceAsync(fetchReverseGeoLogic, 1000)
-	).current;
+	const debounceSelectFetching = useRef({
+		start: debounceAsync(fetchReverseGeoLogic, 1000),
+		end: debounceAsync(fetchReverseGeoLogic, 1000),
+	}).current;
 
 	async function handleSelect(option: "start" | "end") {
 		if (contextMenu) {
@@ -211,7 +212,7 @@ export default function InteractiveMap() {
 			dispatch(setInitialLoad(true));
 			dispatch(setEdges([]));
 			setContextMenu(null); // Close menu after selection
-			await debounceSelectFetching(point, option);
+			await debounceSelectFetching[option](point, option);
 		}
 	}
 

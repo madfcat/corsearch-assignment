@@ -10,6 +10,7 @@ import pickTransportColor from "../../../shared/pickTransportColor";
 import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import Icon from "../../../components/icon/Icon";
 
 type Props = {
 	legs: Leg[];
@@ -78,7 +79,6 @@ export default function RouteInformation({ legs }: Props) {
 	const legsTotal = legs.length;
 	return (
 		<div className={styles["route-information"]}>
-			{/* <p>Distance: {secondsToTime(edge?.node.)}</p> */}
 			{legs?.map((leg, index) => {
 				// console.log("leg", leg);
 				return (
@@ -92,7 +92,8 @@ export default function RouteInformation({ legs }: Props) {
 							</div>
 							<div className={styles["leg-header-stats"]}>
 								<div className={styles["leg-header-stats-duration"]}>
-									{secondsToTime(leg?.duration)}
+									<Icon className={styles["stat-icon"]} svgIconName="timer" />
+									<span>{secondsToTime(leg?.duration)}</span>
 								</div>
 								<div className={styles["leg-header-stats-distance"]}>
 									{metersToDistance(leg?.distance)}

@@ -36,9 +36,21 @@
 				}
 			}
 
-			.route-duration {
+			.route-duration-eco {
 				display: flex;
 				align-items: center;
+				gap: 5px;
+
+				.route-duration-eco-element {
+					display: flex;
+					align-items: center;
+					flex-direction: row;
+
+					.stat-icon {
+						width: 15px;
+						height: 15px;
+					}
+				}
 			}
 		}
 
@@ -80,7 +92,16 @@
 				.leg-header-stats-duration,
 				.leg-header-stats-distance {
 					// color: #7c7a6b;
-					text-align: right;
+					display: flex;
+					align-items: center;
+					flex-direction: row;
+					// text-align: right;
+					justify-content: flex-end;
+
+					.stat-icon {
+						width: 15px;
+						height: 15px;
+					}
 				}
 				.leg-header-stats-duration {
 					font-size: 14px;

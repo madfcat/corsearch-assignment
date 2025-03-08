@@ -1,7 +1,11 @@
 import styles from "./styles.module.scss";
 import RouteName from "./RouteName";
 import { Leg } from "../../../types/types";
-import { formatToHHMM, metersToDistance, secondsToTime } from "../../../shared/converters";
+import {
+	formatToHHMM,
+	metersToDistance,
+	secondsToTime,
+} from "../../../shared/converters";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	setIndexDetailsOpen,
@@ -12,6 +16,7 @@ import {
 	calculateLegsDistance,
 	calculateLegsIntermediateStopsCount,
 } from "../../../features/calculateStats";
+import Icon from "../../../components/icon/Icon";
 
 type Props = {
 	index: number;
@@ -22,7 +27,14 @@ type Props = {
 	co2: number;
 };
 
-export default function RouteTab({ index, duration, legs, arrivalTime, departureTime, co2 }: Props) {
+export default function RouteTab({
+	index,
+	duration,
+	legs,
+	arrivalTime,
+	departureTime,
+	co2,
+}: Props) {
 	const dispatch = useDispatch();
 	const initialLoad = useSelector(
 		(state: RootState) => state.routes.initialLoad
@@ -41,10 +53,30 @@ export default function RouteTab({ index, duration, legs, arrivalTime, departure
 		<summary onClick={(event) => handleClick(index, event)}>
 			<div className={styles["route-name-container"]}>
 				<RouteName legs={legs} />
-				<div className={styles["route-duration"]}>
-					<span>{co2}g</span>
-					<span>{secondsToTime(duration)}</span>
-					<span>{`${formatToHHMM(departureTime)}-${formatToHHMM(arrivalTime)}`}</span>
+				<div className={styles["route-duration-eco"]}>
+					<div className={styles["route-duration-eco-element"]}>
+						<Icon
+							className={styles["stat-icon"]}
+							svgIconName="energy_savings_leaf"
+						/>
+						<span>{co2}g</span>
+					</div>
+					<div className={styles["route-duration-eco-element"]}>
+						<Icon
+							className={styles["stat-icon"]}
+							svgIconName="timer"
+						/>
+						<span>{secondsToTime(duration)}</span>
+					</div>
+					<div className={styles["route-duration-eco-element"]}>
+						<Icon
+							className={styles["stat-icon"]}
+							svgIconName="schedule"
+						/>
+						<span>
+							{`${formatToHHMM(departureTime)}-${formatToHHMM(arrivalTime)}`}
+						</span>
+					</div>
 				</div>
 			</div>
 			<div className={styles["route-stats"]}>

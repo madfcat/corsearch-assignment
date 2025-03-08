@@ -102,8 +102,8 @@ app.use("/geo/reverse", async (req: Request, res: Response) => {
 			headers,
 			body: JSON.stringify(req.body),
 		});
-
 		const data = await response.json();
+		// console.log(JSON.stringify(data, null, 2));
 
 		res.json(data);
 	} catch (error) {
