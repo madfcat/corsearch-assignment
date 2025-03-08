@@ -18,6 +18,7 @@ export default function AvailableRouteCard({
 	const departureTime = edge?.node.start;
 	const arrivalTime = edge?.node.end;
 	const legs = edge?.node.legs;
+	const co2 = edge?.node.emissionsPerPerson?.co2 || 0;
 
 	if (!legs || !legs.length) return <div>No data available for this route</div>;
 
@@ -34,6 +35,7 @@ export default function AvailableRouteCard({
 				legs={legs}
 				departureTime={departureTime}
 				arrivalTime={arrivalTime}
+				co2={Math.floor(co2)}
 			/>
 			<RouteInformation legs={legs} />
 		</details>

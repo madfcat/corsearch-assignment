@@ -72,6 +72,7 @@ export default function InteractiveMap() {
 		x: number;
 		y: number;
 	} | null>(null);
+	const [edgesLoading, setEdgesLoading] = useState(false);
 
 	const mapUpdating = useSelector((state: RootState) => state.map.mapUpdating);
 	const startPoint = useSelector((state: RootState) => state.map.startPoint);
@@ -99,12 +100,13 @@ export default function InteractiveMap() {
 			// dispatch(setMapUpdating(true));
 			refetch();
 			try {
+				setEdgesLoading(true);
 				dispatch(setMapUpdating(true));
 				const { data } = await refetch(); // Triggers a new fetch
 				console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
-				dispatch(sortEdges(chosenGeneralButton?.callbackKey));
+				// dispatch(sortEdges(chosenGeneralButton?.callbackKey));
 				console.log("Refreshed data:", edges);
 			} catch (error) {
 				console.error("Error fetching data:", error);
@@ -112,6 +114,7 @@ export default function InteractiveMap() {
 				// setStartPoint(null);
 				// setEndPoint(null);
 				dispatch(setMapUpdating(false));
+				setEdgesLoading(false);
 			}
 		}
 
@@ -122,8 +125,9 @@ export default function InteractiveMap() {
 	}, [startPoint, endPoint, refetch, dispatch]);
 
 	useEffect(() => {
+		console.log("Sorting edges...", chosenGeneralButton?.callbackKey);
 		dispatch(sortEdges(chosenGeneralButton?.callbackKey));
-	}, [chosenGeneralButton?.callbackKey, startPoint, endPoint, dispatch]);
+	}, [chosenGeneralButton?.callbackKey, dispatch, edgesLoading]);
 
 	function MapEventHandler() {
 		useMapEvents({
@@ -158,19 +162,24 @@ export default function InteractiveMap() {
 				lon: contextMenu.lon,
 			};
 			setContextMenu(null); // Close menu after selection
-			const data = await debouncedSelect(point, () =>
-				dispatch(setMapUpdating(true))
-			);
+			try {
+				const data = await debouncedSelect(point, () =>
+					dispatch(setMapUpdating(true))
+				);
 
-			const locationName = data.features[0].properties.label;
-			if (option === "start") {
-				dispatch(setStartName(locationName));
-				dispatch(setStartPoint({ lat: point.lat, lng: point.lon }));
-			} else {
-				dispatch(setEndName(locationName));
-				dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
+				const locationName = data.features[0].properties.label;
+				if (option === "start") {
+					dispatch(setStartName(locationName));
+					dispatch(setStartPoint({ lat: point.lat, lng: point.lon }));
+				} else {
+					dispatch(setEndName(locationName));
+					dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
+				}
+			} catch (error) {
+				console.error("Error selecting location:", error);
+			} finally {
+				dispatch(setMapUpdating(false));
 			}
-			dispatch(setMapUpdating(false));
 		}
 	}
 

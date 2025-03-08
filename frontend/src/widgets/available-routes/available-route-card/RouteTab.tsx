@@ -19,9 +19,10 @@ type Props = {
 	legs: Leg[];
 	arrivalTime: string;
 	departureTime: string;
+	co2: number;
 };
 
-export default function RouteTab({ index, duration, legs, arrivalTime, departureTime }: Props) {
+export default function RouteTab({ index, duration, legs, arrivalTime, departureTime, co2 }: Props) {
 	const dispatch = useDispatch();
 	const initialLoad = useSelector(
 		(state: RootState) => state.routes.initialLoad
@@ -41,6 +42,7 @@ export default function RouteTab({ index, duration, legs, arrivalTime, departure
 			<div className={styles["route-name-container"]}>
 				<RouteName legs={legs} />
 				<div className={styles["route-duration"]}>
+					<span>{co2}g</span>
 					<span>{secondsToTime(duration)}</span>
 					<span>{`${formatToHHMM(departureTime)}-${formatToHHMM(arrivalTime)}`}</span>
 				</div>
