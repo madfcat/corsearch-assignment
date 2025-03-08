@@ -2,14 +2,10 @@ import styles from "./styles.module.scss";
 import IconButton from "../../../components/icon-button/IconButton";
 import Icon from "../../../components/icon/Icon";
 import { useDispatch, useSelector } from "react-redux";
-import { usePlanConnectionQuery } from "../../../gql/graphql";
-import { setEdges, sortEdges } from "../../../features/edgesSlice";
-import { useState } from "react";
+import { getShouldRefetch, setShouldRefetch } from "../../../features/edgesSlice";
+import { useEffect, useState } from "react";
 import { RootState } from "../../../store/store";
 import { toggleOrder } from "../../../features/orderSlice";
-import { setMapUpdating } from "../../../features/mapSlice";
-import { getChosenGeneralButton } from "../../../features/filterSlice";
-// import { getChosenGeneralButton } from "../../../features/filterSlice";
 
 export default function AvailableRoutesHeader() {
 	const [disabled, setDisabled] = useState(false);
@@ -17,37 +13,18 @@ export default function AvailableRoutesHeader() {
 	const availableRoutesCount = useSelector((state: RootState) => state.edges)
 		.edges.length;
 	const order = useSelector((state: RootState) => state.order.order);
-
-	const map = useSelector((state: RootState) => state.map);
-	const coords = {
-		originLat: map.startPoint?.lat,
-		originLon: map.startPoint?.lng,
-		destinationLat: map.endPoint?.lat,
-		destinationLon: map.endPoint?.lng,
-	};
-	const chosenGeneralButton = useSelector(getChosenGeneralButton);
-
-	const { refetch } = usePlanConnectionQuery({
-		variables: coords,
-	});
+	const shouldRefetch = useSelector(getShouldRefetch);
 
 	async function handleUpdate() {
-		console.log("Update");
-		try {
-			setDisabled(true);
-			dispatch(setMapUpdating(true));
-			const { data } = await refetch();
-			const edges = data?.planConnection?.edges || [];
-			dispatch(setEdges(edges));
-			dispatch(sortEdges(chosenGeneralButton?.callbackKey));
-			console.log("Updated data:", edges);
-		} catch (error) {
-			console.error("Error fetching data:", error);
-		} finally {
-			setDisabled(false);
-			dispatch(setMapUpdating(false));
-		}
+		setDisabled(true);
+		dispatch(setShouldRefetch(true));
 	}
+
+	useEffect(() => {
+		if(!shouldRefetch) {
+			setDisabled(false);
+		}
+	}, [shouldRefetch, dispatch]);
 
 	function handleOrder() {
 		console.log("handleOrder");

@@ -65,3 +65,4 @@ Build a web application that loads, analyses, and visualises public transport da
 - I did not do a lot optimizations in terms of memoization. This area of the project could be improved in the real-life project.
 - Autocomplete Geocoding API can be limited to Uusimaa by providing bounding box coordinates
 - Filter callbacks logic can be refactored to redux createSelector and memoizing filtering. For now, kept as it is by sorting edges data in state after the sorting choice is changed from UI.
+- Rerenders on filter change in the map can be optimized with memoizing.

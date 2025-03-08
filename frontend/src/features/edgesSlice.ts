@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Edges } from "../types/types";
 import { getFilterCallback } from "./filterCallbacks";
+import { RootState } from "../store/store";
 
 type EdgesState = {
 	edges: Edges;
+	shouldRefetch: boolean;
 };
 
 const initialState: EdgesState = {
 	edges: [],
+	shouldRefetch: true,
 };
 
 const edgesSlice = createSlice({
@@ -21,8 +24,15 @@ const edgesSlice = createSlice({
 			if (!action.payload || state.edges.length === 0) return;
 			state.edges = [...state.edges].sort(getFilterCallback(action.payload));
 		},
+		setShouldRefetch(state, action: PayloadAction<boolean>) {
+			state.shouldRefetch = action.payload;
+		}
 	},
 });
 
-export const { setEdges, sortEdges } = edgesSlice.actions;
+export function getShouldRefetch(state: RootState) {
+	return state.edges.shouldRefetch;
+}
+
+export const { setEdges, sortEdges, setShouldRefetch } = edgesSlice.actions;
 export default edgesSlice.reducer;

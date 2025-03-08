@@ -4,11 +4,17 @@ import "leaflet/dist/leaflet.css";
 import createPlannedRoutesPolylines from "../../features/planned-routes/createPlannedRoutesPolylines";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { setEdges, sortEdges } from "../../features/edgesSlice";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+	getShouldRefetch,
+	setEdges,
+	setShouldRefetch,
+	sortEdges,
+} from "../../features/edgesSlice";
 // import { setEdges } from "../../features/edgesSlice";
 import L from "leaflet";
 import { usePlanConnectionQuery } from "../../gql/graphql";
+// import { TransitMode, usePlanConnectionQuery } from "../../gql/graphql";
 import StartEndMenu from "./start-end-menu/StartEndMenu";
 import Flag from "@material-design-icons/svg/round/flag.svg?react";
 import LocationOn from "@material-design-icons/svg/round/location_on.svg?react";
@@ -20,11 +26,15 @@ import {
 	setStartName,
 	setStartPoint,
 } from "../../features/mapSlice";
-import { debounce } from "../../shared/debounce";
+import { debounceAsync } from "../../shared/debounce";
 import { BACKEND_URL } from "../../config";
 import { PeliasReverseResponse } from "../../types/types";
 import Spinner from "../../components/spinner/Spinner";
-import { getChosenGeneralButton } from "../../features/filterSlice";
+import {
+	getChosenGeneralButton,
+	getChosenTransportButtons,
+} from "../../features/filterSlice";
+import { setInitialLoad } from "../../features/routesSlice";
 
 function renderMarkerIcon(
 	iconSize: { width: number; height: number },
@@ -37,33 +47,6 @@ function renderMarkerIcon(
 		iconAnchor: [iconSize.width / 2, iconSize.height],
 	});
 }
-
-const debouncedSelect = debounce(
-	async (
-		point: {
-			lat: number;
-			lon: number;
-		},
-		callbackFunc: () => void
-	): Promise<PeliasReverseResponse> => {
-		console.log("handle change from debounce");
-		callbackFunc();
-		const res = await fetch(`${BACKEND_URL}/geo/reverse`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ point }),
-		});
-		if (!res) {
-			throw new Error(`Response failed: ${res}`);
-		}
-		const data = await res.json();
-		console.log(data);
-		return data;
-	},
-	500
-);
 
 export default function InteractiveMap() {
 	const [contextMenu, setContextMenu] = useState<{
@@ -85,20 +68,33 @@ export default function InteractiveMap() {
 	const dispatch = useDispatch();
 	const chosenGeneralButton = useSelector(getChosenGeneralButton);
 
+	const planTransitModePreferenceInput = useSelector(getChosenTransportButtons);
+	// console.log(JSON.stringify(planTransitModePreferenceInput, null, 2));
+
+	const shouldRefetch = useSelector(getShouldRefetch);
+
+	const variables = {
+		originLat: startPoint?.lat || 0,
+		originLon: startPoint?.lng || 0,
+		destinationLat: endPoint?.lat || 0,
+		destinationLon: endPoint?.lng || 0,
+		planTransitModePreferenceInput,
+		// planTransitModePreferenceInput: [
+		// 	{ mode: TransitMode.Bus },
+		// 	{ mode: TransitMode.Ferry },
+		// 	{ mode: TransitMode.Rail },
+		// 	{ mode: TransitMode.Subway },
+		// 	{ mode: TransitMode.Tram },
+		// ],
+	};
+
 	const { refetch } = usePlanConnectionQuery({
-		variables: {
-			originLat: startPoint?.lat || 0,
-			originLon: startPoint?.lng || 0,
-			destinationLat: endPoint?.lat || 0,
-			destinationLon: endPoint?.lng || 0,
-		},
+		variables,
 	});
 
 	useEffect(() => {
 		async function updateEdges() {
 			console.log("Refetching data from map...");
-			// dispatch(setMapUpdating(true));
-			refetch();
 			try {
 				setEdgesLoading(true);
 				dispatch(setMapUpdating(true));
@@ -106,26 +102,24 @@ export default function InteractiveMap() {
 				console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
-				// dispatch(sortEdges(chosenGeneralButton?.callbackKey));
 				console.log("Refreshed data:", edges);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			} finally {
-				// setStartPoint(null);
-				// setEndPoint(null);
 				dispatch(setMapUpdating(false));
 				setEdgesLoading(false);
+				dispatch(setShouldRefetch(false));
 			}
 		}
 
-		if (startPoint && endPoint) {
-			console.log("startPoint && endPoint", startPoint, endPoint);
+		if (shouldRefetch && startPoint && endPoint) {
 			updateEdges();
 		}
-	}, [startPoint, endPoint, refetch, dispatch]);
+	}, [refetch, dispatch, shouldRefetch, startPoint, endPoint]);
+	// }, [refetch, dispatch, shouldRefetch]);
 
 	useEffect(() => {
-		console.log("Sorting edges...", chosenGeneralButton?.callbackKey);
+		if (edgesLoading) return;
 		dispatch(sortEdges(chosenGeneralButton?.callbackKey));
 	}, [chosenGeneralButton?.callbackKey, dispatch, edgesLoading]);
 
@@ -155,38 +149,81 @@ export default function InteractiveMap() {
 		return null;
 	}
 
+	const fetchReverseGeo = async (point: {
+		lat: number;
+		lon: number;
+	}): Promise<PeliasReverseResponse> => {
+		console.log("handle change from debounce");
+		const res = await fetch(`${BACKEND_URL}/geo/reverse`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ point }),
+		});
+		if (!res) {
+			throw new Error(`Response failed: ${res}`);
+		}
+		const data = await res.json();
+		console.log(data);
+		return data;
+	};
+
+	const fetchReverseGeoLogic = async (
+		point: {
+			lat: number;
+			lon: number;
+		},
+		option: "start" | "end"
+	) => {
+		try {
+			// if (startPoint && endPoint)
+			// 	dispatch(setMapUpdating(true));
+			const data = await fetchReverseGeo(point);
+
+			const locationName = data.features[0].properties.label;
+			if (option === "start") {
+				dispatch(setStartName(locationName));
+			} else {
+				dispatch(setEndName(locationName));
+			}
+			dispatch(setShouldRefetch(true));
+		} catch (error) {
+			console.error("Error selecting location:", error);
+		} finally {
+			dispatch(setMapUpdating(false));
+		}
+	};
+
+	const debounceSelectFetching = useRef(
+		debounceAsync(fetchReverseGeoLogic, 1000)
+	).current;
+
 	async function handleSelect(option: "start" | "end") {
 		if (contextMenu) {
 			const point = {
 				lat: contextMenu.lat,
 				lon: contextMenu.lon,
 			};
-			setContextMenu(null); // Close menu after selection
-			try {
-				const data = await debouncedSelect(point, () =>
-					dispatch(setMapUpdating(true))
-				);
-
-				const locationName = data.features[0].properties.label;
-				if (option === "start") {
-					dispatch(setStartName(locationName));
-					dispatch(setStartPoint({ lat: point.lat, lng: point.lon }));
-				} else {
-					dispatch(setEndName(locationName));
-					dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
-				}
-			} catch (error) {
-				console.error("Error selecting location:", error);
-			} finally {
-				dispatch(setMapUpdating(false));
+			if (option === "start") {
+				dispatch(setStartPoint({ lat: point.lat, lng: point.lon }));
+			} else {
+				dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
 			}
+			dispatch(setInitialLoad(true));
+			dispatch(setEdges([]));
+			setContextMenu(null); // Close menu after selection
+			await debounceSelectFetching(point, option);
 		}
 	}
 
 	console.log("Edges on the map:", edges);
 	console.log("startPoint:", startPoint);
 	console.log("endPoint:", endPoint);
-	const routesPolylines = createPlannedRoutesPolylines(edges);
+	const routesPolylines = useMemo(
+		() => createPlannedRoutesPolylines(edges),
+		[edges]
+	);
 	// console.log(routesPolylines);
 	let leafletNodes: React.JSX.Element[] | null = null;
 	if (routesPolylines.length !== 0)

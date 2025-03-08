@@ -8,9 +8,10 @@ import {
 	setEndPoint,
 } from "../../../features/mapSlice";
 import { BACKEND_URL } from "../../../config";
-import { useEffect, useState } from "react";
-import { debounce } from "../../../shared/debounce";
+import { useEffect, useRef, useState } from "react";
+import { debounceAsync } from "../../../shared/debounce";
 import { PeliasResponse } from "../../../types/types";
+import { setShouldRefetch } from "../../../features/edgesSlice";
 
 type Props = {
 	title: string;
@@ -21,25 +22,6 @@ type Props = {
 function convertGeometryCoordanitesToPoint(arr: [number, number]) {
 	return { lat: arr[1], lng: arr[0] };
 }
-
-const debouncedChange = debounce(
-	async (text: string): Promise<PeliasResponse> => {
-		console.log("handle change from debounce");
-		const res = await fetch(`${BACKEND_URL}/geo/autocomplete`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ text }),
-		});
-		if (!res) {
-			throw new Error(`Response failed: ${res}`);
-		}
-		const data = await res.json();
-		return data;
-	},
-	500
-);
 
 export default function LocationInput({ title, name, placeholder }: Props) {
 	const [features, setFeatures] = useState<PeliasResponse["features"]>([]);
@@ -59,6 +41,25 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 	useEffect(() => {
 		setValue(nameValue || "");
 	}, [nameValue]);
+
+	const debouncedChange = useRef(debounceAsync(
+		async (text: string): Promise<PeliasResponse> => {
+			console.log("handle change from debounce");
+			const res = await fetch(`${BACKEND_URL}/geo/autocomplete`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ text }),
+			});
+			if (!res) {
+				throw new Error(`Response failed: ${res}`);
+			}
+			const data = await res.json();
+			return data;
+		},
+		700
+	)).current;
 
 	async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		console.log("handle change!");
@@ -95,6 +96,8 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 			);
 		}
 		setFeatures([]);
+		dispatch(setShouldRefetch(true));
+		
 	}
 
 	return (

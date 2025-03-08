@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function debounce<T extends (...args: any[]) => Promise<any>>(
+export function debounceAsync<T extends (...args: any[]) => Promise<any>>(
 	func: T,
 	timeout: number = 300
 ) {
-	console.log("debounce");
+	console.log("async debounce...");
 	let timer: ReturnType<typeof setTimeout>;
 	let resolveRef: ((value: Awaited<ReturnType<T>>) => void) | null = null;
 
@@ -17,5 +17,22 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
 				if (resolveRef) resolveRef(result);
 			}, timeout);
 		});
+	};
+}
+
+export function debounce<T extends (...args: any[]) => any>(
+	func: T,
+	timeout: number = 300
+) {
+	console.log("debounce...");
+	let timer: ReturnType<typeof setTimeout>;
+	let lastResult: ReturnType<T>;
+
+	return (...args: Parameters<T>): ReturnType<T> => {
+		if (timer) clearTimeout(timer);
+		timer = setTimeout(() => {
+			lastResult =  func(...args);
+		}, timeout);
+		return lastResult;
 	};
 }

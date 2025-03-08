@@ -6,11 +6,12 @@
 # Duration
 # Duration in a lenient ISO-8601 duration format. Example P2DT2H12M40S, 2d2h12m40s or 1h
 
-query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!) {
+query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!, $planTransitModePreferenceInput: [PlanTransitModePreferenceInput!]) {
   planConnection(
     origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
     destination: {location: {coordinate: {latitude: $destinationLat, longitude: $destinationLon}}}
     searchWindow: "PT5H"
+    modes: {transit: {transit: $planTransitModePreferenceInput}}
   ) {
     edges {
       node {

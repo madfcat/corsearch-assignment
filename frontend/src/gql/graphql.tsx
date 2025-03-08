@@ -4586,6 +4586,7 @@ export type PlanConnectionQueryVariables = Exact<{
   originLon: Scalars['CoordinateValue']['input'];
   destinationLat: Scalars['CoordinateValue']['input'];
   destinationLon: Scalars['CoordinateValue']['input'];
+  planTransitModePreferenceInput?: InputMaybe<Array<PlanTransitModePreferenceInput> | PlanTransitModePreferenceInput>;
 }>;
 
 
@@ -4753,11 +4754,12 @@ export type NearestLazyQueryHookResult = ReturnType<typeof useNearestLazyQuery>;
 export type NearestSuspenseQueryHookResult = ReturnType<typeof useNearestSuspenseQuery>;
 export type NearestQueryResult = Apollo.QueryResult<NearestQuery, NearestQueryVariables>;
 export const PlanConnectionDocument = gql`
-    query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!) {
+    query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!, $planTransitModePreferenceInput: [PlanTransitModePreferenceInput!]) {
   planConnection(
     origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
     destination: {location: {coordinate: {latitude: $destinationLat, longitude: $destinationLon}}}
     searchWindow: "PT5H"
+    modes: {transit: {transit: $planTransitModePreferenceInput}}
   ) {
     edges {
       node {
@@ -4854,6 +4856,7 @@ export type PlanConnectionComponentProps = Omit<ApolloReactComponents.QueryCompo
  *      originLon: // value for 'originLon'
  *      destinationLat: // value for 'destinationLat'
  *      destinationLon: // value for 'destinationLon'
+ *      planTransitModePreferenceInput: // value for 'planTransitModePreferenceInput'
  *   },
  * });
  */

@@ -7,16 +7,23 @@ import { swapStartWithEnd } from "../../features/mapSlice";
 import FilterButton from "./filter-button/FilterButton";
 import { RootState } from "../../store/store";
 import {
+	getFilterTransportButtonsChosenCount,
 	setChosenGeneralButton,
 	toggleChosenTransportButton,
 } from "../../features/filterSlice";
 import classNames from "classnames";
-import { sortEdges } from "../../features/edgesSlice";
+import { setShouldRefetch, sortEdges } from "../../features/edgesSlice";
+import { useRef } from "react";
+import { debounce } from "../../shared/debounce";
 
 export default function SearchFilter() {
 	const transportFilterButtonsData = useSelector(
 		(state: RootState) => state.filter.transportFilterButtonsData
 	);
+	const {
+		trasnportlastIndex,
+		transportChosenCount,
+	} = useSelector(getFilterTransportButtonsChosenCount);
 	const generalFilterButtonsData = useSelector(
 		(state: RootState) => state.filter.generalFilterButtonsData
 	);
@@ -26,9 +33,19 @@ export default function SearchFilter() {
 		dispatch(swapStartWithEnd());
 	}
 
-	function handleFilterButtonClick(index: number) {
+	const debouncedFilterToggle = useRef(
+		debounce((index: number) => {
+			console.log("Debounced transport filter change:", index);
+			dispatch(setShouldRefetch(true));
+		}, 700)
+	).current;
+
+	function handleTransportFilterButtonClick(index: number) {
 		console.log("transport", index);
+
+		if (transportChosenCount === 1 && trasnportlastIndex === index) return;
 		dispatch(toggleChosenTransportButton(index));
+		debouncedFilterToggle(index);
 	}
 
 	function handleGeneralFilterButtonClick(index: number, callbackKey: string) {
@@ -60,7 +77,7 @@ export default function SearchFilter() {
 			<div className={styles["filter-buttons"]}>
 				<div className={styles["filter-buttons-transport"]}>
 					{transportFilterButtonsData.map((buttonData, index) => {
-						const handleClick = () => handleFilterButtonClick(index);
+						const handleClick = () => handleTransportFilterButtonClick(index);
 						const chosenClassName = !buttonData.chosen
 							? styles["filter-button-disabled"]
 							: null;
