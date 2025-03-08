@@ -104,6 +104,7 @@ export default function InteractiveMap() {
 				console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
+				dispatch(sortEdges(chosenGeneralButton?.callbackKey));
 				console.log("Refreshed data:", edges);
 			} catch (error) {
 				console.error("Error fetching data:", error);
