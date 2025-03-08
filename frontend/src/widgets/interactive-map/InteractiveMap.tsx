@@ -5,7 +5,8 @@ import createPlannedRoutesPolylines from "../../features/planned-routes/createPl
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setEdges } from "../../features/edgesSlice";
+import { setEdges, sortEdges } from "../../features/edgesSlice";
+// import { setEdges } from "../../features/edgesSlice";
 import L from "leaflet";
 import { usePlanConnectionQuery } from "../../gql/graphql";
 import StartEndMenu from "./start-end-menu/StartEndMenu";
@@ -23,7 +24,7 @@ import { debounce } from "../../shared/debounce";
 import { BACKEND_URL } from "../../config";
 import { PeliasReverseResponse } from "../../types/types";
 import Spinner from "../../components/spinner/Spinner";
-// import { MuiIcon } from "../../types/types";
+import { getChosenGeneralButton } from "../../features/filterSlice";
 
 function renderMarkerIcon(
 	iconSize: { width: number; height: number },
@@ -81,6 +82,7 @@ export default function InteractiveMap() {
 	);
 	const edges = useSelector((state: RootState) => state.edges.edges);
 	const dispatch = useDispatch();
+	const chosenGeneralButton = useSelector(getChosenGeneralButton);
 
 	const { refetch } = usePlanConnectionQuery({
 		variables: {
@@ -97,7 +99,7 @@ export default function InteractiveMap() {
 			// dispatch(setMapUpdating(true));
 			refetch();
 			try {
-				dispatch(setMapUpdating(true))
+				dispatch(setMapUpdating(true));
 				const { data } = await refetch(); // Triggers a new fetch
 				console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
@@ -105,8 +107,7 @@ export default function InteractiveMap() {
 				console.log("Refreshed data:", edges);
 			} catch (error) {
 				console.error("Error fetching data:", error);
-			}
-			finally {
+			} finally {
 				// setStartPoint(null);
 				// setEndPoint(null);
 				dispatch(setMapUpdating(false));
@@ -118,6 +119,10 @@ export default function InteractiveMap() {
 			updateEdges();
 		}
 	}, [startPoint, endPoint, refetch, dispatch]);
+
+	useEffect(() => {
+		dispatch(sortEdges(chosenGeneralButton?.callbackKey));
+	}, [chosenGeneralButton?.callbackKey, startPoint, endPoint, dispatch]);
 
 	function MapEventHandler() {
 		useMapEvents({
@@ -152,7 +157,9 @@ export default function InteractiveMap() {
 				lon: contextMenu.lon,
 			};
 			setContextMenu(null); // Close menu after selection
-			const data = await debouncedSelect(point, () => dispatch(setMapUpdating(true)));
+			const data = await debouncedSelect(point, () =>
+				dispatch(setMapUpdating(true))
+			);
 
 			const locationName = data.features[0].properties.label;
 			if (option === "start") {

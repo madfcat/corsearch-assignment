@@ -20,7 +20,7 @@ const initialState: FilterState = {
 		{ mode: Mode.Subway, text: "Subway", chosen: true },
 	],
 	generalFilterButtonsData: [
-		{ text: "Earlier", chosen: true, callbackKey: "earlierCallback" },
+		{ text: "Earlier", chosen: true, callbackKey: "earlierDepartureCallback" },
 		{ text: "Faster Route", chosen: false, callbackKey: "fasterRouteCallback" },
 		{ text: "Less stops", chosen: false, callbackKey: "lessStopsCallback" },
 		{
@@ -28,16 +28,11 @@ const initialState: FilterState = {
 			chosen: false,
 			callbackKey: "shorterWalksCallback",
 		},
-		{
-			text: "Less hills walking",
-			chosen: false,
-			callbackKey: "lessHillsWalkingCallback",
-		},
-		{ text: "Greener", chosen: false, callbackKey: "GreenerCallback" },
+		{ text: "Greener", chosen: false, callbackKey: "greenerCallback" },
 		{
 			text: "Shorter route",
 			chosen: false,
-			callbackKey: "ShorterRouteCallback",
+			callbackKey: "shorterRouteCallback",
 		},
 	],
 };
@@ -63,7 +58,7 @@ const filterSlice = createSlice({
 });
 
 export const getChosenGeneralButton = (state: RootState) =>
-		state.filter.generalFilterButtonsData.find((button) => button.chosen);
+	state.filter.generalFilterButtonsData.find((button) => button.chosen);
 
 export const { setChosenGeneralButton, toggleChosenTransportButton } =
 	filterSlice.actions;

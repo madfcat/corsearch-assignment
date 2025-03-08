@@ -31,10 +31,7 @@ export default function SearchFilter() {
 		dispatch(toggleChosenTransportButton(index));
 	}
 
-	function handleGeneralFilterButtonClick(
-		index: number,
-		callbackKey: string
-	) {
+	function handleGeneralFilterButtonClick(index: number, callbackKey: string) {
 		console.log("general", index);
 		dispatch(setChosenGeneralButton(index));
 		dispatch(sortEdges(callbackKey));
@@ -83,7 +80,8 @@ export default function SearchFilter() {
 				</div>
 				<div className={styles["filter-buttons-general"]}>
 					{generalFilterButtonsData.map((buttonData, index) => {
-						const handleClick = () => handleGeneralFilterButtonClick(index, buttonData.callbackKey);
+						const handleClick = () =>
+							handleGeneralFilterButtonClick(index, buttonData.callbackKey);
 						const chosenClassName = !buttonData.chosen
 							? styles["filter-button-disabled"]
 							: null;
