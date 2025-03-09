@@ -35,8 +35,6 @@ describe("createPlannedRoutesPolylines", () => {
 		const legPolylines = result[0];
 		expect(legPolylines).toHaveLength(14);
 
-		console.log(legPolylines[0].props.positions);
-
 		expect(legPolylines[0].props.positions).toSatisfy((positions: [number, number][]) =>
 			positions.every(
 				(point) =>
