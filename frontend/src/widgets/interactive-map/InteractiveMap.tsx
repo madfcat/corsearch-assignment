@@ -97,8 +97,8 @@ export default function InteractiveMap() {
 			try {
 				setEdgesLoading(true);
 				dispatch(setMapUpdating(true));
-				const { data } = await refetch(); // Triggers a new fetch
-				console.log("Data fetched:", data);
+				const { data } = await refetch();
+				// console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
 				console.log("Refreshed data:", edges);
@@ -214,7 +214,6 @@ export default function InteractiveMap() {
 			dispatch(setEdges([]));
 			setContextMenu(null); // Close menu after selection
 			await debounceSelectFetching[option](point, option);
-			console.log("Fetching location data...", debounceSelectFetching.startProgress, debounceSelectFetching.endProgress);
 			// Check if both debounces are not in progress anymore
 			if (
 				!debounceSelectFetching.startProgress &&
@@ -224,10 +223,6 @@ export default function InteractiveMap() {
 			}
 		}
 	}
-
-	// console.log("Edges on the map:", edges);
-	// console.log("startPoint:", startPoint);
-	// console.log("endPoint:", endPoint);
 	const routesPolylines = useMemo(
 		() => createPlannedRoutesPolylines(edges),
 		[edges]

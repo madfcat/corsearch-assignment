@@ -5,7 +5,6 @@
 
 # Duration
 # Duration in a lenient ISO-8601 duration format. Example P2DT2H12M40S, 2d2h12m40s or 1h
-
 query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!, $destinationLat: CoordinateValue!, $destinationLon: CoordinateValue!, $planTransitModePreferenceInput: [PlanTransitModePreferenceInput!]) {
   planConnection(
     origin: {location: {coordinate: {latitude: $originLat, longitude: $originLon}}}
@@ -32,6 +31,7 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
           end {
             scheduledTime
           }
+          realtimeState
           legGeometry {
             length
             points
@@ -66,6 +66,7 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
             lat
             lon
             name(language: "en")
+            vehicleMode
           }
           route {
             longName(language: "en")

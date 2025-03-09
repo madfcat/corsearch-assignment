@@ -66,7 +66,7 @@ function StopName({ stop, type }: StopNameProps) {
 function calculateStopType(
 	legsTotal: number,
 	index: number,
-	fromOrTo: "from" | "to"
+	fromOrTo: "from" | "to" | "middle"
 ) {
 	if (index === 0 && fromOrTo === "from") return "start";
 	if (index === legsTotal - 1 && fromOrTo === "to") return "end";
@@ -109,6 +109,16 @@ export default function RouteInformation({ legs }: Props) {
 								{msToHoursMinutes(leg?.from.departure?.scheduledTime)}
 							</div>
 						</div>
+						{leg?.intermediateStops?.map((stop) => {
+							return (
+								<div className={classNames(styles["leg-stop-and-time"], styles["leg-stop-and-time-inter"])}>
+									<StopName
+										stop={stop}
+										type="middle"
+									/>
+								</div>
+							);
+						})}
 						<div className={styles["leg-stop-and-time"]}>
 							<StopName
 								stop={leg?.to.stop}
