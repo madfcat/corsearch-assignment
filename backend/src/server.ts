@@ -5,6 +5,7 @@ const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 const GRAPHQL_API_TOKEN = process.env.GRAPHQL_API_TOKEN;
 const GEOCODING_ENDPOINT = process.env.GEOCODING_ENDPOINT;
 // console.log(GRAPHQL_ENDPOINT, GRAPHQL_API_TOKEN, GEOCODING_ENDPOINT);
+// console.log(`${process.env.VITE_HOST}`, `${process.env.VITE_HOST}:4000`);
 if (!GRAPHQL_ENDPOINT || !GRAPHQL_API_TOKEN || !GEOCODING_ENDPOINT) {
 	throw new Error(
 		"GRAPHQL_ENDPOINT or GRAPHQL_API_TOKEN or GEOCODING_ENDPOINT is not defined in environment variables."
@@ -77,11 +78,14 @@ app.use("/graphql", async (req: Request, res: Response) => {
 app.use("/geo/autocomplete", async (req: Request, res: Response) => {
 	try {
 		console.log(req.body);
-		const response = await fetch(`${GEOCODING_ENDPOINT}/autocomplete?text=${req.body.text}&lang=en`, {
-			method: "POST",
-			headers,
-			// body: JSON.stringify(req.body),
-		});
+		const response = await fetch(
+			`${GEOCODING_ENDPOINT}/autocomplete?text=${req.body.text}&lang=en`,
+			{
+				method: "POST",
+				headers,
+				// body: JSON.stringify(req.body),
+			}
+		);
 
 		const data = await response.json();
 
@@ -98,11 +102,14 @@ app.use("/geo/autocomplete", async (req: Request, res: Response) => {
 app.use("/geo/reverse", async (req: Request, res: Response) => {
 	try {
 		console.log(req.body);
-		const response = await fetch(`${GEOCODING_ENDPOINT}/reverse?point.lat=${req.body.point.lat}&point.lon=${req.body.point.lon}&size=1s&lang=en`, {
-			method: "POST",
-			headers,
-			body: JSON.stringify(req.body),
-		});
+		const response = await fetch(
+			`${GEOCODING_ENDPOINT}/reverse?point.lat=${req.body.point.lat}&point.lon=${req.body.point.lon}&size=1s&lang=en`,
+			{
+				method: "POST",
+				headers,
+				body: JSON.stringify(req.body),
+			}
+		);
 		const data = await response.json();
 		// console.log(JSON.stringify(data, null, 2));
 
