@@ -15,8 +15,7 @@ const app = express();
 const allowedOrigins =
 	process.env.NODE_ENV === "production"
 		? [
-				"https://your-production-domain.com",
-				"http://your-production-ip-address",
+				`${process.env.VITE_HOST}`,
 				"http://localhost:5173",
 				"http://localhost:4000",
 		  ]
