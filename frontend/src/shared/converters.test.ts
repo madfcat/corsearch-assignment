@@ -74,8 +74,20 @@ describe("formatToHHMM function", () => {
 	});
 
 	it("should handle invalid date strings gracefully", () => {
+		// Invalid date string
 		const invalidDateString = "invalid-date";
-		const result = formatToHHMM(invalidDateString);
-		expect(result).toBe("NaN:NaN"); // Date parsing failure
-	});
+		const result1 = formatToHHMM(invalidDateString);
+		console.log(result1);
+		expect(result1).toBe("");
+	  
+		// Empty string as a date
+		const emptyDateString = "";
+		const result2 = formatToHHMM(emptyDateString);
+		expect(result2).toBe("");
+	  
+		// Date string with invalid format
+		const invalidDateFormatString = "2025-13-40T25:61:00";
+		const result3 = formatToHHMM(invalidDateFormatString);
+		expect(result3).toBe("");
+	  });
 });
