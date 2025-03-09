@@ -193,8 +193,8 @@ export default function InteractiveMap() {
 	const debounceSelectFetching = useRef({
 		startProgress: false,
 		endProgress: false,
-		start: debounceAsync(fetchReverseGeoLogic, 3000),
-		end: debounceAsync(fetchReverseGeoLogic, 3000),
+		start: debounceAsync(fetchReverseGeoLogic, 1000),
+		end: debounceAsync(fetchReverseGeoLogic, 1000),
 	}).current;
 
 	async function handleSelect(option: "start" | "end") {

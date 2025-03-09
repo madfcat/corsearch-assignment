@@ -15,8 +15,6 @@ query planConnection($originLat: CoordinateValue!, $originLon: CoordinateValue!,
   ) {
     edges {
       node {
-        elevationLost
-        elevationGained
         duration
         emissionsPerPerson {
           co2
