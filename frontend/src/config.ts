@@ -1,4 +1,4 @@
-const VITE_IP_ADDRSS = import.meta.env.VITE_IP_ADDRSS;
+const VITE_HOST = import.meta.env.VITE_HOST;
 
 export const BACKEND_URL =
-	VITE_IP_ADDRSS ? `${VITE_IP_ADDRSS}:4000` : "http://localhost:4000";
+	VITE_HOST ? `${VITE_HOST}:4000` : "http://localhost:4000";
