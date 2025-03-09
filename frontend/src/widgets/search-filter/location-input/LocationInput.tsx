@@ -11,6 +11,7 @@ import { BACKEND_URL } from "../../../config";
 import { useEffect, useRef, useState } from "react";
 import { debounceAsync } from "../../../shared/debounce";
 import { PeliasResponse } from "../../../types/types";
+// import { getShouldRefetch, setShouldRefetch } from "../../../features/edgesSlice";
 import { setShouldRefetch } from "../../../features/edgesSlice";
 
 type Props = {
@@ -33,8 +34,9 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 			return state.map.endName;
 		}
 	});
+	// const shouldRefetch = useSelector(getShouldRefetch);
 	const dispatch = useDispatch();
-	console.log("nameValue", nameValue);
+	// console.log("nameValue", nameValue);
 	const [value, setValue] = useState("");
 
 	// sync from the global state
@@ -96,6 +98,7 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 			);
 		}
 		setFeatures([]);
+		// if (!shouldRefetch)
 		dispatch(setShouldRefetch(true));
 		
 	}

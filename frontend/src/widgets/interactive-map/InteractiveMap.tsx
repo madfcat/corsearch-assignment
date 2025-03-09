@@ -111,11 +111,10 @@ export default function InteractiveMap() {
 			}
 		}
 
-		if (shouldRefetch && startPoint && endPoint) {
+		if (shouldRefetch) {
 			updateEdges();
 		}
-	}, [refetch, dispatch, shouldRefetch, startPoint, endPoint]);
-	// }, [refetch, dispatch, shouldRefetch]);
+	}, [refetch, dispatch, shouldRefetch]);
 
 	useEffect(() => {
 		if (edgesLoading) return;
@@ -181,18 +180,21 @@ export default function InteractiveMap() {
 			const locationName = data.features[0].properties.label;
 			if (option === "start") {
 				dispatch(setStartName(locationName));
+				debounceSelectFetching.startProgress = false;
 			} else {
 				dispatch(setEndName(locationName));
+				debounceSelectFetching.endProgress = false;
 			}
-			dispatch(setShouldRefetch(true));
 		} catch (error) {
 			console.error("Error selecting location:", error);
 		}
 	};
 
 	const debounceSelectFetching = useRef({
-		start: debounceAsync(fetchReverseGeoLogic, 1000),
-		end: debounceAsync(fetchReverseGeoLogic, 1000),
+		startProgress: false,
+		endProgress: false,
+		start: debounceAsync(fetchReverseGeoLogic, 3000),
+		end: debounceAsync(fetchReverseGeoLogic, 3000),
 	}).current;
 
 	async function handleSelect(option: "start" | "end") {
@@ -202,14 +204,24 @@ export default function InteractiveMap() {
 				lon: contextMenu.lon,
 			};
 			if (option === "start") {
+				debounceSelectFetching.startProgress = true;
 				dispatch(setStartPoint({ lat: point.lat, lng: point.lon }));
 			} else {
 				dispatch(setEndPoint({ lat: point.lat, lng: point.lon }));
+				debounceSelectFetching.endProgress = true;
 			}
 			dispatch(setInitialLoad(true));
 			dispatch(setEdges([]));
 			setContextMenu(null); // Close menu after selection
 			await debounceSelectFetching[option](point, option);
+			console.log("Fetching location data...", debounceSelectFetching.startProgress, debounceSelectFetching.endProgress);
+			// Check if both debounces are not in progress anymore
+			if (
+				!debounceSelectFetching.startProgress &&
+				!debounceSelectFetching.endProgress
+			) {
+				dispatch(setShouldRefetch(true));
+			}
 		}
 	}
 

@@ -3,7 +3,6 @@ export function debounceAsync<T extends (...args: any[]) => Promise<any>>(
 	func: T,
 	timeout: number = 300
 ) {
-	console.log("async debounce...");
 	let timer: ReturnType<typeof setTimeout>;
 	let lastPromise: Promise<Awaited<ReturnType<T>>> | null = null;
 
@@ -28,7 +27,6 @@ export function debounce<T extends (...args: any[]) => any>(
 	func: T,
 	timeout: number = 300
 ) {
-	console.log("debounce...");
 	let timer: ReturnType<typeof setTimeout>;
 	let lastResult: ReturnType<T>;
 

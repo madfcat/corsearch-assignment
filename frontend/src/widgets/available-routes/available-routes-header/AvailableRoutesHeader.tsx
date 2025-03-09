@@ -17,6 +17,7 @@ export default function AvailableRoutesHeader() {
 
 	async function handleUpdate() {
 		setDisabled(true);
+		// if (!shouldRefetch)
 		dispatch(setShouldRefetch(true));
 	}
 

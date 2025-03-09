@@ -19,6 +19,6 @@ stop:
 fclean: stop
 	docker network rm -f hsl-network
 	docker rm -f hsl-frontend hsl-backend
-	docker image rm -f corsearch-backend corsearch-frontend
+	docker image rm -f corsearch-assignment-backend corsearch-assignment-frontend
 
 .PHONY: dev graphiql prod clean fclean

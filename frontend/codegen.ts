@@ -35,6 +35,7 @@ const config: CodegenConfig = {
 			],
 			config: {
 				withComponent: true,
+
 			},
 		},
 		// "./src/global.d.ts": {

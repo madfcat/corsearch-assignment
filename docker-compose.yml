@@ -21,6 +21,9 @@ services:
     build: 
       context: ./frontend
       target: development
+      args:
+        - GRAPHQL_API_TOKEN=${GRAPHQL_API_TOKEN}
+        - GRAPHQL_ENDPOINT=${GRAPHQL_ENDPOINT}
     ports: 
       - 5173:5173
     environment:

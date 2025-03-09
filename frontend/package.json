@@ -4,7 +4,8 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently \"vite --host\" \"npm run graphql-codegen:watch\"",
+		"dev": "vite --host",
+		"dev:codegen": "npm run graphql-codegen && concurrently \"npm run dev\" \"npm run graphql-codegen:watch\"",
 		"build": "tsc -b && vite build",
 		"lint": "eslint .",
 		"preview": "vite preview",
