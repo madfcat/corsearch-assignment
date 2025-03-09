@@ -24,6 +24,7 @@ services:
       args:
         - GRAPHQL_API_TOKEN=${GRAPHQL_API_TOKEN}
         - GRAPHQL_ENDPOINT=${GRAPHQL_ENDPOINT}
+        - VITE_HOST=${VITE_HOST}
     ports: 
       - 5173:5173
     environment:
