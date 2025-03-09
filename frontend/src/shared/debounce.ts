@@ -5,18 +5,22 @@ export function debounceAsync<T extends (...args: any[]) => Promise<any>>(
 ) {
 	console.log("async debounce...");
 	let timer: ReturnType<typeof setTimeout>;
-	let resolveRef: ((value: Awaited<ReturnType<T>>) => void) | null = null;
+	let lastPromise: Promise<Awaited<ReturnType<T>>> | null = null;
 
-	return (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
-		return new Promise((resolve) => {
-			if (timer) clearTimeout(timer);
-			resolveRef = resolve;
+	return function (
+		this: ThisParameterType<T>,
+		...args: Parameters<T>
+	): Promise<Awaited<ReturnType<T>>> {
+		if (timer) clearTimeout(timer);
 
+		lastPromise = new Promise<Awaited<ReturnType<T>>>((resolve) => {
 			timer = setTimeout(async () => {
-				const result = await func(...args);
-				if (resolveRef) resolveRef(result);
+				const result = await func.apply(this, args);
+				resolve(result);
 			}, timeout);
 		});
+
+		return lastPromise;
 	};
 }
 
@@ -28,10 +32,14 @@ export function debounce<T extends (...args: any[]) => any>(
 	let timer: ReturnType<typeof setTimeout>;
 	let lastResult: ReturnType<T>;
 
-	return (...args: Parameters<T>): ReturnType<T> => {
+	return function (
+		this: ThisParameterType<T>,
+		...args: Parameters<T>
+	): ReturnType<T> {
 		if (timer) clearTimeout(timer);
+
 		timer = setTimeout(() => {
-			lastResult =  func(...args);
+			lastResult = func.apply(this, args);
 		}, timeout);
 		return lastResult;
 	};

@@ -59,21 +59,21 @@ export default function RouteTab({
 							className={styles["stat-icon"]}
 							svgIconName="energy_savings_leaf"
 						/>
-						<span>{co2}g</span>
+						<span className={styles["route-duration-eco-element-value"]}>{co2}g</span>
 					</div>
 					<div className={styles["route-duration-eco-element"]}>
 						<Icon
 							className={styles["stat-icon"]}
 							svgIconName="timer"
 						/>
-						<span>{secondsToTime(duration)}</span>
+						<span className={styles["route-duration-eco-element-value"]}>{secondsToTime(duration)}</span>
 					</div>
 					<div className={styles["route-duration-eco-element"]}>
 						<Icon
 							className={styles["stat-icon"]}
 							svgIconName="schedule"
 						/>
-						<span>
+						<span className={styles["route-duration-eco-element-value"]}>
 							{`${formatToHHMM(departureTime)}-${formatToHHMM(arrivalTime)}`}
 						</span>
 					</div>

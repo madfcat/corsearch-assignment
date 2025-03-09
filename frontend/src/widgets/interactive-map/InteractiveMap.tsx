@@ -1,5 +1,11 @@
 import styles from "./styles.module.scss";
-import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import {
+	MapContainer,
+	Marker,
+	Popup,
+	TileLayer,
+	useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import createPlannedRoutesPolylines from "../../features/planned-routes/createPlannedRoutesPolylines";
 import { RootState } from "../../store/store";
@@ -11,10 +17,8 @@ import {
 	setShouldRefetch,
 	sortEdges,
 } from "../../features/edgesSlice";
-// import { setEdges } from "../../features/edgesSlice";
 import L from "leaflet";
 import { usePlanConnectionQuery } from "../../gql/graphql";
-// import { TransitMode, usePlanConnectionQuery } from "../../gql/graphql";
 import StartEndMenu from "./start-end-menu/StartEndMenu";
 import Flag from "@material-design-icons/svg/round/flag.svg?react";
 import LocationOn from "@material-design-icons/svg/round/location_on.svg?react";
@@ -60,6 +64,8 @@ export default function InteractiveMap() {
 	const mapUpdating = useSelector((state: RootState) => state.map.mapUpdating);
 	const startPoint = useSelector((state: RootState) => state.map.startPoint);
 	const endPoint = useSelector((state: RootState) => state.map.endPoint);
+	const startName = useSelector((state: RootState) => state.map.startName);
+	const endName = useSelector((state: RootState) => state.map.endName);
 
 	const indexDetailsOpen = useSelector(
 		(state: RootState) => state.routes.indexDetailsOpen
@@ -79,13 +85,6 @@ export default function InteractiveMap() {
 		destinationLat: endPoint?.lat || 0,
 		destinationLon: endPoint?.lng || 0,
 		planTransitModePreferenceInput,
-		// planTransitModePreferenceInput: [
-		// 	{ mode: TransitMode.Bus },
-		// 	{ mode: TransitMode.Ferry },
-		// 	{ mode: TransitMode.Rail },
-		// 	{ mode: TransitMode.Subway },
-		// 	{ mode: TransitMode.Tram },
-		// ],
 	};
 
 	const { refetch } = usePlanConnectionQuery({
@@ -177,8 +176,6 @@ export default function InteractiveMap() {
 		option: "start" | "end"
 	) => {
 		try {
-			// if (startPoint && endPoint)
-			// 	dispatch(setMapUpdating(true));
 			const data = await fetchReverseGeo(point);
 
 			const locationName = data.features[0].properties.label;
@@ -216,15 +213,13 @@ export default function InteractiveMap() {
 		}
 	}
 
-	console.log("Edges on the map:", edges);
-	console.log("startPoint:", startPoint);
-	console.log("endPoint:", endPoint);
-	// const routesPolylines = createPlannedRoutesPolylines(edges);
+	// console.log("Edges on the map:", edges);
+	// console.log("startPoint:", startPoint);
+	// console.log("endPoint:", endPoint);
 	const routesPolylines = useMemo(
 		() => createPlannedRoutesPolylines(edges),
 		[edges]
 	);
-	// console.log(routesPolylines);
 	let leafletNodes: React.JSX.Element[] | null = null;
 	if (routesPolylines.length !== 0)
 		leafletNodes = routesPolylines[indexDetailsOpen];
@@ -255,13 +250,17 @@ export default function InteractiveMap() {
 					<Marker
 						position={startPoint}
 						icon={renderMarkerIcon({ width: 20, height: 20 }, <LocationOn />)}
-					/>
+					>
+						{startName && <Popup>{startName}</Popup>}
+					</Marker>
 				)}
 				{endPoint && (
 					<Marker
 						position={endPoint}
 						icon={renderMarkerIcon({ width: 20, height: 20 }, <Flag />)}
-					/>
+					>
+						{endName && <Popup>{endName}</Popup>}
+					</Marker>
 				)}
 				{!mapUpdating ? <>{leafletNodes}</> : <div>Loading...</div>}
 			</MapContainer>
