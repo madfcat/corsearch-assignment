@@ -21,6 +21,10 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no -T ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} << 'EOF'
+            # Ensure known hosts for GitHub
+            mkdir -p ~/.ssh
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
             # Navigate to your project directory
             if [ ! -d "${{ secrets.PROJECT_PATH }}" ]; then
             # Clone the repo if not already cloned
@@ -34,6 +38,17 @@ jobs:
 
             # Pull the latest changes
             git pull origin main
+
+            
+            # Check if 'make' is installed
+            if ! command -v make &> /dev/null; then
+              # Update package list
+              sudo apt update
+              echo "make is not installed. Installing..."
+              sudo apt install build-essential
+            else
+              echo "make is already installed."
+            fi
 
             # Rebuild and restart the Docker Compose project
             make clean
