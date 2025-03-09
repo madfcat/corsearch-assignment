@@ -16,6 +16,7 @@ const allowedOrigins =
 	process.env.NODE_ENV === "production"
 		? [
 				`${process.env.VITE_HOST}`,
+				`${process.env.VITE_HOST}:4000`,
 				"http://localhost",
 				"http://localhost:5173",
 				"http://localhost:4000",

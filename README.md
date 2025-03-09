@@ -72,4 +72,4 @@ Build a web application that loads, analyses, and visualises public transport da
 - Departure and arrival time could be added as input fields to expand data that can be obtained
 - One of the improvement that was on my mind was to fetch a lot of routes according to the address for each hour during the 24 hour window and create Data Distribution graph. It can be done even though one call to Routing API can only be in 8h window. Several sequential calls could solve the task.
 - Map could be optimized to move its view to the location found from the search
-- CI/CD is a simple implementations with GitHub Actions pulling updates, building the containers and restarting them
+- CI/CD is a simple implementations with GitHub Actions pulling updates, building the containers and restarting them. It could be improved with creating blue green deployment
