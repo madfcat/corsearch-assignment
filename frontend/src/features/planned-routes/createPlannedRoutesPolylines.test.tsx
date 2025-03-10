@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import createPlannedRoutesPolylines from "./createPlannedRoutesPolylines";
-import { edgesData } from "./createPlannedRoutesPolylines.mock.ts";
+import { edgesData } from "../../__test__/edges.mock.ts";
 import RoundMarker from "../../components/round-marker/RoundMarker.tsx";
 // import { Polyline, Popup } from "react-leaflet";
 // import { Mode } from "../../gql/graphql";

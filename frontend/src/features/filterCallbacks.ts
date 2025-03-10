@@ -32,14 +32,6 @@ export const lessStopsCallback: SortFilterCallback = (a, b) => {
 };
 
 export const shorterWalksCallback: SortFilterCallback = (a, b) => {
-	// function calculateWalkDistance(edge: Edge) {
-	// 	const legs = edge?.node?.legs || [];
-	// 	const walkDistance = legs.reduce((acc, leg) => {
-	// 		const distance = leg?.mode === Mode.Walk ? leg?.distance || 0 : 0;
-	// 		return acc + distance;
-	// 	}, 0);
-	// 	return walkDistance;
-	// }
 	function calculateWalkDistance(edge: Edge) {
 		return edge?.node?.walkDistance || 0;
 	}
@@ -51,6 +43,7 @@ export const greenerCallback: SortFilterCallback = (a, b) => {
 	function calculateCo2(edge: Edge) {
 		return edge?.node?.emissionsPerPerson?.co2 || 0;
 	}
+
 	return calculateCo2(a) - calculateCo2(b);
 };
 

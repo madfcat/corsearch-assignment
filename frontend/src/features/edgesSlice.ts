@@ -3,7 +3,7 @@ import { Edges } from "../types/types";
 import { getFilterCallback } from "./filterCallbacks";
 import { RootState } from "../store/store";
 
-type EdgesState = {
+export type EdgesState = {
 	edges: Edges;
 	shouldRefetch: boolean;
 };

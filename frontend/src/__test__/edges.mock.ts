@@ -1,5 +1,5 @@
-import { Mode } from "../../gql/graphql";
-import { Edges } from "../../types/types";
+import { Mode } from "../gql/graphql";
+import { Edges } from "../types/types";
 
 export const edgesData: Edges = [
 	{
