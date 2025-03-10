@@ -38,7 +38,7 @@ import {
 	getChosenGeneralButton,
 	getChosenTransportButtons,
 } from "../../features/filterSlice";
-import { setInitialLoad } from "../../features/routesSlice";
+import { setIndexDetailsOpen, setInitialLoad } from "../../features/routesSlice";
 
 function renderMarkerIcon(
 	iconSize: { width: number; height: number },
@@ -102,6 +102,7 @@ export default function InteractiveMap() {
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
 				// console.log("Refreshed data:", edges);
+				dispatch(setIndexDetailsOpen(0));
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			} finally {
