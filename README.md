@@ -34,8 +34,9 @@ So, I decided to implement interactive map with list of available routes, filter
 Each request is limited to 5 hours window or 50 routes (HSL API limitation).
 Users can use interactive map with right click or inputs to set location and final destination.
 
+- Live demo: http://37.27.252.44/ (will be dropped soon)
+- YouTube demo: https://www.youtube.com/watch?v=PLf_jXUBov4
 - Figma design: https://www.figma.com/design/G8Vp9CvlK26IVeOKfCWLLJ/Corsearch-Test-Assignment?node-id=0-1&t=FnVNiLQseH0XN1hN-1
-- Live version: http://37.27.252.44/ (will be dropped soon) 
 
 ### Features
 
