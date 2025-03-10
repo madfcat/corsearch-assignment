@@ -47,6 +47,7 @@ export default function RouteTab({
 			dispatch(setInitialLoad(false));
 		}
 	}
+	// console.log(departureTime, arrivalTime);
 
 	const stopsCount = calculateLegsIntermediateStopsCount(legs);
 	return (

@@ -1,7 +1,7 @@
 import { Leg } from "../../../types/types";
 import {
+	formatToHHMM,
 	metersToDistance,
-	msToHoursMinutes,
 	secondsToTime,
 } from "../../../shared/converters";
 import TransportIcon from "../../../components/transport-icon/TransportIcon";
@@ -77,8 +77,12 @@ export default function RouteInformation({ legs }: Props) {
 		<div className={styles["route-information"]}>
 			{legs?.map((leg, index) => {
 				// console.log("leg", leg);
+				// console.log(leg?.from.departure?.scheduledTime);
 				return (
-					<div className={styles["leg"]} key={index}>
+					<div
+						className={styles["leg"]}
+						key={`${leg?.distance}-${leg?.duration}-${leg?.id}-${index}`}
+					>
 						<div className={styles["leg-header"]}>
 							<div className={styles["leg-header-transport"]}>
 								<TransportIcon mode={leg?.mode} />
@@ -102,16 +106,19 @@ export default function RouteInformation({ legs }: Props) {
 								type={calculateStopType(legsTotal, index, "from")}
 							/>
 							<div className={styles["stop-departure-time"]}>
-								{msToHoursMinutes(leg?.from.departure?.scheduledTime)}
+								{formatToHHMM(leg?.from.departure?.scheduledTime)}
 							</div>
 						</div>
-						{leg?.intermediateStops?.map((stop) => {
+						{leg?.intermediateStops?.map((stop, index) => {
 							return (
-								<div className={classNames(styles["leg-stop-and-time"], styles["leg-stop-and-time-inter"])}>
-									<StopName
-										stop={stop}
-										type="middle"
-									/>
+								<div
+									className={classNames(
+										styles["leg-stop-and-time"],
+										styles["leg-stop-and-time-inter"]
+									)}
+									key={`${stop?.code}-${stop?.vehicleMode}-${index}`}
+								>
+									<StopName stop={stop} type="middle" />
 								</div>
 							);
 						})}
@@ -121,7 +128,7 @@ export default function RouteInformation({ legs }: Props) {
 								type={calculateStopType(legsTotal, index, "to")}
 							/>
 							<div className={styles["stop-departure-time"]}>
-								{msToHoursMinutes(leg?.to.departure?.scheduledTime)}
+								{formatToHHMM(leg?.to.departure?.scheduledTime)}
 							</div>
 						</div>
 					</div>

@@ -37,7 +37,7 @@ export default function AvailableRouteCard({
 				arrivalTime={arrivalTime}
 				co2={Math.floor(co2)}
 			/>
-			<RouteInformation legs={legs} />
+			<RouteInformation legs={legs} key={index}/>
 		</details>
 	);
 }
