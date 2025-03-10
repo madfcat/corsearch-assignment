@@ -103,6 +103,9 @@ Then follow: http://localhost/
 
 To study Routing API and easier query building, GraphiQL with GraphiQl Explorer was used locally.
 
+`.env` file in `./graphiql` should have these variable:
+`GRAPHQL_API_TOKEN` - obtained from https://digitransit.fi/en/developers/api-registration/
+
 To run:
 
 ```
