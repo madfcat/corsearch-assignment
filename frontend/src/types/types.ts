@@ -7,7 +7,6 @@ export type PickedMode =
 	| Mode.Subway
 	| Mode.Rail
 	| Mode.Ferry;
-// | "DEFAULT";
 
 export type Edges = NonNullable<
 	NonNullable<PlanConnectionQuery["planConnection"]>["edges"]

@@ -95,11 +95,9 @@
 			.leg-header-stats {
 				.leg-header-stats-duration,
 				.leg-header-stats-distance {
-					// color: #7c7a6b;
 					display: flex;
 					align-items: center;
 					flex-direction: row;
-					// text-align: right;
 					justify-content: flex-end;
 
 					.stat-icon {
@@ -127,8 +125,8 @@
 					margin-right: 6px;
 				}
 
-				.stop-name-text {
-				}
+				// .stop-name-text {
+				// }
 
 				.stop-name-code-BUS,
 				.stop-name-code-RAIL,
@@ -137,13 +135,12 @@
 				}
 			}
 
-			.stop-departure-time {
-				// color: #7c7a6b;
-			}
+			// .stop-departure-time {
+			// }
 		}
 
 		.leg-stop-and-time-inter {
-			margin-left: 15px;
+			margin-left: 10px;
 			font-size: 12px;
 		}
 	}

@@ -30,11 +30,8 @@ describe("orderSlice", () => {
 	});
 
 	it("should toggle the order state from desc to asc", () => {
-		console.log(store.getState());
 		store.dispatch(toggleOrder());
-		console.log(store.getState());
 		store.dispatch(toggleOrder());
-		console.log(store.getState());
 
 		const updatedState = store.getState().order;
 		expect(updatedState.order).toBe("asc");

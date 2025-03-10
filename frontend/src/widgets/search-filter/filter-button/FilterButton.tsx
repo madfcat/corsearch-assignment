@@ -15,7 +15,6 @@ export default function TransportFilterButton({
 	text,
 	className = "",
 	handleClick,
-	// disabled = false,
 }: Props) {
 	const color = mode ? pickTransportColor(mode) : "";
 	return (

@@ -17,7 +17,6 @@ export default function AvailableRoutesHeader() {
 
 	async function handleUpdate() {
 		setDisabled(true);
-		// if (!shouldRefetch)
 		dispatch(setShouldRefetch(true));
 	}
 
@@ -28,7 +27,6 @@ export default function AvailableRoutesHeader() {
 	}, [shouldRefetch, dispatch]);
 
 	function handleOrder() {
-		console.log("handleOrder");
 		dispatch(toggleOrder());
 	}
 

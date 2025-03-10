@@ -14,8 +14,6 @@ export default function AvailableRoutes() {
 	);
 	const edges = useSelector((state: RootState) => state.edges.edges);
 	const order = useSelector((state: RootState) => state.order.order);
-	// const startName = useSelector((state: RootState) => state.map.startName);
-	// const endName = useSelector((state: RootState) => state.map.endName);
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -47,7 +45,6 @@ export default function AvailableRoutes() {
 						})
 					) : (
 						<div className={styles["available-routes-instructions"]}>
-							{/* {(!(startName && endName)) ? (<> */}
 							{(initialLoad) ? (<>
 							<p>Available routes will be shown here.</p>
 							<p>

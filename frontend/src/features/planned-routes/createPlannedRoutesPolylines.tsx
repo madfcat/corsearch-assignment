@@ -9,7 +9,7 @@ import pickTransportColor from "../../shared/pickTransportColor";
 export default function createPlannedRoutesPolylines(edges: Edges) {
 	const routesPolylines: JSX.Element[][] = [];
 
-	console.log("edges:", edges);
+	// console.log("edges:", edges);
 
 	edges?.forEach((edge) => {
 		const legs = edge?.node?.legs;

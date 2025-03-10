@@ -11,7 +11,6 @@ import { getBackendUrl } from "../../../config";
 import { useEffect, useRef, useState } from "react";
 import { debounceAsync } from "../../../shared/debounce";
 import { PeliasResponse } from "../../../types/types";
-// import { getShouldRefetch, setShouldRefetch } from "../../../features/edgesSlice";
 import { setShouldRefetch } from "../../../features/edgesSlice";
 
 type Props = {
@@ -34,7 +33,6 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 			return state.map.endName;
 		}
 	});
-	// const shouldRefetch = useSelector(getShouldRefetch);
 	const dispatch = useDispatch();
 	// console.log("nameValue", nameValue);
 	const [value, setValue] = useState("");
@@ -46,7 +44,6 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 
 	const debouncedChange = useRef(debounceAsync(
 		async (text: string): Promise<PeliasResponse> => {
-			console.log("handle change from debounce");
 			const res = await fetch(`${getBackendUrl()}/geo/autocomplete`, {
 				method: "POST",
 				headers: {
@@ -64,9 +61,6 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 	)).current;
 
 	async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-		console.log("handle change!");
-		// if (name === "from") dispatch(setStartName(""));
-		// if (name === "to") dispatch(setEndName(""));
 		setIsLoading(true);
 		e.preventDefault();
 		setValue(e.target.value);
@@ -76,7 +70,7 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 		}
 		const data = await debouncedChange(e.target.value);
 		setIsLoading(false);
-		console.log("data pelias", data);
+		// console.log("data pelias", data);
 		if (data?.features) setFeatures([...data.features]);
 	}
 
@@ -98,7 +92,6 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 			);
 		}
 		setFeatures([]);
-		// if (!shouldRefetch)
 		dispatch(setShouldRefetch(true));
 		
 	}

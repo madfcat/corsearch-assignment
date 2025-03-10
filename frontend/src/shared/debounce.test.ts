@@ -42,7 +42,7 @@ describe("debounceAsync", () => {
 });
 
 describe("debounce", () => {
-	vi.useFakeTimers(); // Use fake timers to control time in the tests
+	vi.useFakeTimers();
 
 	it("should debounce a normal function", () => {
 		const mockFn = vi.fn();
@@ -58,7 +58,6 @@ describe("debounce", () => {
 
 	it("should return the result of the debounced function", async () => {
 		const mockFn = vi.fn(() => "result");
-		// function mockFn() { return "result"};
 		const debouncedFn = debounce(mockFn, 300);
 
 		const result = debouncedFn();

@@ -28,33 +28,26 @@ export default function SearchFilter() {
 	const generalFilterButtonsData = useSelector(
 		(state: RootState) => state.filter.generalFilterButtonsData
 	);
-	// const shouldRefetch = useSelector(getShouldRefetch);
 	const dispatch = useDispatch();
 
 	function swapLocations() {
 		dispatch(swapStartWithEnd());
-		// if (!shouldRefetch)
 		dispatch(setShouldRefetch(true))
 	}
 
 	const debouncedFilterToggle = useRef(
-		debounce((index: number) => {
-			console.log("Debounced transport filter change:", index);
-			// if (!shouldRefetch)
+		debounce(() => {
 			dispatch(setShouldRefetch(true));
 		}, 700)
 	).current;
 
 	function handleTransportFilterButtonClick(index: number) {
-		console.log("transport", index);
-
 		if (transportChosenCount === 1 && trasnportlastIndex === index) return;
 		dispatch(toggleChosenTransportButton(index));
-		debouncedFilterToggle(index);
+		debouncedFilterToggle();
 	}
 
 	function handleGeneralFilterButtonClick(index: number, callbackKey: string) {
-		console.log("general", index);
 		dispatch(setChosenGeneralButton(index));
 		dispatch(sortEdges(callbackKey));
 	}
@@ -120,7 +113,6 @@ export default function SearchFilter() {
 						);
 					})}
 				</div>
-				<div></div>
 			</div>
 		</div>
 	);

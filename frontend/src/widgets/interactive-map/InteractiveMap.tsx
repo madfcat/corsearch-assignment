@@ -101,7 +101,7 @@ export default function InteractiveMap() {
 				// console.log("Data fetched:", data);
 				const edges = data?.planConnection?.edges || [];
 				dispatch(setEdges(edges));
-				console.log("Refreshed data:", edges);
+				// console.log("Refreshed data:", edges);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			} finally {
@@ -151,7 +151,6 @@ export default function InteractiveMap() {
 		lat: number;
 		lon: number;
 	}): Promise<PeliasReverseResponse> => {
-		console.log("handle change from debounce");
 		const res = await fetch(`${getBackendUrl()}/geo/reverse`, {
 			method: "POST",
 			headers: {
@@ -163,7 +162,7 @@ export default function InteractiveMap() {
 			throw new Error(`Response failed: ${res}`);
 		}
 		const data = await res.json();
-		console.log(data);
+		// console.log(data);
 		return data;
 	};
 

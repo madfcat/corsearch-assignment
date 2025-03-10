@@ -81,7 +81,6 @@ describe("formatToHHMM function", () => {
 		// Invalid date string
 		const invalidDateString = "invalid-date";
 		const result1 = formatToHHMM(invalidDateString);
-		console.log(result1);
 		expect(result1).toBe("");
 	  
 		// Empty string as a date

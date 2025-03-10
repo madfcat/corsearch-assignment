@@ -28,10 +28,6 @@ function StopName({ stop, type }: StopNameProps) {
 	const startName = useSelector((state: RootState) => state.map.startName);
 	const endName = useSelector((state: RootState) => state.map.endName);
 
-	// console.log(
-	// 	"`stop-name-code-${stop?.vehicleMode}`",
-	// 	`stop-name-code-${stop?.vehicleMode}`
-	// );
 	let stopName = stop?.name;
 	if (!stopName) {
 		switch (type) {
