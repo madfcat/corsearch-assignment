@@ -15,6 +15,5 @@ export const store = configureStore({
 	},
 });
 
-// Define TypeScript types for better auto-completion
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

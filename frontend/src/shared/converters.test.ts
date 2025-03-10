@@ -15,6 +15,8 @@ describe("secondsToTime()", () => {
 		expect(secondsToTime(3721)).toBe("1h 2m 1s");
 		expect(secondsToTime(3601)).toBe("1h 1s");
 		expect(secondsToTime(3600)).toBe("1h");
+		expect(secondsToTime(undefined)).toBe("");
+		expect(secondsToTime(null)).toBe("");
 	});
 });
 
@@ -25,6 +27,8 @@ describe("metersToDistance()", () => {
 		expect(metersToDistance(1000)).toBe("1km");
 		expect(metersToDistance(3721)).toBe("3km 721m");
 		expect(metersToDistance(140025)).toBe("140km 25m");
+		expect(metersToDistance(undefined)).toBe("");
+		expect(metersToDistance(null)).toBe("");
 	});
 });
 

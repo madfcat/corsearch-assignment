@@ -5,11 +5,11 @@ import { store } from "./store/store";
 import "./index.scss";
 import App from "./App.tsx";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { BACKEND_URL } from "./config";
+import { getBackendUrl } from "./config";
 
 const client = new ApolloClient({
 	// uri: '/api/graphql',
-	uri: `${BACKEND_URL}/graphql`,
+	uri: `${getBackendUrl()}/graphql`,
 	cache: new InMemoryCache(),
 });
 

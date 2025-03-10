@@ -31,7 +31,7 @@ import {
 	setStartPoint,
 } from "../../features/mapSlice";
 import { debounceAsync } from "../../shared/debounce";
-import { BACKEND_URL } from "../../config";
+import { getBackendUrl } from "../../config";
 import { PeliasReverseResponse } from "../../types/types";
 import Spinner from "../../components/spinner/Spinner";
 import {
@@ -152,7 +152,7 @@ export default function InteractiveMap() {
 		lon: number;
 	}): Promise<PeliasReverseResponse> => {
 		console.log("handle change from debounce");
-		const res = await fetch(`${BACKEND_URL}/geo/reverse`, {
+		const res = await fetch(`${getBackendUrl()}/geo/reverse`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

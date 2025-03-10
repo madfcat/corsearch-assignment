@@ -7,7 +7,7 @@ import {
 	setEndName,
 	setEndPoint,
 } from "../../../features/mapSlice";
-import { BACKEND_URL } from "../../../config";
+import { getBackendUrl } from "../../../config";
 import { useEffect, useRef, useState } from "react";
 import { debounceAsync } from "../../../shared/debounce";
 import { PeliasResponse } from "../../../types/types";
@@ -47,7 +47,7 @@ export default function LocationInput({ title, name, placeholder }: Props) {
 	const debouncedChange = useRef(debounceAsync(
 		async (text: string): Promise<PeliasResponse> => {
 			console.log("handle change from debounce");
-			const res = await fetch(`${BACKEND_URL}/geo/autocomplete`, {
+			const res = await fetch(`${getBackendUrl()}/geo/autocomplete`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
