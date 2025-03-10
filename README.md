@@ -24,6 +24,9 @@ Build a web application that loads, analyses, and visualises public transport da
 
 ## My approach
 
+![corsearch-hsl-short](https://github.com/user-attachments/assets/07e4d394-ab84-492c-8f00-6da93d49d952)
+
+
 At first, my idea was to create a bicycle related application showing rentals, parkings etc. But there is not so much data to play with. At least at this season.
 
 So, I decided to implement interactive map with list of available routes, filter, sort and ability to search by address and by the location from the map.
